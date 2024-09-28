@@ -3,10 +3,10 @@ import plotly.express as px
 
 class Plotter:
     def __init__(self)->None:
-        self.figure = go.Figure()
+        self._initialize_figure()
 
     def _initialize_figure(self)->None:
-        pass
+        self.figure = go.Figure()
 
     def express(self, type:str, **args, **kwargs)->go.Figure:
         self.figure = getattr(px, type)(**args, **kwargs)
