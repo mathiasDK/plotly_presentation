@@ -9,7 +9,6 @@ here = os.path.abspath(os.path.dirname(__file__))
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-
 # requirements
 def package_is_pinned(name):
     """quick check to make sure packages are pinned"""
@@ -56,6 +55,7 @@ def read(*filenames, **kwargs):
 
 
 META_FILE = read(os.path.join(PACKAGE_NAME, '__init__.py'))
+print(META_FILE)
 
 
 def find_meta(meta):
@@ -72,8 +72,8 @@ setup(
     version=find_meta('version'),
     description="Python library to make it easier to plot using plotly",
     long_description=readme,
-    author="Mathias Nørskov",
-    author_email="mathiasnoerskov@gmail.com",
+    author=find_meta('author'),
+    author_email=find_meta('email'),
     url='https://github.dev/mathiasDK/plotly_presentation',
     packages=find_packages(include=['plotly_presentation']),
     include_package_data=True,
