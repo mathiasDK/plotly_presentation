@@ -34,16 +34,42 @@ class Options:
                 "config.colors": OptionValue(options_path + "colors_config.yaml"),
             }
         )
+        default_folder = str(Path.cwd()) + "/plotly_presentation/_core/_defaults/"
+        self._default_options = OrderedDict(
+            {
+                # "config.options": OptionValue(default_folder + "options_config.yaml"),
+                "config.callout_settings": OptionValue(default_folder + "callout_settings_config.yaml"),
+                "config.theme_settings": OptionValue(default_folder + "theme_settings_config.yaml"),
+                "config.colors": OptionValue(default_folder + "colors_config.yaml"),
+            }
+        )
 
-        config_filename = self.get_option("config.options")
-        try:
-            self._from_yaml(config_filename)
-        except FileNotFoundError:
-            pass
+        # config_filename = self.get_option("config.options")
+        # try:
+        #     self._from_yaml(config_filename)
+        # except FileNotFoundError:
+        #     print("Trying defaults")
+        #     config_filename = self.get_default_option("config.options")
+        #     self._from_yaml(config_filename)
 
     def get_option(self, option_name):
         """Return the value of the given option"""
+        try:
+            config_filename = self._get_option(option_name)
+            return self._from_yaml(config_filename)
+        except FileNotFoundError:
+            print("Trying defaults")
+            config_filename = self._get_default_option(option_name)
+            print(config_filename)
+            return self._from_yaml(config_filename)
+
+    def _get_option(self, option_name):
+        """Return the value of the given option"""
         return self._options[option_name].value
+    
+    def _get_default_option(self, option_name):
+        """Return the value of the given option"""
+        return self._default_options[option_name].value
 
     @staticmethod
     def _get_value(option_value):
@@ -65,7 +91,7 @@ class Options:
         # Note: We assume that the contents of the config file are trusted
         # TODO: Change this file format to be plain yaml and use SafeLoader
         yaml_options = yaml.load(open(filename), Loader=yaml.UnsafeLoader)
-        self._options.update(yaml_options)
+        return yaml_options
 
 
 class OptionValue:
