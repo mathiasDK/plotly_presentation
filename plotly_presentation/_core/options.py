@@ -28,7 +28,7 @@ class Options:
             options_path = home_path + "/.plotly/"
         self._options = OrderedDict(
             {
-                "config.options": OptionValue(options_path + "options_config.yaml"),
+                "config.layout": OptionValue(options_path + "layout_config.yaml"),
                 "config.callout_settings": OptionValue(options_path + "callout_settings_config.yaml"),
                 "config.theme_settings": OptionValue(options_path + "theme_settings_config.yaml"),
                 "config.colors": OptionValue(options_path + "colors_config.yaml"),
@@ -37,20 +37,12 @@ class Options:
         default_folder = str(Path.cwd()) + "/plotly_presentation/_core/_defaults/"
         self._default_options = OrderedDict(
             {
-                # "config.options": OptionValue(default_folder + "options_config.yaml"),
+                "config.layout": OptionValue(default_folder + "layout_config.yaml"),
                 "config.callout_settings": OptionValue(default_folder + "callout_settings_config.yaml"),
                 "config.theme_settings": OptionValue(default_folder + "theme_settings_config.yaml"),
                 "config.colors": OptionValue(default_folder + "colors_config.yaml"),
             }
         )
-
-        # config_filename = self.get_option("config.options")
-        # try:
-        #     self._from_yaml(config_filename)
-        # except FileNotFoundError:
-        #     print("Trying defaults")
-        #     config_filename = self.get_default_option("config.options")
-        #     self._from_yaml(config_filename)
 
     def get_option(self, option_name):
         """Return the value of the given option"""
@@ -58,9 +50,7 @@ class Options:
             config_filename = self._get_option(option_name)
             return self._from_yaml(config_filename)
         except FileNotFoundError:
-            print("Trying defaults")
             config_filename = self._get_default_option(option_name)
-            print(config_filename)
             return self._from_yaml(config_filename)
 
     def _get_option(self, option_name):

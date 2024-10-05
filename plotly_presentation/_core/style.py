@@ -1,20 +1,20 @@
-from plotly_presentation._core.colors import Color, color_list, DivergentColor, SequentialColor, PlotColor, CalloutColor
+from plotly_presentation._core.colors import color_list, DivergentColor, SequentialColor, PlotColor, CalloutColor
+from plotly_presentation._core.options import options
 import plotly.io as pio
 import plotly.graph_objects as go
+from plotly_presentation._core.utils.dict_funcs import update_dict
 
-pio.templates["presentation_layout"] = go.layout.Template(
-    layout = {
+
+layout = options.get_option("config.layout")
+
+color_layout = {
     'annotationdefaults': {
         'arrowcolor': str(CalloutColor.LINE_COLOR), 
-        'arrowhead': 0, 
-        'arrowwidth': 1, 
         "bgcolor": str(CalloutColor.TEXT_BG_COLOR),
         "font": {
             "color": str(CalloutColor.TEXT_COLOR)
         }
     },
-    'autotypenumbers': 'strict',
-    'coloraxis': {'colorbar': {'outlinewidth': 1, 'tickcolor': 'rgb(36,36,36)', 'ticks': 'outside'}},
     'colorscale': {
         'diverging': [[0, str(DivergentColor.START)], [0.5, str(DivergentColor.MID)], [1, str(DivergentColor.END)]],
         'sequential': [[0.0, str(SequentialColor.START)], [1.0, str(SequentialColor.END)]],
@@ -22,101 +22,22 @@ pio.templates["presentation_layout"] = go.layout.Template(
     },
     'colorway': color_list,
     'font': {'color': str(PlotColor.TEXT_COLOR)},
-    'geo': {'bgcolor': 'white',
-            'lakecolor': 'white',
-            'landcolor': 'white',
-            'showlakes': True,
-            'showland': True,
-            'subunitcolor': 'white'},
-    'hoverlabel': {'align': 'left'},
-    'hovermode': 'closest',
-    'mapbox': {'style': 'light'},
-    # 'paper_bgcolor': PlotColor.BG_COLOR,
-    # 'plot_bgcolor': PlotColor.BG_COLOR,
-    'polar': {'angularaxis': {'gridcolor': 'rgb(232,232,232)',
-                              'linecolor': 'rgb(36,36,36)',
-                              'showgrid': False,
-                              'showline': True,
-                              'ticks': 'outside'},
-              'bgcolor': 'white',
-              'radialaxis': {'gridcolor': 'rgb(232,232,232)',
-                             'linecolor': 'rgb(36,36,36)',
-                             'showgrid': False,
-                             'showline': True,
-                             'ticks': 'outside'}},
-    'scene': {'xaxis': {'backgroundcolor': 'white',
-                        'gridcolor': 'rgb(232,232,232)',
-                        'gridwidth': 2,
-                        'linecolor': 'rgb(36,36,36)',
-                        'showbackground': True,
-                        'showgrid': False,
-                        'showline': True,
-                        'ticks': 'outside',
-                        'zeroline': False,
-                        'zerolinecolor': 'rgb(36,36,36)'},
-              'yaxis': {'backgroundcolor': 'white',
-                        'gridcolor': 'rgb(232,232,232)',
-                        'gridwidth': 2,
-                        'linecolor': 'rgb(36,36,36)',
-                        'showbackground': True,
-                        'showgrid': False,
-                        'showline': True,
-                        'ticks': 'outside',
-                        'zeroline': False,
-                        'zerolinecolor': 'rgb(36,36,36)'},
-              'zaxis': {'backgroundcolor': 'white',
-                        'gridcolor': 'rgb(232,232,232)',
-                        'gridwidth': 2,
-                        'linecolor': 'rgb(36,36,36)',
-                        'showbackground': True,
-                        'showgrid': False,
-                        'showline': True,
-                        'ticks': 'outside',
-                        'zeroline': False,
-                        'zerolinecolor': 'rgb(36,36,36)'}},
-    'shapedefaults': {'fillcolor': 'black', 'line': {'width': 0}, 'opacity': 0.3},
-    'ternary': {'aaxis': {'gridcolor': 'rgb(232,232,232)',
-                          'linecolor': 'rgb(36,36,36)',
-                          'showgrid': False,
-                          'showline': True,
-                          'ticks': 'outside'},
-                'baxis': {'gridcolor': 'rgb(232,232,232)',
-                          'linecolor': 'rgb(36,36,36)',
-                          'showgrid': False,
-                          'showline': True,
-                          'ticks': 'outside'},
-                'bgcolor': 'white',
-                'caxis': {'gridcolor': 'rgb(232,232,232)',
-                          'linecolor': 'rgb(36,36,36)',
-                          'showgrid': False,
-                          'showline': True,
-                          'ticks': 'outside'}},
-    'title': {'x': 0.05},
-    "barcornerradius": 10,
+    'paper_bgcolor': str(PlotColor.BG_COLOR),
+    'plot_bgcolor': str(PlotColor.BG_COLOR),
     'xaxis': {
-        'automargin': True,
         'gridcolor': str(PlotColor.BG_COLOR),
         'linecolor': str(PlotColor.LINE_COLOR),
-        'showgrid': False,
-        'showline': True,
-        'ticks': 'outside',
-        'title': {'standoff': 15},
-        'zeroline': False,
         'zerolinecolor': str(PlotColor.LINE_COLOR),
     },
     'yaxis': {
-        'automargin': True,
         'gridcolor': str(PlotColor.BG_COLOR),
         'linecolor': str(PlotColor.LINE_COLOR),
-        'showgrid': False,
-        'showline': True,
-        'ticks': 'outside',
-        'title': {'standoff': 15},
-        'zeroline': False,
         'zerolinecolor': str(PlotColor.LINE_COLOR),
     }
-})
-  
+}
+layout = update_dict(layout, color_layout)
+
+pio.templates["presentation_layout"] = go.layout.Template(layout = layout)
 pio.templates.default = "presentation_layout"
 
 

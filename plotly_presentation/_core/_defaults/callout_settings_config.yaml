@@ -1,0 +1,27 @@
+default_line_style:
+  type: line
+  line:
+    width: 2
+
+default_dash_line_style:
+  type: line
+  line:
+    width: 2
+    dash: dash
+  opacity: 0.7
+
+default_arrow_style:
+  showarrow: True
+  arrowhead: 2
+  arrowsize: 1
+  arrowwidth: 2
+  xref: x
+  axref: x
+  yref: y
+  ayref: y
+
+default_text_style:
+  showarrow: False
+  borderpad: 4
+  font:
+    size: 14

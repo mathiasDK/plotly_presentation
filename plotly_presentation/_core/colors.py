@@ -3,7 +3,6 @@ from plotly_presentation._core.options import options
 
 
 color_dict = options.get_option("config.colors")
-print(color_dict)
 color_list = color_dict["color_list"]
 class ColorEnum(Enum):
     def __str__(self):
@@ -38,3 +37,4 @@ del ColorEnum, color_dict
 if __name__ == "__main__":
     print(Color.PRIMARY)
     print(PlotColor.LINE_COLOR)
+    print(PlotColor.BG_COLOR)
