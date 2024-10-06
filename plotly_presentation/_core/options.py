@@ -29,17 +29,25 @@ class Options:
         self._options = OrderedDict(
             {
                 "config.layout": OptionValue(options_path + "layout_config.yaml"),
-                "config.callout_settings": OptionValue(options_path + "callout_settings_config.yaml"),
-                "config.theme_settings": OptionValue(options_path + "theme_settings_config.yaml"),
+                "config.callout_settings": OptionValue(
+                    options_path + "callout_settings_config.yaml"
+                ),
+                "config.theme_settings": OptionValue(
+                    options_path + "theme_settings_config.yaml"
+                ),
                 "config.colors": OptionValue(options_path + "colors_config.yaml"),
             }
         )
-        default_folder = str(Path.cwd()) + "/plotly_presentation/_core/_defaults/"
+        default_folder = str(Path.cwd().parent) + "/_core/_defaults/"
         self._default_options = OrderedDict(
             {
                 "config.layout": OptionValue(default_folder + "layout_config.yaml"),
-                "config.callout_settings": OptionValue(default_folder + "callout_settings_config.yaml"),
-                "config.theme_settings": OptionValue(default_folder + "theme_settings_config.yaml"),
+                "config.callout_settings": OptionValue(
+                    default_folder + "callout_settings_config.yaml"
+                ),
+                "config.theme_settings": OptionValue(
+                    default_folder + "theme_settings_config.yaml"
+                ),
                 "config.colors": OptionValue(default_folder + "colors_config.yaml"),
             }
         )
@@ -56,7 +64,7 @@ class Options:
     def _get_option(self, option_name):
         """Return the value of the given option"""
         return self._options[option_name].value
-    
+
     def _get_default_option(self, option_name):
         """Return the value of the given option"""
         return self._default_options[option_name].value

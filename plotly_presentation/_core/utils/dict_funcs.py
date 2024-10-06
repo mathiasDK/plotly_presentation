@@ -1,5 +1,6 @@
 import collections.abc
 
+
 def update_dict(d: dict, u: dict) -> dict:
     # kudos: https://stackoverflow.com/questions/3232943/update-value-of-a-nested-dictionary-of-varying-depth
     for k, v in u.items():
