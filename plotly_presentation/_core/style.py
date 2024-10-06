@@ -24,6 +24,7 @@ color_layout = {
     'font': {'color': str(PlotColor.TEXT_COLOR)},
     'paper_bgcolor': str(PlotColor.BG_COLOR),
     'plot_bgcolor': str(PlotColor.BG_COLOR),
+    # 'plot_bgcolor': PlotColor.BG_COLOR,
     'xaxis': {
         'gridcolor': str(PlotColor.BG_COLOR),
         'linecolor': str(PlotColor.LINE_COLOR),
