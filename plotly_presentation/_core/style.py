@@ -50,7 +50,7 @@ color_layout = {
         "zerolinecolor": str(PlotColor.LINE_COLOR),
     },
 }
-layout = update_dict(layout, color_layout)
+layout = update_dict(color_layout, layout)
 
 pio.templates["presentation_layout"] = go.layout.Template(layout=layout)
 pio.templates.default = "presentation_layout"
@@ -79,6 +79,10 @@ class Style:
         elif slide_layout == "slide_25%":
             height_multiplier = 0.5
             width_multiplier = 0.5
+
+        elif slide_layout == "slide_wide%":
+            height_multiplier = 0.75
+            width_multiplier = 1
 
         self.figure.update_layout(
             height=int(self.plot_height * height_multiplier),

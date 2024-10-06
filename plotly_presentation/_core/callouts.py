@@ -38,13 +38,17 @@ class Callout:
             },
         }
         styles = options.get_option("config.callout_settings")
-        styles = update_dict(styles, color_styles)
+        styles = update_dict(color_styles, styles)
         return styles
 
-    def _get_center_point(self, a, b):
-        return (b - a) / 2.0 + a  # Current only for numeric values
+    def _get_center_point(self, a, b, axis="x"):
+        # Only works for numeric and str
+        if isinstance(a, str):
+            vals = self.figure.data[0][axis]
+            a, b = list(vals).index(a), list(vals).index(b)
+        return (b - a) / 2.0 + a
 
-    def add_square_growth_line(self, x0, x1, y0, y1, y_top, text) -> go.Figure:
+    def add_square_growth_line(self, x0, x1, y0, y1, y_top, text=None) -> go.Figure:
 
         # creating points
         l1 = {"x0": x0, "y0": y0, "x1": x0, "y1": y_top}
@@ -59,12 +63,13 @@ class Callout:
         for l in [l1, l2, l3]:
             self.figure.add_shape(**l, **self._DEFAULT_LINE_STYLE)
 
-        self.figure.add_annotation(
-            text=text,
-            x=self._get_center_point(x0, x1),
-            y=y_top,
-            **self._DEFAULT_TEXT_STYLE,
-        )
+        if text is not None:
+            self.figure.add_annotation(
+                text=text,
+                x=self._get_center_point(x0, x1),
+                y=y_top,
+                **self._DEFAULT_TEXT_STYLE,
+            )
 
         return self.figure
 
