@@ -25,3 +25,22 @@ default_text_style:
   borderpad: 4
   font:
     size: 14
+
+default_circle_style:
+  line: 
+    width: 2
+  type: circle
+  layer: above
+  xsizemode: pixel
+  ysizemode: pixel
+
+default_circle_size:
+  circular_radius: 20
+  oval_x_width: 25
+  oval_y_width: 15
+
+default_circle_text_style:
+  borderpad: 2
+  showarrow: False
+  font:
+    size: 14
