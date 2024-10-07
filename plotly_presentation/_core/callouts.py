@@ -42,6 +42,19 @@ class Callout:
         return styles
 
     def _get_center_point(self, a, b, axis="x"):
+        """Finding the middle point between the two points given on the axis specified.
+
+        Given the axis is categorical then the middle point is calculated by extracting the indexes of `a` and `b`. 
+        The index values are then used to calculate the middle point.
+
+        Args:
+            a (any): The value of the first point.
+            b (any): The value of the second point.
+            axis (str, optional): The axis where the midpoint is calculated. Defaults to "x".
+
+        Returns:
+            float: A numeric value which is the middle point between a and b.
+        """
         # Only works for numeric and str
         if isinstance(a, str):
             vals = self.figure.data[0][axis]
