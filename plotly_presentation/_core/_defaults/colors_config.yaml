@@ -33,6 +33,7 @@ callout_colors:
   line_color: "#222222"
   text_color: "#000000"
   text_bg_color: "#ffffff"
+  circle_line_color: "#D73809"
 
 plot_colors:
   line_color: "#000000"

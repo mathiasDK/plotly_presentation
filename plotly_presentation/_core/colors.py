@@ -38,6 +38,8 @@ class CalloutColor(ColorEnum):
     LINE_COLOR = color_dict["callout_colors"]["line_color"]
     TEXT_COLOR = color_dict["callout_colors"]["text_color"]
     TEXT_BG_COLOR = color_dict["callout_colors"]["text_bg_color"]
+    CIRCLE_LINE_COLOR = color_dict["callout_colors"]["circle_line_color"]
+    CIRCLE_FILL_COLOR = color_dict["callout_colors"]["text_bg_color"]
 
 
 del ColorEnum, color_dict
