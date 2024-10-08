@@ -3,3 +3,4 @@ pandas>=2.2
 numpy>=2.1
 pyyaml>=6.0.2
 black==24.*
+pytest==8.*

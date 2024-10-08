@@ -17,6 +17,7 @@ from collections import OrderedDict
 import os
 from pathlib import Path
 import yaml
+from plotly_presentation._core.utils.root_searcher import find_git_root
 
 
 class Options:
@@ -38,7 +39,8 @@ class Options:
                 "config.colors": OptionValue(options_path + "colors_config.yaml"),
             }
         )
-        default_folder = str(Path.cwd().parent) + "/_core/_defaults/"
+        default_folder = find_git_root() + "/_core/_defaults/"
+
         self._default_options = OrderedDict(
             {
                 "config.layout": OptionValue(default_folder + "layout_config.yaml"),

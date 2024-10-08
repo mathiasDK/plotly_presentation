@@ -52,7 +52,6 @@ def read(*filenames, **kwargs):
 
 
 META_FILE = read(os.path.join(PACKAGE_NAME, "__init__.py"))
-print(META_FILE)
 
 
 def find_meta(meta):
