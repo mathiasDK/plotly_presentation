@@ -6,7 +6,7 @@ from plotly_presentation._core.colors import Color
 
 
 class Plotter:
-    def __init__(self, slide_layout: str="slide_100%") -> None:
+    def __init__(self, slide_layout: str = "slide_100%") -> None:
         """Initiate the plot library with the following extentions:
         .callout
         .color
