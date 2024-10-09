@@ -227,19 +227,29 @@ class Callout:
             if primary_first:
                 if diff > 0:
                     x = i + bargap/2 + (1-bargap)/4
+                    x0 = i + bargap/2
+                    x1 = i + bargap/2 + (1-bargap)/2
                 elif diff < 0:
                     x = i + 1 - bargap/2 - (1-bargap)/4
+                    x0 = i + 1 - bargap/2
+                    x1 = i + 1 - bargap/2 - (1-bargap)/2
                 else:
                     continue
             elif ~primary_first:
                 if diff > 0:
                     x = i + 1 - bargap/2 - (1-bargap)/4
+                    x0 = i + 1 - bargap/2
+                    x1 = i + 1 - bargap/2 - (1-bargap)/2
                 elif diff < 0:
                     x = i + bargap/2 + (1-bargap)/4
+                    x0 = i + bargap/2
+                    x1 = i + bargap/2 + (1-bargap)/2
                 else:
                     continue
             else:
-                continue           
+                continue         
+
+            y_max = max(comparison_y, primary_y)
 
             # y_mid = diff/2 + primary_y
             self.figure.add_shape(
@@ -250,6 +260,14 @@ class Callout:
                 y1=comparison_y,
                 xref="x2"
             )
+            self.figure.add_shape(
+                **self._DEFAULT_LINE_STYLE,
+                x0=x0,
+                x1=x1,
+                y0=y_max,
+                y1=y_max,
+                xref="x2"
+            )
             if text_type is not None:
                 if text_type == 'percentage':
                     text = f"{diff/primary_y:{text_format}}"
@@ -257,7 +275,7 @@ class Callout:
                     text = f"{diff:{text_format}}"
                 self.figure.add_annotation(
                     x=x,
-                    y=max(comparison_y, primary_y)+y_offset,
+                    y=y_max+y_offset,
                     text=f"<b>{text}</b>",
                     xref="x2",
                     **self._DEFAULT_SMALL_TEXT_STYLE
