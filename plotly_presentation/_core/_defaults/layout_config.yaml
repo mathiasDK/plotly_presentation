@@ -97,6 +97,7 @@ ternary:
 title: 
   x: 0.05
 barcornerradius: 10
+bargap: 0.2
 xaxis:
   automargin: True
   showgrid: False

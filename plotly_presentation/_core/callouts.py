@@ -14,6 +14,7 @@ class Callout:
         self._DEFAULT_DASH_LINE_STYLE = styles["default_dash_line_style"]
         self._DEFAULT_ARROW_STYLE = styles["default_arrow_style"]
         self._DEFAULT_TEXT_STYLE = styles["default_text_style"]
+        self._DEFAULT_SMALL_TEXT_STYLE = styles["default_small_text_style"]
         self._DEFAULT_CIRCLE_STYLE = styles["default_circle_style"]
         self._DEFAULT_CIRCLE_TEXT_STYLE = styles["default_circle_text_style"]
         self._DEFAULT_CIRCLE_SIZE = styles["default_circle_size"]
@@ -34,6 +35,12 @@ class Callout:
                 "arrowcolor": CalloutColor.LINE_COLOR.value,
             },
             "default_text_style": {
+                "bgcolor": CalloutColor.TEXT_BG_COLOR.value,
+                "font": {
+                    "color": CalloutColor.TEXT_COLOR.value,
+                },
+            },
+            "default_small_text_style": {
                 "bgcolor": CalloutColor.TEXT_BG_COLOR.value,
                 "font": {
                     "color": CalloutColor.TEXT_COLOR.value,
@@ -70,6 +77,8 @@ class Callout:
         circle_y_pixel_width=None,
         shape_form="round",
         text=None,
+        text_format=":.1f",
+        **kwargs
     ) -> go.Figure:
         _VALID_SHAPE_FORMS = ["round", "oval"]
         if shape_form not in _VALID_SHAPE_FORMS:
@@ -94,10 +103,11 @@ class Callout:
             y0=-circle_y_pixel_width,
             y1=circle_y_pixel_width,
             **self._DEFAULT_CIRCLE_STYLE,
+            **kwargs
         )
         if text is not None:
             self.figure.add_annotation(
-                x=x, y=y, text=text, **self._DEFAULT_CIRCLE_TEXT_STYLE
+                x=x, y=y, text=f"{text}".format(text_format), **self._DEFAULT_CIRCLE_TEXT_STYLE, **kwargs
             )
         return self.figure
 
@@ -167,4 +177,89 @@ class Callout:
                 text=text,
                 shape_form="oval",
             )
+        return self.figure
+
+    def add_line_differences(
+        self,
+        primary_trace_name,
+        secondary_trace_name,
+        text_type=None,
+        text_format=":.1f",
+        y_offset=0
+    ) -> go.Figure:
+        
+        if text_type is not None:
+            _VALID_TEXT_TYPES = ["percentage", "difference"]
+            if text_type not in _VALID_TEXT_TYPES:
+                raise AttributeError(
+                    f"The text type must be on of the following: {_VALID_TEXT_TYPES}"
+                )
+        if len(self.figure.data) != 2:
+            raise AttributeError("Need at two traces to compare")
+        if type(self.figure.data[0]) != go._bar.Bar:
+            raise AttributeError("Only works with bar charts")
+        primary_first = None
+        for i, d in enumerate(self.figure.data):
+            if d.name == primary_trace_name:
+                primary_xs = list(d.x)
+                primary_ys = list(d.y)
+                primary_first = i==0
+            elif d.name == secondary_trace_name:
+                comparison_xs = list(d.x)
+                comparison_ys = list(d.y)
+
+        if primary_first is None:
+            raise AttributeError("Could not find the traces - please provide the actual trace names")
+
+        if self.figure.layout.bargap is not None:
+            bargap = self.figure.layout.bargap
+        else:
+            bargap = self.figure.layout.template.layout.bargap
+
+        # Adding a hidden extra xaxis to the figure
+        self.figure.layout.xaxis2 = go.layout.XAxis(
+            overlaying='x', range=[0, len(primary_xs)], showticklabels=False)
+        
+        # Starting to plot the lines
+        for i, (primary_x, primary_y) in enumerate(zip(primary_xs, primary_ys)):
+            comparison_y = comparison_ys[comparison_xs.index(primary_x)]
+            diff = comparison_y - primary_y
+            if primary_first:
+                if diff > 0:
+                    x = i + bargap/2 + (1-bargap)/4
+                elif diff < 0:
+                    x = i + 1 - bargap/2 - (1-bargap)/4
+                else:
+                    continue
+            elif ~primary_first:
+                if diff > 0:
+                    x = i + 1 - bargap/2 - (1-bargap)/4
+                elif diff < 0:
+                    x = i + bargap/2 + (1-bargap)/4
+                else:
+                    continue
+            else:
+                continue           
+
+            # y_mid = diff/2 + primary_y
+            self.figure.add_shape(
+                **self._DEFAULT_DASH_LINE_STYLE,
+                x0=x,
+                x1=x,
+                y0=primary_y,
+                y1=comparison_y,
+                xref="x2"
+            )
+            if text_type is not None:
+                if text_type == 'percentage':
+                    text = f"{diff/primary_y:{text_format}}"
+                elif text_type == 'difference':
+                    text = f"{diff:{text_format}}"
+                self.figure.add_annotation(
+                    x=x,
+                    y=max(comparison_y, primary_y)+y_offset,
+                    text=f"<b>{text}</b>",
+                    xref="x2",
+                    **self._DEFAULT_SMALL_TEXT_STYLE
+                )
         return self.figure
