@@ -189,7 +189,7 @@ class Callout:
     ) -> go.Figure:
         
         if text_type is not None:
-            _VALID_TEXT_TYPES = ["percentage", "difference"]
+            _VALID_TEXT_TYPES = ["percentage", "difference", "ratio"]
             if text_type not in _VALID_TEXT_TYPES:
                 raise AttributeError(
                     f"The text type must be on of the following: {_VALID_TEXT_TYPES}"
@@ -252,15 +252,20 @@ class Callout:
             y_max = max(comparison_y, primary_y)
 
             # y_mid = diff/2 + primary_y
-            self.figure.add_shape(
-                **self._DEFAULT_DASH_LINE_STYLE,
-                x0=x,
-                x1=x,
-                y0=primary_y,
-                y1=comparison_y,
-                xref="x2"
+            # self.figure.add_shape(
+            #     **self._DEFAULT_DASH_LINE_STYLE,
+            #     x0=x,
+            #     x1=x,
+            #     y0=primary_y,
+            #     y1=comparison_y,
+            #     xref="x2"
+            # )
+            ARROW_STYLE = update_dict(self._DEFAULT_ARROW_STYLE, {"xref": "x2", "axref": "x2"})
+            self.figure.add_annotation(
+                x=x, ax=x, y=primary_y, ay=comparison_y, **ARROW_STYLE,
+                text="", bgcolor='rgba(0,0,0,0)'
             )
-            self.figure.add_shape(
+            self.figure.add_shape( # horisontal line
                 **self._DEFAULT_LINE_STYLE,
                 x0=x0,
                 x1=x1,
@@ -273,6 +278,8 @@ class Callout:
                     text = f"{diff/primary_y:{text_format}}"
                 elif text_type == 'difference':
                     text = f"{diff:{text_format}}"
+                elif text_type == "ratio":
+                    text = f"{primary_y/comparison_y:{text_format}}x"
                 self.figure.add_annotation(
                     x=x,
                     y=y_max+y_offset,
