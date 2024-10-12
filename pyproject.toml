@@ -5,3 +5,40 @@ target-version = ['py311']
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "plotly_presentation"
+version = "0.2.0"  
+description = "Python library to make it easier to plot using plotly"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Mathias Nørskov", email = "mathiasnoerskov@gmail.com" }  # Replace with actual author info
+]
+requires-python = ">=3.8,<4"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: Apache Software License",
+]
+keywords = ["plotly_presentation"]
+
+[project.urls]
+Homepage = "https://github.dev/mathiasDK/plotly_presentation"
+
+[project.optional-dependencies]
+test = [
+    "plotly>=5.24.0",
+    "pandas>=2.2",
+    "numpy>=2.1",
+    "pyyaml>=6.0.2",
+    "black==24.*",
+    "pytest==8.*",
+]
+
+[tool.setuptools.packages.find]
+include = ["plotly_presentation"]
