@@ -28,11 +28,26 @@ with open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as f:
     if not all(map(package_is_pinned, requirements)):
         raise RuntimeError("All Packages in requirements.txt must be pinned")
 
-setup_requirements = []
+setup_requirements = [
+    "plotly>=5.24.0",
+    "pandas>=2.2",
+    "numpy>=2.1",
+    "pyyaml>=6.0.2",
+    "black==24.*",
+    "pytest==8.*",
+]
 
-test_requirements = []
+test_requirements = [
+    "plotly>=5.24.0",
+    "pandas>=2.2",
+    "numpy>=2.1",
+    "pyyaml>=6.0.2",
+    "black==24.*",
+    "pytest==8.*",
+]
 
 PACKAGE_NAME = "plotly_presentation"
+
 
 def read(*filenames, **kwargs):
     """
