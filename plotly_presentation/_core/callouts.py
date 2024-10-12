@@ -63,6 +63,19 @@ class Callout:
         return styles
 
     def _get_center_point(self, a, b, axis="x"):
+        """Finding the middle point between the two points given on the axis specified.
+
+        Given the axis is categorical then the middle point is calculated by extracting the indexes of `a` and `b`.
+        The index values are then used to calculate the middle point.
+
+        Args:
+            a (any): The value of the first point.
+            b (any): The value of the second point.
+            axis (str, optional): The axis where the midpoint is calculated. Defaults to "x".
+
+        Returns:
+            float: A numeric value which is the middle point between a and b.
+        """
         # Only works for numeric and str
         if isinstance(a, str):
             vals = self.figure.data[0][axis]
@@ -73,17 +86,39 @@ class Callout:
         self,
         x,
         y,
-        circle_x_pixel_width=None,
-        circle_y_pixel_width=None,
+        circle_x_pixel_width: int = None,
+        circle_y_pixel_width: int = None,
         shape_form="round",
-        text=None,
-        text_format=":.1f",
+        text: str =None,
+        text_format: str =":.1f",
         **kwargs
     ) -> go.Figure:
+        """Adding a circle to the graph.
+
+        For further documentation you should explore the plotly docs for adding shapes where the xsizemode and ysizemode is pixel.
+
+        Args:
+            x (any): The center point for the circle on the x axis.
+            y (any): The center point for the circle on the y axis.
+            circle_x_pixel_width (int, optional): How many pixels the circle should be on the x axis. If long texts then you can adjust manually here. Defaults to None.
+            circle_y_pixel_width (int, optional): How many pixels the circle should be on the y axis. If long texts then you can adjust manually here. Defaults to None.
+            shape_form (str, optional): The shape of the circle. This can either be oval or round. If circle_x_pixel_width or circle_y_pixel_width they will override. Defaults to "round".
+            text (str, optional): The text inside the buble. Defaults to None.
+
+        Raises:
+            AttributeError: Given there isn't enough data to create the circle.
+
+        Returns:
+            go.Figure: The figure with a circle on it.
+        """
         _VALID_SHAPE_FORMS = ["round", "oval"]
-        if shape_form not in _VALID_SHAPE_FORMS:
+        if (
+            shape_form not in _VALID_SHAPE_FORMS
+            and circle_x_pixel_width is None
+            and circle_y_pixel_width is None
+        ):
             raise AttributeError(
-                f"The shape of the circle must be on of the following: {_VALID_SHAPE_FORMS}"
+                f"You must provide a shape for the circle: {_VALID_SHAPE_FORMS} or specify the size of the circle with `circle_x_pixel_width` and `circle_y_pixel_width`"
             )
         if shape_form == "round":
             if circle_x_pixel_width is None:
@@ -118,9 +153,9 @@ class Callout:
         y0,
         y1,
         y_top,
-        circle_x_pixel_width=None,
-        circle_y_pixel_width=None,
-        text=None,
+        circle_x_pixel_width: int = None,
+        circle_y_pixel_width: int = None,
+        text: str = None,
     ) -> go.Figure:
 
         # creating points
@@ -155,9 +190,9 @@ class Callout:
         x_end,
         y0,
         y1,
-        circle_x_pixel_width=None,
-        circle_y_pixel_width=None,
-        text=None,
+        circle_x_pixel_width: int = None,
+        circle_y_pixel_width: int = None,
+        text: str = None,
     ) -> go.Figure:
         l1 = {"x0": x0, "x1": x_end, "y0": y0, "y1": y0}
         l2 = {"x0": x1, "x1": x_end, "y0": y1, "y1": y1}
