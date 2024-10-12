@@ -26,6 +26,14 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
 ]
 keywords = ["plotly_presentation"]
+dependencies = [
+    "plotly>=5.24.0",
+    "pandas>=2.2",
+    "numpy>=2.1",
+    "pyyaml>=6.0.2",
+    "black==24.*",
+    "pytest==8.*",
+] 
 
 [project.urls]
 Homepage = "https://github.dev/mathiasDK/plotly_presentation"
