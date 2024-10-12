@@ -40,7 +40,6 @@ class Options:
             }
         )
         default_folder = find_git_root() + "/_core/_defaults/"
-        print("Default folder:", default_folder)
 
         self._default_options = OrderedDict(
             {
