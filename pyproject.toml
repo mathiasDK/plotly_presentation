@@ -46,6 +46,7 @@ test = [
     "pyyaml>=6.0.2",
     "black==24.*",
     "pytest==8.*",
+    "nbformat>=4.2.0",
 ]
 
 [tool.pytest.ini_options]
