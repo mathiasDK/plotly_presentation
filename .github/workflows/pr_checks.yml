@@ -1,0 +1,32 @@
+name: Check Python Formatting with Black
+run-name: Checks for ${{ github.ref }}
+
+# Run this workflow when a pull request is opened or updated
+on: [pull_request]
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' 
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install black
+      # Step 4: Run Black to check code formatting
+      - name: Run Black formatting check
+        run: |
+          source venv/bin/activate
+          black . --check
