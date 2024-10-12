@@ -4,7 +4,7 @@ import re
 from codecs import open
 from setuptools import setup, find_packages
 
-here = os.path.abspath(os.path.dirname(__file__))
+HERE = os.path.abspath(os.path.dirname(__file__))
 
 with open("README.md") as readme_file:
     readme = readme_file.read()
@@ -19,7 +19,7 @@ def package_is_pinned(name):
     return False
 
 
-with open(os.path.join(here, "requirements.txt"), encoding="utf-8") as f:
+with open(os.path.join(HERE, "requirements.txt"), encoding="utf-8") as f:
     requirements = []
     for line in f.readlines():
         line = line.strip()
@@ -33,9 +33,6 @@ setup_requirements = []
 test_requirements = []
 
 PACKAGE_NAME = "plotly_presentation"
-
-HERE = os.path.abspath(os.path.dirname(__file__))
-
 
 def read(*filenames, **kwargs):
     """

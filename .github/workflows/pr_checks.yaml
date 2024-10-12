@@ -1,4 +1,4 @@
-name: Check Python Formatting with Black
+name: Check PR
 run-name: Checks for ${{ github.ref }}
 
 # Run this workflow when a pull request is opened or updated
