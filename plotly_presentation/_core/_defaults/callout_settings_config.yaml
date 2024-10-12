@@ -36,8 +36,8 @@ default_circle_style:
 
 default_circle_size:
   circular_radius: 20
-  oval_x_width: 25
-  oval_y_width: 15
+  oval_x_width: 32
+  oval_y_width: 18
 
 default_circle_text_style:
   borderpad: 2
