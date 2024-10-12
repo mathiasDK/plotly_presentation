@@ -40,5 +40,12 @@ test = [
     "pytest==8.*",
 ]
 
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra"
+testpaths = [
+    "tests"
+]
+
 [tool.setuptools.packages.find]
 include = ["plotly_presentation"]
