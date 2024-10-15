@@ -1,14 +1,6 @@
-[tool.black]
-line-length = 88
-target-version = ['py311']
-
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [project]
 name = "plotly_presentation"
-version = "0.2.0"  
+version = "0.3.0"  
 description = "Python library to make it easier to plot using plotly"
 readme = "README.md"
 license = { text = "MIT" }
@@ -58,3 +50,11 @@ testpaths = [
 
 [tool.setuptools.packages.find]
 include = ["plotly_presentation"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
