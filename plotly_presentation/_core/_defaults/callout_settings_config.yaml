@@ -24,7 +24,13 @@ default_text_style:
   showarrow: False
   borderpad: 4
   font:
-    size: 14
+    size: 12
+
+default_small_text_style:
+  showarrow: False
+  borderpad: 2
+  font:
+    size: 10
 
 default_circle_style:
   line: 
@@ -43,4 +49,4 @@ default_circle_text_style:
   borderpad: 2
   showarrow: False
   font:
-    size: 14
+    size: 12

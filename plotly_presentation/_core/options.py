@@ -39,7 +39,7 @@ class Options:
                 "config.colors": OptionValue(options_path + "colors_config.yaml"),
             }
         )
-        default_folder = find_git_root() + "/_core/_defaults/"
+        default_folder = find_git_root() + "/plotly_presentation/_core/_defaults/"
 
         self._default_options = OrderedDict(
             {
