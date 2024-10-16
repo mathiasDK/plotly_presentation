@@ -26,7 +26,7 @@ class Options:
             options_path = os.environ["PLOTLY_CONFIG_DIR"]
         except KeyError:
             home_path = str(Path.home())
-            options_path = home_path + "/.plotly/"
+            options_path = home_path + "/.plotly_presentation/"
         self._options = OrderedDict(
             {
                 "config.layout": OptionValue(options_path + "layout_config.yaml"),
@@ -43,12 +43,8 @@ class Options:
         self._default_options = OrderedDict(
             {
                 "config.layout": OptionValue("layout_config.yaml"),
-                "config.callout_settings": OptionValue(
-                    "callout_settings_config.yaml"
-                ),
-                "config.theme_settings": OptionValue(
-                    "theme_settings_config.yaml"
-                ),
+                "config.callout_settings": OptionValue("callout_settings_config.yaml"),
+                "config.theme_settings": OptionValue("theme_settings_config.yaml"),
                 "config.colors": OptionValue("colors_config.yaml"),
             }
         )
