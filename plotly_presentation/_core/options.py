@@ -17,7 +17,7 @@ from collections import OrderedDict
 import os
 from pathlib import Path
 import yaml
-from plotly_presentation._core.utils.root_searcher import find_git_root
+from plotly_presentation._core.utils.root_searcher import find_git_root, get_file_path
 
 
 class Options:
@@ -39,18 +39,17 @@ class Options:
                 "config.colors": OptionValue(options_path + "colors_config.yaml"),
             }
         )
-        default_folder = find_git_root() + "/plotly_presentation/_core/_defaults/"
 
         self._default_options = OrderedDict(
             {
-                "config.layout": OptionValue(default_folder + "layout_config.yaml"),
+                "config.layout": OptionValue("layout_config.yaml"),
                 "config.callout_settings": OptionValue(
-                    default_folder + "callout_settings_config.yaml"
+                    "callout_settings_config.yaml"
                 ),
                 "config.theme_settings": OptionValue(
-                    default_folder + "theme_settings_config.yaml"
+                    "theme_settings_config.yaml"
                 ),
-                "config.colors": OptionValue(default_folder + "colors_config.yaml"),
+                "config.colors": OptionValue("colors_config.yaml"),
             }
         )
 
@@ -61,6 +60,7 @@ class Options:
             return self._from_yaml(config_filename)
         except FileNotFoundError:
             config_filename = self._get_default_option(option_name)
+            config_filename = get_file_path(config_filename)
             return self._from_yaml(config_filename)
 
     def _get_option(self, option_name):
