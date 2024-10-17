@@ -422,3 +422,101 @@ class Callout:
                     **self._DEFAULT_SMALL_TEXT_STYLE,
                 )
         return self.figure
+
+    def add_line_end_marker(
+        self,
+        traces: list[str] | str = None,
+        text_type: str = None,
+        text_format: str = ".1f",
+        text_positions: list[str] | str = None,
+        marker_size: int = 10
+    ) -> go.Figure:
+        """Creating a marker at the end of the line with optional text.
+
+        Note that if the marker is set at the beginning of the line, then you must sort your data accordingly.
+        It might also be necessary to adjust the range of the x axis.
+
+        Args:
+            traces (list[str] | str, optional):
+                The names of the traces which should be highlighted. Defaults to None.
+            text_type (str, optional): 
+                What should be text should be plotted. Defaults to None.
+                If category is mentioned then the legend will be hidden.
+
+                - 'value' = The value of the y axis.
+                - 'category' = The name of the trace.
+                - 'value+category' = The value of the y axis and the name of the trace.
+                - 'category+value' = The name of the trace and the value of the y axis.
+                - None = No text.
+            text_format (str, optional): 
+                How the yaxis value should be formatted. Defaults to ".1f".
+            text_positions (list[str] | str, optional): 
+                When the traces are close the text can tend to overlap. This can be used to adjust the position slightly. 
+                If it is None then the text position will be "middle right".
+                Defaults to None.
+            marker_size (int, optional): 
+                The size of the marker. Defaults to 10.
+
+        Returns:
+            go.Figure: The plotly figure.
+        """
+        
+        if type(self.figure.data[0]) != go._scatter.Scatter: 
+            raise AttributeError("Only works with scatter charts")
+        
+        if traces is None:
+            traces = [d.name for d in self.figure.data]
+        elif isinstance(traces, str):
+            traces = [traces]
+
+        _VALID_TEXT_TYPES = ["value", "category", "value+category", "category+value"]
+        if text_type is not None:
+            if text_type not in _VALID_TEXT_TYPES:
+                raise AttributeError(
+                    f"The text type must be on of the following: {_VALID_TEXT_TYPES}"
+                )
+    
+        if text_positions is None:
+            text_positions = ["middle right"] * len(traces)
+
+        showlegend = self.figure.layout.showlegend
+        if showlegend is None:
+            showlegend = True
+        
+        for d, pos in zip(self.figure.data, text_positions):
+            if d.name in traces:
+                x = d.x[-1]
+                y = d.y[-1]
+                name = d.name
+                color = d.line.color
+                if text_type is None:
+                    text = None
+                elif text_type == "value":
+                    text = f"{y:{text_format}}"
+                elif text_type == "category":
+                    showlegend = False
+                    text = f"{name}"
+                elif text_type == "value+category":
+                    showlegend = False
+                    text = f"{y:{text_format}}<br>{name}"
+                elif text_type == "category+value":
+                    showlegend = False
+                    text = f"{name}<br>{y:{text_format}}"
+                
+                self.figure.add_trace(
+                    go.Scatter(
+                        x=[x],
+                        y=[y],
+                        mode="markers+text",
+                        text=[text],
+                        marker=dict(color=color, size=marker_size),
+                        showlegend=False,
+                        textposition=pos
+                    )
+                )
+        self.figure.update_layout(
+            showlegend=showlegend
+        )
+        return self.figure
+        
+        
