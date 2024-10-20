@@ -50,9 +50,6 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip3 install .
-      - name: Check default yaml files
-        run: |
-          git ls-files | grep _defaults
       # Step 4: Run tests using pytest
       - name: Run tests
         run: |
