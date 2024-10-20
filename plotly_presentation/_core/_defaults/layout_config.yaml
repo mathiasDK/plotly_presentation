@@ -106,6 +106,7 @@ xaxis:
   title: 
     standoff: 15
   zeroline: False
+  rangemode: 'tozero'
 yaxis: 
   automargin: True
   showgrid: False
@@ -114,6 +115,7 @@ yaxis:
   title: 
     standoff: 15
   zeroline: False
+  rangemode: 'tozero'
 margin:
   t: 70
   l: 20

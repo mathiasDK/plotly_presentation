@@ -1,9 +1,15 @@
 import unittest
 from plotly_presentation._core.plotter import Plotter
 import plotly.graph_objs as go
+import plotly.express as px
 
 
 class CalloutTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(self):
+        self.df = px.data.stocks()
+
     # Arrow diff tests
     def test_valid_arrow_diff(self):
         p = Plotter()
@@ -96,3 +102,19 @@ class CalloutTest(unittest.TestCase):
         shape_count = len(p.figure.layout.shapes)
         self.assertEqual(annotation_count, 1)
         self.assertEqual(shape_count, 1)
+
+    def test_end_line_marker_count_full(self):
+        p = Plotter()
+        p.express(type="line", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.callout.add_line_end_marker()
+        trace_count = len(p.figure.data)
+        self.assertEqual(trace_count, 6)
+
+    def test_end_line_marker_count_selected(self):
+        p = Plotter()
+        p.express(type="line", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.callout.add_line_end_marker(
+            traces=["GOOG", "FB"],
+        )
+        trace_count = len(p.figure.data)
+        self.assertEqual(trace_count, 5)
