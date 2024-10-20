@@ -429,7 +429,7 @@ class Callout:
         text_type: str = None,
         text_format: str = ".1f",
         text_positions: list[str] | str = None,
-        marker_size: int = 10
+        marker_size: int = 10,
     ) -> go.Figure:
         """Creating a marker at the end of the line with optional text.
 
@@ -439,7 +439,7 @@ class Callout:
         Args:
             traces (list[str] | str, optional):
                 The names of the traces which should be highlighted. Defaults to None.
-            text_type (str, optional): 
+            text_type (str, optional):
                 What should be text should be plotted. Defaults to None.
                 If category is mentioned then the legend will be hidden.
 
@@ -448,22 +448,22 @@ class Callout:
                 - 'value+category' = The value of the y axis and the name of the trace.
                 - 'category+value' = The name of the trace and the value of the y axis.
                 - None = No text.
-            text_format (str, optional): 
+            text_format (str, optional):
                 How the yaxis value should be formatted. Defaults to ".1f".
-            text_positions (list[str] | str, optional): 
-                When the traces are close the text can tend to overlap. This can be used to adjust the position slightly. 
+            text_positions (list[str] | str, optional):
+                When the traces are close the text can tend to overlap. This can be used to adjust the position slightly.
                 If it is None then the text position will be "middle right".
                 Defaults to None.
-            marker_size (int, optional): 
+            marker_size (int, optional):
                 The size of the marker. Defaults to 10.
 
         Returns:
             go.Figure: The plotly figure.
         """
-        
-        if type(self.figure.data[0]) != go._scatter.Scatter: 
+
+        if type(self.figure.data[0]) != go._scatter.Scatter:
             raise AttributeError("Only works with scatter charts")
-        
+
         if traces is None:
             traces = [d.name for d in self.figure.data]
         elif isinstance(traces, str):
@@ -475,15 +475,15 @@ class Callout:
                 raise AttributeError(
                     f"The text type must be on of the following: {_VALID_TEXT_TYPES}"
                 )
-    
+
         if text_positions is None:
             text_positions = ["middle right"] * len(traces)
 
         showlegend = self.figure.layout.showlegend
         if showlegend is None:
             showlegend = True
-        
-        i=0
+
+        i = 0
         for d in self.figure.data:
             if d.name in traces:
                 x = d.x[-1]
@@ -503,7 +503,7 @@ class Callout:
                 elif text_type == "category+value":
                     showlegend = False
                     text = f"{name}<br>{y:{text_format}}"
-                
+
                 self.figure.add_trace(
                     go.Scatter(
                         x=[x],
@@ -512,13 +512,9 @@ class Callout:
                         text=[text],
                         marker=dict(color=color, size=marker_size),
                         showlegend=False,
-                        textposition=text_positions[i]
+                        textposition=text_positions[i],
                     )
                 )
-                i+=1
-        self.figure.update_layout(
-            showlegend=showlegend
-        )
+                i += 1
+        self.figure.update_layout(showlegend=showlegend)
         return self.figure
-        
-        
