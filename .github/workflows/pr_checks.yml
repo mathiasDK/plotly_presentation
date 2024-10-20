@@ -30,3 +30,31 @@ jobs:
         run: |
           source venv/bin/activate
           black . --check
+
+  test:
+    name: Running tests
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'  # Specify the Python version needed
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip3 install .
+      - name: Check default yaml files
+        run: |
+          git ls-files | grep _defaults
+      # Step 4: Run tests using pytest
+      - name: Run tests
+        run: |
+          source venv/bin/activate
+          python3 -m pytest tests

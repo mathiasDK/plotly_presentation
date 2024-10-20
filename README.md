@@ -8,5 +8,5 @@ Most of the inspiration for the library is taken from the [Spotify Chartify](htt
 Making it possible to install the library using `pip install`.
 
 ## Adjusting the default to your preferences
-Make a copy of the `_defaults` folder to your home folder and name it `.plotly` so the path name will be `~/.plotly/`.
+Make a copy of the `_defaults` folder to your home folder and name it `.plotly_presentation` so the path name will be `~/.plotly_presentation/`.
 Alternatively you can paste the folder to a destination of your choice and do the following command: `export PLOTLY_CONFIG_DIR=your_folder`.
