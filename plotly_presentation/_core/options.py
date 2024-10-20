@@ -1,23 +1,8 @@
-# -*- coding: utf-8 -*-
-#
-# Copyright (c) 2017-2018 Spotify AB
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 from collections import OrderedDict
 import os
 from pathlib import Path
 import yaml
-from plotly_presentation._core.utils.root_searcher import find_git_root
+from plotly_presentation._core.utils.root_searcher import get_file_path
 
 
 class Options:
@@ -26,7 +11,7 @@ class Options:
             options_path = os.environ["PLOTLY_CONFIG_DIR"]
         except KeyError:
             home_path = str(Path.home())
-            options_path = home_path + "/.plotly/"
+            options_path = home_path + "/.plotly_presentation/"
         self._options = OrderedDict(
             {
                 "config.layout": OptionValue(options_path + "layout_config.yaml"),
@@ -39,18 +24,13 @@ class Options:
                 "config.colors": OptionValue(options_path + "colors_config.yaml"),
             }
         )
-        default_folder = find_git_root() + "/plotly_presentation/_core/_defaults/"
 
         self._default_options = OrderedDict(
             {
-                "config.layout": OptionValue(default_folder + "layout_config.yaml"),
-                "config.callout_settings": OptionValue(
-                    default_folder + "callout_settings_config.yaml"
-                ),
-                "config.theme_settings": OptionValue(
-                    default_folder + "theme_settings_config.yaml"
-                ),
-                "config.colors": OptionValue(default_folder + "colors_config.yaml"),
+                "config.layout": OptionValue("layout_config.yaml"),
+                "config.callout_settings": OptionValue("callout_settings_config.yaml"),
+                "config.theme_settings": OptionValue("theme_settings_config.yaml"),
+                "config.colors": OptionValue("colors_config.yaml"),
             }
         )
 
@@ -61,6 +41,7 @@ class Options:
             return self._from_yaml(config_filename)
         except FileNotFoundError:
             config_filename = self._get_default_option(option_name)
+            config_filename = get_file_path(config_filename)
             return self._from_yaml(config_filename)
 
     def _get_option(self, option_name):

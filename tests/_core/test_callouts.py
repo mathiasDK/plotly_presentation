@@ -19,7 +19,7 @@ class CalloutTest(unittest.TestCase):
             secondary_trace_name="a",
             text_type="ratio",
             text_format=".1f",
-            y_offset=0.1,
+            y_text_offset=0.1,
         )
         self.assertEqual(type(p.figure), go.Figure)
 
@@ -33,7 +33,7 @@ class CalloutTest(unittest.TestCase):
             secondary_trace_name="a",
             text_type="ratio",
             text_format=".1f",
-            y_offset=0.1,
+            y_text_offset=0.1,
         )
         line_annotation = p.figure.layout.annotations[0]
         self.assertEqual(line_annotation.x < 0.5, True)
@@ -48,7 +48,7 @@ class CalloutTest(unittest.TestCase):
             secondary_trace_name="a",
             text_type="ratio",
             text_format=".1f",
-            y_offset=0.1,
+            y_text_offset=0.1,
         )
         line_annotation = p.figure.layout.annotations[0]
         self.assertEqual(line_annotation.x > 0.5, True)
@@ -63,7 +63,7 @@ class CalloutTest(unittest.TestCase):
             secondary_trace_name="b",
             text_type="ratio",
             text_format=".1f",
-            y_offset=0.1,
+            y_text_offset=0.1,
         )
         line_annotation = p.figure.layout.annotations[0]
         self.assertEqual(line_annotation.x > 0.5, True)
@@ -78,7 +78,7 @@ class CalloutTest(unittest.TestCase):
             secondary_trace_name="b",
             text_type="ratio",
             text_format=".1f",
-            y_offset=0.1,
+            y_text_offset=0.1,
         )
         line_annotation = p.figure.layout.annotations[0]
         self.assertEqual(line_annotation.x < 0.5, True)
