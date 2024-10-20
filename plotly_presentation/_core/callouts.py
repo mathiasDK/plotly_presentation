@@ -483,7 +483,8 @@ class Callout:
         if showlegend is None:
             showlegend = True
         
-        for d, pos in zip(self.figure.data, text_positions):
+        i=0
+        for d in self.figure.data:
             if d.name in traces:
                 x = d.x[-1]
                 y = d.y[-1]
@@ -511,9 +512,10 @@ class Callout:
                         text=[text],
                         marker=dict(color=color, size=marker_size),
                         showlegend=False,
-                        textposition=pos
+                        textposition=text_positions[i]
                     )
                 )
+                i+=1
         self.figure.update_layout(
             showlegend=showlegend
         )
