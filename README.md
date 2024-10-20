@@ -1,4 +1,7 @@
-# plotly_presentation
+# Plotly Presentation
+
+![Coverage Badge](docs/coverage.svg)
+
 This repository is targeted data analysts building most of their analyses in python and exporting the graphs to a slide deck. 
 
 ## Inspiration
