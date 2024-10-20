@@ -1,6 +1,6 @@
 [project]
 name = "plotly_presentation"
-version = "0.3.0"  
+version = "0.4.0"  
 description = "Python library to make it easier to plot using plotly"
 readme = "README.md"
 license = { text = "MIT" }
@@ -56,5 +56,5 @@ line-length = 88
 target-version = ['py311']
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
