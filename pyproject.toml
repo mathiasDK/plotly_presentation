@@ -40,6 +40,8 @@ test = [
     "flake8==4.0.1",
     "coverage==7.2.2",
     "coverage-badge==1.*",
+    "pytest-cov==4.0.0",
+    "twine==4.0.0",
 ]
 
 [tool.pytest.ini_options]
