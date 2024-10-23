@@ -6,9 +6,7 @@ This repository is targeted data analysts building most of their analyses in pyt
 
 ## Inspiration
 Most of the inspiration for the library is taken from the [Spotify Chartify](https://github.com/spotify/chartify) library.
-
-## To come
-Making it possible to install the library using `pip install`.
+Much of the callout inspiration is taken from think-cell.
 
 ## Adjusting the default to your preferences
 Make a copy of the `_defaults` folder to your home folder and name it `.plotly_presentation` so the path name will be `~/.plotly_presentation/`.

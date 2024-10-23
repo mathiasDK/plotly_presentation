@@ -49,7 +49,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-          pip3 install .
+          pip3 install plotly_presentation[test]
       # Step 4: Run tests using pytest
       - name: Run tests
         run: |
