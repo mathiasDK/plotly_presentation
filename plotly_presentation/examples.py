@@ -183,6 +183,7 @@ def _bar_callout_example_2():
     )
     p.show()
 
+
 @_print_source
 def _bar_callout_example_3():
     """
