@@ -9,14 +9,15 @@ import plotly.express.data as data
 import plotly.graph_objs as go
 
 from plotly_presentation import Plotter
+import plotly.io as pio
 
-_OUTPUT_FORMAT = "png"
+pio.renderers.default = "png"
 
 
 def _clean_source(source):
     source = source.split('"""')[2].replace("\t", "")
     # Replace the output variable wth its value
-    source = source.replace("_OUTPUT_FORMAT", "'{}'".format(_OUTPUT_FORMAT))
+    # source = source.replace("_OUTPUT_FORMAT", "'{}'".format(_OUTPUT_FORMAT))
     return source
 
 
@@ -133,6 +134,8 @@ def plot_bar_callout():
     _bar_callout_example_1()
     _bar_callout_example_2()
     _bar_callout_example_3()
+    _bar_callout_example_4()
+    _bar_callout_example_5()
 
 
 @_print_source
@@ -145,13 +148,12 @@ def _bar_callout_example_1():
     p.express(
         type="bar",
         x=["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4"],
-        y=[1, 3, 2, 3, 3, 2, 4, 4],
+        y=[1, 3, 0, 3, 3, 2, 4, 4],
         color=["a", "b", "a", "b", "a", "b", "a", "b"],
         barmode="group",
     )
     p.callout.add_line_differences(
         primary_trace_name="b",
-        secondary_trace_name="a",
         text_type="ratio",
         text_format=".1f",
         y_text_offset=0.1,
@@ -161,6 +163,51 @@ def _bar_callout_example_1():
 
 @_print_source
 def _bar_callout_example_2():
+    """
+    Bar callouts example
+    """
+
+    p = Plotter(slide_layout="slide_50%")
+    p.express(
+        type="bar",
+        x=["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4"],
+        y=[1, 3, 0, 3, 3, 2, 4, 4],
+        color=["a", "b", "a", "b", "a", "b", "a", "b"],
+        barmode="group",
+    )
+    p.callout.add_line_differences(
+        primary_trace_name="b",
+        text_type="difference",
+        text_format=".0f",
+        y_text_offset=0.1,
+    )
+    p.show()
+
+@_print_source
+def _bar_callout_example_3():
+    """
+    Bar callouts example
+    """
+
+    p = Plotter(slide_layout="slide_50%")
+    p.express(
+        type="bar",
+        x=["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4"],
+        y=[1, 3, 0, 3, 3, 2, 4, 4],
+        color=["a", "b", "a", "b", "a", "b", "a", "b"],
+        barmode="group",
+    )
+    p.callout.add_line_differences(
+        primary_trace_name="a",
+        text_type="difference",
+        text_format=".0f",
+        y_text_offset=0.1,
+    )
+    p.show()
+
+
+@_print_source
+def _bar_callout_example_4():
     """
     Bar callouts example
     """
@@ -178,7 +225,7 @@ def _bar_callout_example_2():
 
 
 @_print_source
-def _bar_callout_example_3():
+def _bar_callout_example_5():
     """
     Bar callouts example
     """

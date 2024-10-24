@@ -281,7 +281,6 @@ class Callout:
     def add_line_differences(
         self,
         primary_trace_name: str,
-        secondary_trace_name: str,
         text_type=None,
         text_format=".1f",
         y_text_offset: float = 0,
@@ -333,7 +332,7 @@ class Callout:
                 primary_xs = list(d.x)
                 primary_ys = list(d.y)
                 primary_first = i == 0
-            elif d.name == secondary_trace_name:
+            else:
                 comparison_xs = list(d.x)
                 comparison_ys = list(d.y)
 
@@ -361,24 +360,27 @@ class Callout:
         # Starting to plot the lines
         for i, (primary_x, primary_y) in enumerate(zip(primary_xs, primary_ys)):
             comparison_y = comparison_ys[comparison_xs.index(primary_x)]
-            diff = comparison_y - primary_y
+            diff = primary_y - comparison_y
+            if text_type in ["ratio", "percentage"] and comparison_y == 0:
+                # Do not show a diff if the comparison value is 0 and the type is ratio or percentage
+                continue
             if primary_first:
-                if diff > 0:
+                if diff < 0:
                     x = i + bargap / 2 + (1 - bargap) / 4
                     x0 = i + bargap / 2
                     x1 = i + bargap / 2 + (1 - bargap) / 2
-                elif diff < 0:
+                elif diff > 0:
                     x = i + 1 - bargap / 2 - (1 - bargap) / 4
                     x0 = i + 1 - bargap / 2
                     x1 = i + 1 - bargap / 2 - (1 - bargap) / 2
                 else:
                     continue
             elif ~primary_first:
-                if diff > 0:
+                if diff < 0:
                     x = i + 1 - bargap / 2 - (1 - bargap) / 4
                     x0 = i + 1 - bargap / 2
                     x1 = i + 1 - bargap / 2 - (1 - bargap) / 2
-                elif diff < 0:
+                elif diff > 0:
                     x = i + bargap / 2 + (1 - bargap) / 4
                     x0 = i + bargap / 2
                     x1 = i + bargap / 2 + (1 - bargap) / 2
@@ -409,7 +411,7 @@ class Callout:
             # Adding the text
             if text_type is not None:
                 if text_type == "percentage":
-                    text = f"{diff/primary_y:{text_format}}"
+                    text = f"{diff/comparison_y:{text_format}}"
                 elif text_type == "difference":
                     text = f"{diff:{text_format}}"
                 elif text_type == "ratio":
