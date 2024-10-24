@@ -22,7 +22,6 @@ class CalloutTest(unittest.TestCase):
         )
         p.callout.add_line_differences(
             primary_trace_name="b",
-            secondary_trace_name="a",
             text_type="ratio",
             text_format=".1f",
             y_text_offset=0.1,
@@ -36,7 +35,6 @@ class CalloutTest(unittest.TestCase):
         )
         p.callout.add_line_differences(
             primary_trace_name="b",
-            secondary_trace_name="a",
             text_type="ratio",
             text_format=".1f",
             y_text_offset=0.1,
@@ -51,7 +49,6 @@ class CalloutTest(unittest.TestCase):
         )
         p.callout.add_line_differences(
             primary_trace_name="b",
-            secondary_trace_name="a",
             text_type="ratio",
             text_format=".1f",
             y_text_offset=0.1,
@@ -66,7 +63,6 @@ class CalloutTest(unittest.TestCase):
         )
         p.callout.add_line_differences(
             primary_trace_name="a",
-            secondary_trace_name="b",
             text_type="ratio",
             text_format=".1f",
             y_text_offset=0.1,
@@ -81,7 +77,6 @@ class CalloutTest(unittest.TestCase):
         )
         p.callout.add_line_differences(
             primary_trace_name="a",
-            secondary_trace_name="b",
             text_type="ratio",
             text_format=".1f",
             y_text_offset=0.1,
