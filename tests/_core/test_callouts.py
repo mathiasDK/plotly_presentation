@@ -2,6 +2,7 @@ import unittest
 from plotly_presentation._core.plotter import Plotter
 import plotly.graph_objs as go
 import plotly.express as px
+import pandas as pd
 
 
 class CalloutTest(unittest.TestCase):
@@ -113,3 +114,75 @@ class CalloutTest(unittest.TestCase):
         )
         trace_count = len(p.figure.data)
         self.assertEqual(trace_count, 5)
+
+    def test_get_center_point_categorical_x(self):
+        p = Plotter()
+        p.express(
+            type="bar",
+            x=["cat1", "cat2", "cat3", "cat4"],
+            y=[1, 2, 3, 4],
+            barmode="group",
+        )
+        actual_center = p.callout._get_center_point(
+            a="cat1", b="cat3",
+            axis = "x"
+        )
+        expected_center = 1
+        self.assertEqual(actual_center, expected_center)
+
+    def test_get_center_point_categorical_y(self):
+        p = Plotter()
+        p.express(
+            type="bar",
+            y=["cat1", "cat2", "cat3", "cat4"],
+            x=[1, 2, 3, 4],
+            barmode="group",
+        )
+        actual_center = p.callout._get_center_point(
+            a="cat1", b="cat3",
+            axis = "y"
+        )
+        expected_center = 1
+        self.assertEqual(actual_center, expected_center)
+
+    def test_get_center_point_numerical_x(self):
+        p = Plotter()
+        p.express(
+            type="bar",
+            x=[1,2,3,4],
+            y=[1, 2, 3, 4],
+            barmode="group",
+        )
+        actual_center = p.callout._get_center_point(
+            a=1, b=4,
+            axis = "x"
+        )
+        expected_center = 2.5
+        self.assertEqual(actual_center, expected_center)
+
+    def test_get_center_point_numerical_y(self):
+        p = Plotter()
+        p.express(
+            type="bar",
+            y=[1,2,3,4],
+            x=[1, 2, 3, 4],
+            barmode="group",
+        )
+        actual_center = p.callout._get_center_point(
+            a=1, b=4,
+            axis = "y"
+        )
+        expected_center = 2.5
+        self.assertEqual(actual_center, expected_center)
+
+    def test_get_center_point_date_x(self):
+        p = Plotter()
+        p.express(type="line", data_frame=self.df, x="date", y="GOOG")
+        print(p.figure.data[0].x)
+        actual_center = p.callout._get_center_point(
+            a="2018-01-08", b="2018-01-22",
+            axis = "x"
+        )
+        print(actual_center)
+        expected_center = pd.to_datetime("2018-01-15 00:00:00")
+        self.assertEqual(actual_center, expected_center)
