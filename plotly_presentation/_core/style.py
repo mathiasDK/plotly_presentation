@@ -88,3 +88,27 @@ class Style:
             height=int(self.plot_height * height_multiplier),
             width=int(self.plot_width * width_multiplier),
         )
+
+    def set_color_palette(self, palette_type:str=None, color_dict:dict=None):
+        """Set the color palette for the plot"""
+        _VALID_PALETTES = ["categorical", "sequential", "diverging", "accent", None]
+        if palette_type not in _VALID_PALETTES:
+            raise ValueError(f"Invalid palette type. Must be one of {_VALID_PALETTES}")
+        
+        if palette_type is None and color_dict is None:
+            raise ValueError("Either palette_type or color_dict must be provided")
+        
+        if color_dict is not None:
+            for key, value in color_dict.items():
+                self.figure.update_traces(marker_color=value, selector = ({'name':key})) # Adjusting for different trace types?
+        elif palette_type == "categorical":
+            pass # This is already set in the layout
+        elif palette_type in ["sequential", "diverging"]:
+            trace_names = [d.name for d in self.figure.data]
+            n_traces = len(trace_names)
+            
+            if palette_type == "sequential":
+                pass
+            else:
+                pass
+    
