@@ -254,6 +254,7 @@ def plot_line_callout():
     _line_callout_example_1()
     _line_callout_example_2()
     _line_callout_example_3()
+    _line_callout_example_4()
 
 
 @_print_source
@@ -310,6 +311,21 @@ def _line_callout_example_3():
     )
     p.callout.add_dash_growth_lines(
         x0="cat2", x1="cat4", y0=2, y1=3.1, x_end="cat4", text="+55%"
+    )
+    p.figure.update_layout(showlegend=False)
+    p.show()
+
+
+@_print_source
+def _line_callout_example_4():
+    """
+    Line callouts example
+    """
+    df = data.stocks()
+    p = Plotter(slide_layout="slide_50%")
+    p.express(type="line", data_frame=df, x="date", y="GOOG")
+    p.callout.add_square_growth_line(
+        x0="2019-01-28", x1="2019-12-30", y0=1, y1=1.2, y_top=1.5, text="+20%"
     )
     p.figure.update_layout(showlegend=False)
     p.show()
