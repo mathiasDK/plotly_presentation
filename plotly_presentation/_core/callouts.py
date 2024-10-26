@@ -2,6 +2,8 @@ import plotly.graph_objs as go
 from plotly_presentation._core.colors import CalloutColor
 from plotly_presentation._core.options import options
 from plotly_presentation._core.utils.dict_funcs import update_dict
+import pandas as pd
+import datetime
 
 
 class Callout:
@@ -79,10 +81,17 @@ class Callout:
         Returns:
             float: A numeric value which is the middle point between a and b.
         """
-        # Only works for numeric and str
-        if isinstance(a, str):
-            vals = self.figure.data[0][axis]
-            a, b = list(vals).index(a), list(vals).index(b)
+        # Does not work with logs
+        if isinstance(a, float | int):
+            pass
+        else:
+            try:
+                datetime.date.fromisoformat(a)
+                a, b = pd.to_datetime(a), pd.to_datetime(b)
+            except:
+                if isinstance(a, str):
+                    vals = self.figure.data[0][axis]
+                    a, b = list(vals).index(a), list(vals).index(b)
         return (b - a) / 2.0 + a
 
     def add_circle_highlight(
