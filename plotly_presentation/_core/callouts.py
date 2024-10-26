@@ -82,7 +82,7 @@ class Callout:
             float: A numeric value which is the middle point between a and b.
         """
         # Does not work with logs
-        if isinstance(a, float|int):
+        if isinstance(a, float | int):
             pass
         else:
             try:

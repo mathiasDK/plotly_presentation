@@ -123,10 +123,7 @@ class CalloutTest(unittest.TestCase):
             y=[1, 2, 3, 4],
             barmode="group",
         )
-        actual_center = p.callout._get_center_point(
-            a="cat1", b="cat3",
-            axis = "x"
-        )
+        actual_center = p.callout._get_center_point(a="cat1", b="cat3", axis="x")
         expected_center = 1
         self.assertEqual(actual_center, expected_center)
 
@@ -138,10 +135,7 @@ class CalloutTest(unittest.TestCase):
             x=[1, 2, 3, 4],
             barmode="group",
         )
-        actual_center = p.callout._get_center_point(
-            a="cat1", b="cat3",
-            axis = "y"
-        )
+        actual_center = p.callout._get_center_point(a="cat1", b="cat3", axis="y")
         expected_center = 1
         self.assertEqual(actual_center, expected_center)
 
@@ -149,14 +143,11 @@ class CalloutTest(unittest.TestCase):
         p = Plotter()
         p.express(
             type="bar",
-            x=[1,2,3,4],
+            x=[1, 2, 3, 4],
             y=[1, 2, 3, 4],
             barmode="group",
         )
-        actual_center = p.callout._get_center_point(
-            a=1, b=4,
-            axis = "x"
-        )
+        actual_center = p.callout._get_center_point(a=1, b=4, axis="x")
         expected_center = 2.5
         self.assertEqual(actual_center, expected_center)
 
@@ -164,14 +155,11 @@ class CalloutTest(unittest.TestCase):
         p = Plotter()
         p.express(
             type="bar",
-            y=[1,2,3,4],
+            y=[1, 2, 3, 4],
             x=[1, 2, 3, 4],
             barmode="group",
         )
-        actual_center = p.callout._get_center_point(
-            a=1, b=4,
-            axis = "y"
-        )
+        actual_center = p.callout._get_center_point(a=1, b=4, axis="y")
         expected_center = 2.5
         self.assertEqual(actual_center, expected_center)
 
@@ -180,8 +168,7 @@ class CalloutTest(unittest.TestCase):
         p.express(type="line", data_frame=self.df, x="date", y="GOOG")
         print(p.figure.data[0].x)
         actual_center = p.callout._get_center_point(
-            a="2018-01-08", b="2018-01-22",
-            axis = "x"
+            a="2018-01-08", b="2018-01-22", axis="x"
         )
         print(actual_center)
         expected_center = pd.to_datetime("2018-01-15 00:00:00")
