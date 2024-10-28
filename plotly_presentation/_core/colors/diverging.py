@@ -20,20 +20,32 @@ def create_diverging_color_list(low_color, mid_color, high_color, n) -> list:
 
     if n % 2 == 0:
         low_colors = n_colors(
-            lowcolor=low_color, highcolor=mid_color, n_colors=int(np.ceil(n / 2) + 1), colortype=color_type
+            lowcolor=low_color,
+            highcolor=mid_color,
+            n_colors=int(np.ceil(n / 2) + 1),
+            colortype=color_type,
         )
         high_colors = n_colors(
-            lowcolor=mid_color, highcolor=high_color, n_colors=int(np.ceil(n / 2) + 1), colortype=color_type
+            lowcolor=mid_color,
+            highcolor=high_color,
+            n_colors=int(np.ceil(n / 2) + 1),
+            colortype=color_type,
         )
         diverging_color_list = (
             low_colors[:-1] + high_colors[1:]
         )  # ensuring that the mid color isn't shown twice
     else:
         low_colors = n_colors(
-            lowcolor=low_color, highcolor=mid_color, n_colors=int(np.ceil(n / 2)), colortype=color_type
+            lowcolor=low_color,
+            highcolor=mid_color,
+            n_colors=int(np.ceil(n / 2)),
+            colortype=color_type,
         )
         high_colors = n_colors(
-            lowcolor=mid_color, highcolor=high_color, n_colors=int(np.ceil(n / 2)), colortype=color_type
+            lowcolor=mid_color,
+            highcolor=high_color,
+            n_colors=int(np.ceil(n / 2)),
+            colortype=color_type,
         )
         diverging_color_list = (
             low_colors + high_colors[1:]

@@ -14,7 +14,7 @@ class CalloutTest(unittest.TestCase):
         self.assertEqual(len(colors), 6)
 
     def test_create_sequential_color_list_length_tuple(self):
-        colors = create_sequential_color_list((0,0,0), (255,255,255), 6)
+        colors = create_sequential_color_list((0, 0, 0), (255, 255, 255), 6)
         self.assertEqual(len(colors), 6)
 
     def test_create_sequential_color_list_length_rgb(self):

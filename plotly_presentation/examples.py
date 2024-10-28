@@ -358,6 +358,7 @@ def _general_callout_example_1():
     p.callout.add_circle_highlight(x="a", y=3, text="2")
     p.show()
 
+
 @_print_source
 def plot_style():
     """
@@ -370,6 +371,7 @@ def plot_style():
     _style_set_diverging_colors()
     _style_set_sequential_colors()
 
+
 @_print_source
 def _style_set_sequential_colors():
     """
@@ -380,11 +382,22 @@ def _style_set_sequential_colors():
     p.express(
         type="line",
         x=["a", "b", "c", "a", "b", "c", "a", "b", "c"],
-        y=[2,2,2,3,3,3,4,4,4],
-        color=["a", "a", "a", "b", "b", "b", "c", "c", "c", ]
+        y=[2, 2, 2, 3, 3, 3, 4, 4, 4],
+        color=[
+            "a",
+            "a",
+            "a",
+            "b",
+            "b",
+            "b",
+            "c",
+            "c",
+            "c",
+        ],
     )
     p.style.set_color_palette(palette_type="sequential", palette_name="reds")
     p.show()
+
 
 @_print_source
 def _style_set_diverging_colors():
@@ -396,11 +409,22 @@ def _style_set_diverging_colors():
     p.express(
         type="line",
         x=["a", "b", "c", "a", "b", "c", "a", "b", "c"],
-        y=[2,2,2,3,3,3,4,4,4],
-        color=["a", "a", "a", "b", "b", "b", "c", "c", "c", ]
+        y=[2, 2, 2, 3, 3, 3, 4, 4, 4],
+        color=[
+            "a",
+            "a",
+            "a",
+            "b",
+            "b",
+            "b",
+            "c",
+            "c",
+            "c",
+        ],
     )
     p.style.set_color_palette(palette_type="diverging", palette_name="reds")
     p.show()
+
 
 @_print_source
 def _style_set_colors():
@@ -412,13 +436,19 @@ def _style_set_colors():
     p.express(
         type="line",
         x=["a", "b", "c", "a", "b", "c", "a", "b", "c"],
-        y=[2,2,2,3,3,3,4,4,4],
-        color=["a", "a", "a", "b", "b", "b", "c", "c", "c", ]
+        y=[2, 2, 2, 3, 3, 3, 4, 4, 4],
+        color=[
+            "a",
+            "a",
+            "a",
+            "b",
+            "b",
+            "b",
+            "c",
+            "c",
+            "c",
+        ],
     )
-    color_map = {
-        "a": "#0011ff",
-        "b": "#88ff00",
-        "c": "#44aaaa"
-    }
+    color_map = {"a": "#0011ff", "b": "#88ff00", "c": "#44aaaa"}
     p.style.set_color_palette(color_dict=color_map)
     p.show()

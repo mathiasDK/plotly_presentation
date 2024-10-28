@@ -14,13 +14,17 @@ class CalloutTest(unittest.TestCase):
         self.assertEqual(len(colors), 6)
 
     def test_create_diverging_color_list_length_tuple(self):
-        colors = create_diverging_color_list((0,0,0), (255,255,255), (10,10,10), 6)
+        colors = create_diverging_color_list(
+            (0, 0, 0), (255, 255, 255), (10, 10, 10), 6
+        )
         self.assertEqual(len(colors), 6)
 
     def test_create_diverging_color_list_length_rgb(self):
-        colors = create_diverging_color_list("rgb(0,0,0)", "rgb(255,255,255)", "rgb(10,10,10)", 6)
+        colors = create_diverging_color_list(
+            "rgb(0,0,0)", "rgb(255,255,255)", "rgb(10,10,10)", 6
+        )
         self.assertEqual(len(colors), 6)
-    
+
     def test_create_diverging_color_list_length_hex_unequal(self):
         colors = create_diverging_color_list("#000000", "#60748D", "#ffffff", 11)
         self.assertEqual(len(colors), 11)
@@ -29,9 +33,13 @@ class CalloutTest(unittest.TestCase):
         self.assertEqual(colors[-1], "rgb(255.0, 255.0, 255.0)")
 
     def test_create_diverging_color_list_length_tuple_unequal(self):
-        colors = create_diverging_color_list((0,0,0), (255,255,255), (10,10,10), 11)
+        colors = create_diverging_color_list(
+            (0, 0, 0), (255, 255, 255), (10, 10, 10), 11
+        )
         self.assertEqual(len(colors), 11)
 
     def test_create_diverging_color_list_length_rgb_unequal(self):
-        colors = create_diverging_color_list("rgb(0,0,0)", "rgb(255,255,255)", "rgb(10,10,10)", 11)
+        colors = create_diverging_color_list(
+            "rgb(0,0,0)", "rgb(255,255,255)", "rgb(10,10,10)", 11
+        )
         self.assertEqual(len(colors), 11)
