@@ -39,3 +39,20 @@ plot_colors:
   line_color: "#000000"
   text_color: "#000000"
   bg_color: "#ffffff"
+
+custom_sequential:
+  reds:
+    - "#D73809"
+    - "#f98f70"
+  ice:
+    - "#60748D"
+    - "#a3b0c0"
+  hot_cold:
+    - "#D73809"
+    - "#60748D"
+
+custom_diverging:
+  reds:
+    - "#D73809"
+    - "#c2c2c2"
+    - "#940C08"

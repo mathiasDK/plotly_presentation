@@ -2,6 +2,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly_presentation._core.callouts import Callout
 from plotly_presentation._core.style import Style
+from plotly_presentation._core.colors import Color
 
 
 class Plotter:

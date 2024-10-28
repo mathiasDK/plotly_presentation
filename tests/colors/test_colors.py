@@ -1,6 +1,6 @@
 import unittest
 from plotly_presentation._core.plotter import Plotter
-from plotly_presentation._core.colors import SequentialColor, DivergentColor
+from plotly_presentation._core.colors._colors import SequentialColor, DivergentColor
 import plotly.express as px
 
 
