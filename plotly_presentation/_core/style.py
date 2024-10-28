@@ -4,6 +4,8 @@ from plotly_presentation._core.colors import (
     SequentialColor,
     PlotColor,
     CalloutColor,
+    get_sequential_color_list,
+    get_diverging_color_list,
 )
 from plotly_presentation._core.options import options
 import plotly.io as pio
@@ -80,7 +82,7 @@ class Style:
             height_multiplier = 0.5
             width_multiplier = 0.5
 
-        elif slide_layout == "slide_wide%":
+        elif slide_layout == "slide_wide":
             height_multiplier = 0.75
             width_multiplier = 1
 
@@ -88,3 +90,59 @@ class Style:
             height=int(self.plot_height * height_multiplier),
             width=int(self.plot_width * width_multiplier),
         )
+
+    def set_color_palette(
+        self,
+        palette_type: str = None,
+        palette_name: str = None,
+        color_dict: dict = None,
+    ):
+        """Set the color palette for the plot"""
+        _VALID_PALETTES = [
+            "sequential",
+            "diverging",
+            "sequential_negative",
+            "diverging_negative",
+            None,
+        ]
+        if palette_type not in _VALID_PALETTES:
+            raise ValueError(f"Invalid palette type. Must be one of {_VALID_PALETTES}")
+
+        if palette_type is None and color_dict is None:
+            raise ValueError("Either palette_type or color_dict must be provided")
+
+        if color_dict is not None:
+            for key, value in color_dict.items():
+                self.figure.update_traces(line_color=value, selector=({"name": key}))
+                self.figure.update_traces(marker_color=value, selector=({"name": key}))
+        elif palette_type in ["sequential", "diverging"]:
+            trace_names = [d.name for d in self.figure.data]
+            n_traces = len(trace_names)
+
+            if n_traces > 1:
+                if palette_type == "sequential":
+                    try:
+                        colors = get_sequential_color_list(
+                            palette_name=palette_name, n=n_traces
+                        )
+                    except AttributeError:
+                        raise AttributeError(
+                            "You must specify the custom color palette in the colors_config.yaml file."
+                        )
+                else:
+                    try:
+                        colors = get_diverging_color_list(
+                            palette_name=palette_name, n=n_traces
+                        )
+                    except AttributeError:
+                        raise AttributeError(
+                            "You must specify the custom color palette in the colors_config.yaml file."
+                        )
+
+                for color, name in zip(colors, trace_names):
+                    self.figure.update_traces(
+                        line_color=color, selector=({"name": name})
+                    )
+                    self.figure.update_traces(
+                        marker_color=color, selector=({"name": name})
+                    )
