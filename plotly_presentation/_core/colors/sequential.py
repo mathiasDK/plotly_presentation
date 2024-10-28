@@ -10,7 +10,11 @@ sequential_colors = {}
 def create_sequential_color_list(low_color, high_color, n) -> list:
     low_color = _convert_to_rgb(low_color)
     high_color = _convert_to_rgb(high_color)
-    sequential_color_list = n_colors(low_color, high_color, n_colors=n)
+    if low_color[:3] == "rgb":
+        color_type = "rgb"
+    else:
+        color_type = "tuple"
+    sequential_color_list = n_colors(low_color, high_color, n_colors=n, colortype=color_type)
     sequential_color_list = [label_rgb(color) for color in sequential_color_list]
     return sequential_color_list
 

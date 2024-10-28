@@ -1,6 +1,6 @@
 import unittest
 from plotly_presentation._core.plotter import Plotter
-from plotly_presentation._core.colors._colors import SequentialColor, DivergentColor
+from plotly_presentation._core.colors import SequentialColor, DivergentColor
 import plotly.express as px
 
 
@@ -27,53 +27,40 @@ class CalloutTest(unittest.TestCase):
     def test_set_color_palette_palette_sequential(self):
         p = Plotter()
         p.express(type="line", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
-        p.style.set_color_palette(palette_type="sequential")
+        p.style.set_color_palette(palette_type="sequential", palette_name="reds")
 
         actual_colors = {
             d.name: d.line.color for d in p.figure.data if d.name in ("GOOG", "FB")
         }
         expected_colors = {
-            "GOOG": SequentialColor.START.value,
-            "FB": SequentialColor.END.value,
+            "GOOG": "rgb(215.0, 56.0, 9.0)",
+            "FB": "rgb(249.0, 143.0, 112.0)",
         }
         self.assertEqual(actual_colors, expected_colors)
 
     def test_set_color_palette_palette_sequential_negative(self):
         p = Plotter()
         p.express(type="line", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
-        p.style.set_color_palette(palette_type="sequential_negative")
+        p.style.set_color_palette(palette_type="sequential", palette_name="hot_cold")
 
         actual_colors = {
             d.name: d.line.color for d in p.figure.data if d.name in ("GOOG", "FB")
         }
         expected_colors = {
-            "GOOG": SequentialColor.END.value,
-            "FB": SequentialColor.START.value,
+            "GOOG": "rgb(215.0, 56.0, 9.0)",
+            "FB": "rgb(96.0, 116.0, 141.0)",
         }
         self.assertEqual(actual_colors, expected_colors)
 
     def test_set_color_palette_palette_diverging(self):
         p = Plotter()
         p.express(type="line", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
-        p.style.set_color_palette(palette_type="diverging")
+        p.style.set_color_palette(palette_type="diverging", palette_name="reds")
 
         actual_colors = {d.name: d.line.color for d in p.figure.data}
         expected_colors = {
-            "GOOG": DivergentColor.START.value,
-            "AAPL": DivergentColor.MID.value,
-            "FB": DivergentColor.END.value,
-        }
-        self.assertEqual(actual_colors, expected_colors)
-
-    def test_set_color_palette_palette_diverging_negative(self):
-        p = Plotter()
-        p.express(type="line", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
-        p.style.set_color_palette(palette_type="diverging_negative")
-
-        actual_colors = {d.name: d.line.color for d in p.figure.data}
-        expected_colors = {
-            "GOOG": DivergentColor.END.value,
-            "AAPL": DivergentColor.MID.value,
-            "FB": DivergentColor.START.value,
+            "GOOG": "rgb(215.0, 56.0, 9.0)",
+            "AAPL": "rgb(194.0, 194.0, 194.0)",
+            "FB": "rgb(148.0, 12.0, 8.0)",
         }
         self.assertEqual(actual_colors, expected_colors)

@@ -13,22 +13,27 @@ def create_diverging_color_list(low_color, mid_color, high_color, n) -> list:
     mid_color = _convert_to_rgb(mid_color)
     high_color = _convert_to_rgb(high_color)
 
+    if low_color[:3] == "rgb":
+        color_type = "rgb"
+    else:
+        color_type = "tuple"
+
     if n % 2 == 0:
         low_colors = n_colors(
-            lowcolor=low_color, highcolor=mid_color, n_colors=int(np.ceil(n / 2) + 1)
+            lowcolor=low_color, highcolor=mid_color, n_colors=int(np.ceil(n / 2) + 1), colortype=color_type
         )
         high_colors = n_colors(
-            lowcolor=mid_color, highcolor=high_color, n_colors=int(np.ceil(n / 2) + 1)
+            lowcolor=mid_color, highcolor=high_color, n_colors=int(np.ceil(n / 2) + 1), colortype=color_type
         )
         diverging_color_list = (
             low_colors[:-1] + high_colors[1:]
         )  # ensuring that the mid color isn't shown twice
     else:
         low_colors = n_colors(
-            lowcolor=low_color, highcolor=mid_color, n_colors=int(np.ceil(n / 2))
+            lowcolor=low_color, highcolor=mid_color, n_colors=int(np.ceil(n / 2)), colortype=color_type
         )
         high_colors = n_colors(
-            lowcolor=mid_color, highcolor=high_color, n_colors=int(np.ceil(n / 2))
+            lowcolor=mid_color, highcolor=high_color, n_colors=int(np.ceil(n / 2)), colortype=color_type
         )
         diverging_color_list = (
             low_colors + high_colors[1:]
