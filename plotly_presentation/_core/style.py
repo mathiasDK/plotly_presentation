@@ -113,8 +113,14 @@ class Style:
 
         if color_dict is not None:
             for key, value in color_dict.items():
-                self.figure.update_traces(line_color=value, selector=({"name": key}))
-                self.figure.update_traces(marker_color=value, selector=({"name": key}))
+                try:
+                    self.figure.update_traces(
+                        line_color=value, selector=({"name": key})
+                    )
+                except ValueError:
+                    self.figure.update_traces(
+                        marker_color=value, selector=({"name": key})
+                    )
         elif palette_type in ["sequential", "diverging"]:
             trace_names = [d.name for d in self.figure.data]
             n_traces = len(trace_names)
@@ -140,9 +146,11 @@ class Style:
                         )
 
                 for color, name in zip(colors, trace_names):
-                    self.figure.update_traces(
-                        line_color=color, selector=({"name": name})
-                    )
-                    self.figure.update_traces(
-                        marker_color=color, selector=({"name": name})
-                    )
+                    try:
+                        self.figure.update_traces(
+                            line_color=color, selector=({"name": name})
+                        )
+                    except ValueError:
+                        self.figure.update_traces(
+                            marker_color=color, selector=({"name": name})
+                        )
