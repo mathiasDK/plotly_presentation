@@ -135,7 +135,7 @@ class Callout:
             and circle_x_pixel_width is None
             and circle_y_pixel_width is None
         ):
-            raise AttributeError(
+            raise ValueError(
                 f"You must provide a shape for the circle: {_VALID_SHAPE_FORMS} or specify the size of the circle with `circle_x_pixel_width` and `circle_y_pixel_width`"
             )
         if shape_form == "round":
