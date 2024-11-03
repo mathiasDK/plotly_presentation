@@ -230,3 +230,73 @@ class CalloutTest(unittest.TestCase):
                 "y1": s["y1"],
             }
             self.assertEqual(actual_shape, expected_shape)
+
+    def test_dash_growth_lines_no_text(self):
+        p = Plotter()
+        p.callout.add_dash_growth_lines(x0=0, y0=0, x1=1, y1=1, x_end=1.5)
+
+        expected_dash_1 = {
+            "x0": 0,
+            "y0": 0,
+            "x1": 1.5,
+            "y1": 0,
+        }
+        expected_dash_2 = {
+            "x0": 1,
+            "y0": 1,
+            "x1": 1.5,
+            "y1": 1,
+        }
+        expected_shapes = [
+            expected_dash_1,
+            expected_dash_2,
+        ]
+        for expected_shape, s in zip(expected_shapes, p.figure.layout.shapes):
+            actual_shape = {
+                "x0": s["x0"],
+                "y0": s["y0"],
+                "x1": s["x1"],
+                "y1": s["y1"],
+            }
+            self.assertEqual(actual_shape, expected_shape)
+
+        actual_shapes = len(p.figure.layout.shapes)
+        self.assertEqual(actual_shapes, 2)
+
+        actual_annotations = len(p.figure.layout.annotations)
+        self.assertEqual(actual_annotations, 1)
+
+    def test_dash_growth_lines_no_text(self):
+        p = Plotter()
+        p.callout.add_dash_growth_lines(x0=0, y0=0, x1=1, y1=1, x_end=1.5, text="s")
+
+        expected_dash_1 = {
+            "x0": 0,
+            "y0": 0,
+            "x1": 1.5,
+            "y1": 0,
+        }
+        expected_dash_2 = {
+            "x0": 1,
+            "y0": 1,
+            "x1": 1.5,
+            "y1": 1,
+        }
+        expected_shapes = [
+            expected_dash_1,
+            expected_dash_2,
+        ]
+        for expected_shape, s in zip(expected_shapes, p.figure.layout.shapes):
+            actual_shape = {
+                "x0": s["x0"],
+                "y0": s["y0"],
+                "x1": s["x1"],
+                "y1": s["y1"],
+            }
+            self.assertEqual(actual_shape, expected_shape)
+
+        actual_shapes = len(p.figure.layout.shapes)
+        self.assertEqual(actual_shapes, 3)
+
+        actual_annotations = len(p.figure.layout.annotations)
+        self.assertEqual(actual_annotations, 2)
