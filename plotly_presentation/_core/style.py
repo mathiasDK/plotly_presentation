@@ -103,13 +103,12 @@ class Style:
             "diverging",
             "sequential_negative",
             "diverging_negative",
-            None,
         ]
-        if palette_type not in _VALID_PALETTES:
+        if palette_type not in _VALID_PALETTES and palette_type is not None:
             raise ValueError(f"Invalid palette type. Must be one of {_VALID_PALETTES}")
 
         if palette_type is None and color_dict is None:
-            raise ValueError("Either palette_type or color_dict must be provided")
+            raise AttributeError("Either palette_type or color_dict must be provided")
 
         if color_dict is not None:
             for key, value in color_dict.items():

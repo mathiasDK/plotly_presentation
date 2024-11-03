@@ -135,3 +135,34 @@ class CalloutTest(unittest.TestCase):
         p.style.set_color_palette(color_dict=new_colors)
         actual_colors = {d.name: d.line.color for d in p.figure.data}
         self.assertEqual(new_colors, actual_colors)
+
+    def test_set_color_palette_invalid_palette_type(self):
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        _VALID_PALETTES = [
+            "sequential",
+            "diverging",
+            "sequential_negative",
+            "diverging_negative",
+        ]
+
+        with self.assertRaises(ValueError) as context:
+            p.style.set_color_palette(
+                palette_type="some palette that does not exist", palette_name="reds"
+            )
+            # Optionally, check the exception message
+            self.assertEqual(
+                str(context.exception),
+                f"Invalid palette type. Must be one of {_VALID_PALETTES}",
+            )
+
+    def test_set_color_palette_invalid_input(self):
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+
+        with self.assertRaises(AttributeError) as context:
+            p.style.set_color_palette(palette_type=None, color_dict=None)
+            self.assertEqual(
+                str(context.exception),
+                "Either palette_type or color_dict must be provided",
+            )
