@@ -174,8 +174,8 @@ class StyleTest(unittest.TestCase):
             "connectors": s.figure.data[0].connector.line.color,
         }
         expected_colors = {
-            "increase": "#4c8a8e",
-            "decrease": "#8E504C",
+            "increase": "#09d738",
+            "decrease": "#D73809",
             "totals": "#CFD6D5",
             "connectors": "black",
         }
