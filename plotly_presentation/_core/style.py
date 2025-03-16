@@ -1,5 +1,6 @@
 from plotly_presentation._core.colors import (
     color_list,
+    Color,
     DivergentColor,
     SequentialColor,
     PlotColor,
@@ -154,3 +155,12 @@ class Style:
                         self.figure.update_traces(
                             marker_color=color, selector=({"name": name})
                         )
+
+    def _apply_waterfall_style(self):
+        self.figure.data[0]["increasing"] = {"marker": {"color": Color.POSITIVE.value}}
+        self.figure.data[0]["decreasing"] = {"marker": {"color": Color.NEGATIVE.value}}
+        self.figure.data[0]["totals"] = {"marker": {"color": Color.NEUTRAL.value}}
+        self.figure.data[0]["connector"] = {
+            "mode": "between",
+            "line": {"width": 0.5, "color": "black", "dash": "solid"},
+        }
