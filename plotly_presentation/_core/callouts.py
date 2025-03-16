@@ -523,6 +523,7 @@ class Callout:
                         text=[text],
                         marker=dict(color=color, size=marker_size),
                         showlegend=False,
+                        name=f"{name}_marker",
                         textposition=text_positions[i],
                     )
                 )
