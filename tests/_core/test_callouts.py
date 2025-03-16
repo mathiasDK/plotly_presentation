@@ -115,6 +115,98 @@ class CalloutTest(unittest.TestCase):
         trace_count = len(p.figure.data)
         self.assertEqual(trace_count, 5)
 
+    def test_end_line_marker_text_format_value(self):
+        p = Plotter()
+        p.express(
+            type="line",
+            x=["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4"],
+            y=[1, 3, 2, 3, 3, 2, 4, 4],
+            color=["a", "b", "a", "b", "a", "b", "a", "b"],
+        )
+        p.callout.add_line_end_marker(
+            traces=["a"],
+            text_type="value",
+            text_format=".2f",
+        )
+        expected_text = "4.00"
+        for t in p.figure.select_traces(selector={"name": "a_marker"}):
+            actual_text = t.text[0]
+            self.assertEqual(expected_text, actual_text)
+
+    def test_end_line_marker_text_format_category(self):
+        p = Plotter()
+        p.express(
+            type="line",
+            x=["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4"],
+            y=[1, 3, 2, 3, 3, 2, 4, 4],
+            color=["a", "b", "a", "b", "a", "b", "a", "b"],
+        )
+        p.callout.add_line_end_marker(
+            traces=["a"],
+            text_type="category",
+        )
+        expected_text = "a"
+        for t in p.figure.select_traces(selector={"name": "a_marker"}):
+            actual_text = t.text[0]
+            self.assertEqual(expected_text, actual_text)
+
+    def test_end_line_marker_text_format_value_category(self):
+        p = Plotter()
+        p.express(
+            type="line",
+            x=["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4"],
+            y=[1, 3, 2, 3, 3, 2, 4, 4],
+            color=["a", "b", "a", "b", "a", "b", "a", "b"],
+        )
+        p.callout.add_line_end_marker(
+            traces=["a"],
+            text_type="value+category",
+            text_format=".0f",
+        )
+        expected_text = "4<br>a"
+        for t in p.figure.select_traces(selector={"name": "a_marker"}):
+            print(t)
+            actual_text = t.text[0]
+            self.assertEqual(expected_text, actual_text)
+
+    def test_end_line_marker_text_format_category_value(self):
+        p = Plotter()
+        p.express(
+            type="line",
+            x=["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4"],
+            y=[1, 3, 2, 3, 3, 2, 4, 4],
+            color=["a", "b", "a", "b", "a", "b", "a", "b"],
+        )
+        p.callout.add_line_end_marker(
+            traces=["a"],
+            text_type="category+value",
+            text_format=".0f",
+        )
+        expected_text = "a<br>4"
+        for t in p.figure.select_traces(selector={"name": "a_marker"}):
+            print(t)
+            actual_text = t.text[0]
+            self.assertEqual(expected_text, actual_text)
+
+    def test_end_line_marker_text_format_unknown_text_type(self):
+        p = Plotter()
+        p.express(
+            type="line",
+            x=["cat1", "cat1", "cat2", "cat2", "cat3", "cat3", "cat4", "cat4"],
+            y=[1, 3, 2, 3, 3, 2, 4, 4],
+            color=["a", "b", "a", "b", "a", "b", "a", "b"],
+        )
+
+        with self.assertRaises(AttributeError) as context:
+            p.callout.add_line_end_marker(
+                traces=["a"],
+                text_type="unknown",
+            )
+            self.assertEqual(
+                str(context.exception),
+                "The text type must be on of the following: {_VALID_TEXT_TYPES}",
+            )
+
     def test_get_center_point_categorical_x(self):
         p = Plotter()
         p.express(
