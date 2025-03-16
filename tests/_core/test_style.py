@@ -211,3 +211,47 @@ class StyleTest(unittest.TestCase):
             "connectors": "black",
         }
         self.assertEqual(actual_colors, expected_colors)
+
+    def test_slide_layout_size(self):
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+
+        p.style._set_width_and_height("slide_25%")
+        self.assertEqual(960.0 / 2, p.figure.layout.width)
+        self.assertEqual(540.0 / 2, p.figure.layout.height)
+
+        p.style._set_width_and_height("slide_50%")
+        self.assertEqual(960.0 / 2, p.figure.layout.width)
+        self.assertEqual(540.0, p.figure.layout.height)
+
+        p.style._set_width_and_height("slide_75%")
+        self.assertEqual(960.0 * 0.75 * 0.8, p.figure.layout.width)
+        self.assertEqual(540.0 * 0.8, p.figure.layout.height)
+
+        p.style._set_width_and_height("slide_100%")
+        self.assertEqual(960.0, p.figure.layout.width)
+        self.assertEqual(540.0, p.figure.layout.height)
+
+        p.style._set_width_and_height("slide_wide")
+        self.assertEqual(960.0, p.figure.layout.width)
+        self.assertEqual(540 * 0.75, p.figure.layout.height)
+
+    def test_unknown_sequential_palette(self):
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        with self.assertRaises(TypeError) as context:
+            p.style.set_color_palette(palette_type="sequential", palette_name="unknown")
+            self.assertEqual(
+                str(context.exception),
+                "Invalid palette name. Must be one of {palette_names}",
+            )
+
+    def test_unknown_divergin_palette(self):
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        with self.assertRaises(TypeError) as context:
+            p.style.set_color_palette(palette_type="diverging", palette_name="unknown")
+            self.assertEqual(
+                str(context.exception),
+                "Invalid palette name. Must be one of {palette_names}",
+            )

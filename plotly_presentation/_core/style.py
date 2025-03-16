@@ -131,8 +131,8 @@ class Style:
                         colors = get_sequential_color_list(
                             palette_name=palette_name, n=n_traces
                         )
-                    except AttributeError:
-                        raise AttributeError(
+                    except TypeError:
+                        raise TypeError(
                             "You must specify the custom color palette in the colors_config.yaml file."
                         )
                 else:
@@ -140,8 +140,8 @@ class Style:
                         colors = get_diverging_color_list(
                             palette_name=palette_name, n=n_traces
                         )
-                    except AttributeError:
-                        raise AttributeError(
+                    except TypeError:
+                        raise TypeError(
                             "You must specify the custom color palette in the colors_config.yaml file."
                         )
 
