@@ -1,4 +1,5 @@
 import plotly.graph_objects as go
+import plotly
 import plotly.express as px
 from plotly_presentation._core.callouts import Callout
 from plotly_presentation._core.style import Style
@@ -18,6 +19,8 @@ class Plotter:
         self.slide_layout = slide_layout
         if figure is not None:
             self.figure = figure
+            if type(figure.data[0]) == plotly.graph_objs._waterfall.Waterfall:
+                self.style._apply_waterfall_style()
         else:
             self.figure = go.Figure()
         self._apply_settings()
@@ -34,6 +37,8 @@ class Plotter:
     def add_trace(self, func) -> go.Figure:
         self.figure.add_trace(func)
         self._apply_settings()
+        if type(func) == plotly.graph_objs._waterfall.Waterfall:
+            self.style._apply_waterfall_style()
         return self.figure
 
     def show(self):

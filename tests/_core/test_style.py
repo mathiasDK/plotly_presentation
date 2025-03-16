@@ -1,10 +1,12 @@
 import unittest
 from plotly_presentation._core.plotter import Plotter
 from plotly_presentation._core.colors import SequentialColor, DivergentColor
+from plotly_presentation._core.style import Style
+import plotly.graph_objects as go
 import plotly.express as px
 
 
-class CalloutTest(unittest.TestCase):
+class StyleTest(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
@@ -135,3 +137,31 @@ class CalloutTest(unittest.TestCase):
         p.style.set_color_palette(color_dict=new_colors)
         actual_colors = {d.name: d.line.color for d in p.figure.data}
         self.assertEqual(new_colors, actual_colors)
+
+    def test_waterfall_style(self):
+        figure = go.Figure(
+            go.Waterfall(
+                name = "20", orientation = "v",
+                measure = ["relative", "relative", "total", "relative", "relative", "total"],
+                x = ["Sales", "Consulting", "Net revenue", "Purchases", "Other expenses", "Profit before tax"],
+                textposition = "outside",
+                text = ["+60", "+80", "", "-40", "-20", "Total"],
+                y = [60, 80, 0, -40, -20, 0],
+            )
+        )
+        s = Style(figure, slide_layout="slide_100%")
+        s._apply_waterfall_style()
+
+        actual_colors = {
+            "increase": s.figure.data[0].increasing.marker.color,
+            "decrease": s.figure.data[0].decreasing.marker.color,
+            "totals": s.figure.data[0].totals.marker.color,
+            "connectors": s.figure.data[0].connector.line.color,
+        }
+        expected_colors = {
+            "increase": "#4c8a8e",
+            "decrease": "#8E504C",
+            "totals": "#CFD6D5",
+            "connectors": "black",
+        }
+        self.assertEqual(actual_colors, expected_colors)

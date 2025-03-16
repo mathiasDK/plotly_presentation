@@ -452,3 +452,33 @@ def _style_set_colors():
     color_map = {"a": "#0011ff", "b": "#88ff00", "c": "#44aaaa"}
     p.style.set_color_palette(color_dict=color_map)
     p.show()
+
+
+@_print_source
+def plot_special_graphs():
+    """
+    Special graphs examples
+    """
+    from plotly_presentation import Plotter
+
+    """Print break"""
+    _waterfall_example_1()
+    
+@_print_source
+def _waterfall_example_1():
+    """
+    Waterfall example
+    """
+
+    p = Plotter(slide_layout="slide_100%")
+    p.add_trace(
+        go.Waterfall(
+            name = "20", orientation = "v",
+            measure = ["relative", "relative", "total", "relative", "relative", "total"],
+            x = ["Sales", "Consulting", "Net revenue", "Purchases", "Other expenses", "Profit before tax"],
+            textposition = "outside",
+            text = ["+60", "+80", "", "-40", "-20", "Total"],
+            y = [60, 80, 0, -40, -20, 0],
+        )
+    )
+    p.show()
