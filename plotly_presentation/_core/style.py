@@ -157,7 +157,10 @@ class Style:
                         )
 
     def _apply_waterfall_style(self):
-        self.figure.data[0]["increasing"] = {"marker":{"color":Color.POSITIVE.value}}
-        self.figure.data[0]["decreasing"] = {"marker":{"color":Color.NEGATIVE.value}}
-        self.figure.data[0]["totals"] = {"marker":{"color":Color.NEUTRAL.value}}
-        self.figure.data[0]["connector"] = {"mode":"between", "line":{"width":0.5, "color":"black", "dash":"solid"}}
+        self.figure.data[0]["increasing"] = {"marker": {"color": Color.POSITIVE.value}}
+        self.figure.data[0]["decreasing"] = {"marker": {"color": Color.NEGATIVE.value}}
+        self.figure.data[0]["totals"] = {"marker": {"color": Color.NEUTRAL.value}}
+        self.figure.data[0]["connector"] = {
+            "mode": "between",
+            "line": {"width": 0.5, "color": "black", "dash": "solid"},
+        }

@@ -463,7 +463,8 @@ def plot_special_graphs():
 
     """Print break"""
     _waterfall_example_1()
-    
+
+
 @_print_source
 def _waterfall_example_1():
     """
@@ -473,12 +474,20 @@ def _waterfall_example_1():
     p = Plotter(slide_layout="slide_100%")
     p.add_trace(
         go.Waterfall(
-            name = "20", orientation = "v",
-            measure = ["relative", "relative", "total", "relative", "relative", "total"],
-            x = ["Sales", "Consulting", "Net revenue", "Purchases", "Other expenses", "Profit before tax"],
-            textposition = "outside",
-            text = ["+60", "+80", "", "-40", "-20", "Total"],
-            y = [60, 80, 0, -40, -20, 0],
+            name="20",
+            orientation="v",
+            measure=["relative", "relative", "total", "relative", "relative", "total"],
+            x=[
+                "Sales",
+                "Consulting",
+                "Net revenue",
+                "Purchases",
+                "Other expenses",
+                "Profit before tax",
+            ],
+            textposition="outside",
+            text=["+60", "+80", "", "-40", "-20", "Total"],
+            y=[60, 80, 0, -40, -20, 0],
         )
     )
     p.show()

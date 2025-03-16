@@ -141,12 +141,27 @@ class StyleTest(unittest.TestCase):
     def test_waterfall_style(self):
         figure = go.Figure(
             go.Waterfall(
-                name = "20", orientation = "v",
-                measure = ["relative", "relative", "total", "relative", "relative", "total"],
-                x = ["Sales", "Consulting", "Net revenue", "Purchases", "Other expenses", "Profit before tax"],
-                textposition = "outside",
-                text = ["+60", "+80", "", "-40", "-20", "Total"],
-                y = [60, 80, 0, -40, -20, 0],
+                name="20",
+                orientation="v",
+                measure=[
+                    "relative",
+                    "relative",
+                    "total",
+                    "relative",
+                    "relative",
+                    "total",
+                ],
+                x=[
+                    "Sales",
+                    "Consulting",
+                    "Net revenue",
+                    "Purchases",
+                    "Other expenses",
+                    "Profit before tax",
+                ],
+                textposition="outside",
+                text=["+60", "+80", "", "-40", "-20", "Total"],
+                y=[60, 80, 0, -40, -20, 0],
             )
         )
         s = Style(figure, slide_layout="slide_100%")
