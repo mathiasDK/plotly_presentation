@@ -2,6 +2,9 @@ primary_colors:
   primary: "#D73809"
   secondary: "#60748D"
   tertiary: "#940C08"
+  positive: "#09d738"
+  negative: "#D73809"
+  neutral: "#CFD6D5"
 
 light_primary_colors:
   primary: "#f98f70"
