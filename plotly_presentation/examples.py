@@ -9,6 +9,7 @@ import plotly.express.data as data
 import plotly.graph_objs as go
 
 from plotly_presentation import Plotter
+from plotly_presentation._core.analysis import Analysis
 import plotly.io as pio
 
 pio.renderers.default = "png"
@@ -490,4 +491,99 @@ def _waterfall_example_1():
             y=[60, 80, 0, -40, -20, 0],
         )
     )
+    p.show()
+
+@_print_source
+def plot_analysis_graphs():
+    """
+    Analysis graphs examples
+    """
+    from plotly_presentation._core.analysis import Analysis
+
+    """Print break"""
+    _price_volume_mix_example_aggregated()
+    _price_volume_mix_example_by_product()
+    _price_volume_mix_example_aggregated_adjusted_y()
+
+
+@_print_source
+def _price_volume_mix_example_aggregated():
+    """
+    Price volume mix example
+    """
+    df = pd.DataFrame(
+        {
+            "product": ["A", "B", "C", "A", "B", "C"],
+            "price": [10, 15, 20, 11, 15, 23],
+            "volume": [1000, 800, 500, 1000, 700, 800],
+            "period": ["FY23", "FY23", "FY23", "FY24", "FY24", "FY24"],
+        }
+    )
+
+    p = Analysis(slide_layout="slide_wide")
+    p.price_volume_mix_analysis(
+        df,
+        value_col="price",
+        weight_col="volume",
+        period_col="period",
+        groupby_col="product",
+        aggregated_output=True,
+        show_text=True,
+        text_format=".0f",
+    )
+    p.show()
+
+@_print_source
+def _price_volume_mix_example_by_product():
+    """
+    Price volume mix example
+    """
+    df = pd.DataFrame(
+        {
+            "product": ["A", "B", "C", "A", "B", "C"],
+            "price": [10, 15, 20, 11, 15, 23],
+            "volume": [1000, 800, 500, 1000, 700, 800],
+            "period": ["FY23", "FY23", "FY23", "FY24", "FY24", "FY24"],
+        }
+    )
+
+    p = Analysis(slide_layout="slide_wide")
+    p.price_volume_mix_analysis(
+        df,
+        value_col="price",
+        weight_col="volume",
+        period_col="period",
+        groupby_col="product",
+        aggregated_output=False,
+        show_text=True,
+        text_format=".0f",
+    )
+    p.show()
+
+@_print_source
+def _price_volume_mix_example_aggregated_adjusted_y():
+    """
+    Price volume mix example
+    """
+    df = pd.DataFrame(
+        {
+            "product": ["A", "B", "C", "A", "B", "C"],
+            "price": [10, 15, 20, 11, 15, 23],
+            "volume": [1000, 800, 500, 1000, 700, 800],
+            "period": ["FY23", "FY23", "FY23", "FY24", "FY24", "FY24"],
+        }
+    )
+
+    p = Analysis(slide_layout="slide_wide")
+    p.price_volume_mix_analysis(
+        df,
+        value_col="price",
+        weight_col="volume",
+        period_col="period",
+        groupby_col="product",
+        aggregated_output=True,
+        show_text=True,
+        text_format=".0f",
+    )
+    p.adjust_yaxis(range=[25000, 41000])
     p.show()
