@@ -33,9 +33,7 @@ def price_volume_analysis(
 
     # Aggregate the results
     df = (
-        df.groupby([period_col])[
-            ["value_effect", "weight_effect", "total_value"]
-        ]
+        df.groupby([period_col])[["value_effect", "weight_effect", "total_value"]]
         .sum()
         .reset_index()
     )
@@ -61,9 +59,7 @@ def price_volume_analysis(
 
     # Sort the result by period, product, and variable
     result = (
-        result.sort_values(by=[period_col, "variable"])
-        .reset_index(drop=True)
-        .dropna()
+        result.sort_values(by=[period_col, "variable"]).reset_index(drop=True).dropna()
     )
 
     # Replace "total_value" with spaces and add more spaces for each occurrence

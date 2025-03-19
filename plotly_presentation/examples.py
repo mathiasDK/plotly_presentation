@@ -493,6 +493,7 @@ def _waterfall_example_1():
     )
     p.show()
 
+
 @_print_source
 def plot_analysis_graphs():
     """
@@ -533,6 +534,7 @@ def _price_volume_mix_example_aggregated():
     )
     p.show()
 
+
 @_print_source
 def _price_volume_mix_example_by_product():
     """
@@ -559,6 +561,7 @@ def _price_volume_mix_example_by_product():
         text_format=".0f",
     )
     p.show()
+
 
 @_print_source
 def _price_volume_mix_example_aggregated_adjusted_y():

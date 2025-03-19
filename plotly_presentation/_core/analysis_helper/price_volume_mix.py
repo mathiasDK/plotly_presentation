@@ -30,36 +30,69 @@ def price_volume_mix_analysis(
     df["lag_value"] = df.groupby([groupby_col])[value_col].shift(1)
     df["lag_weight"] = df.groupby([groupby_col])[weight_col].shift(1)
     df["lag_total_value"] = df.groupby([groupby_col])["total_value"].shift(1)
-    
+
     # Calculate price and volume for each period
     df["value_effect"] = (df[value_col] - df["lag_value"]) * df["lag_weight"]
     df["weight_effect"] = (df[weight_col] - df["lag_weight"]) * df["lag_value"]
-    df["mix_effect"] = (df["total_value"] - df["lag_total_value"]) - df["value_effect"] - df["weight_effect"]
-    
+    df["mix_effect"] = (
+        (df["total_value"] - df["lag_total_value"])
+        - df["value_effect"]
+        - df["weight_effect"]
+    )
+
     if aggregated_output:
         # Aggregate the results
         df[groupby_col] = "FIXED"
-        df = df.groupby([period_col, groupby_col])[['value_effect', 'weight_effect', 'mix_effect', 'total_value']].sum().reset_index()
-        df.loc[0, ['value_effect', 'weight_effect', 'mix_effect']] = pd.NA
+        df = (
+            df.groupby([period_col, groupby_col])[
+                ["value_effect", "weight_effect", "mix_effect", "total_value"]
+            ]
+            .sum()
+            .reset_index()
+        )
+        df.loc[0, ["value_effect", "weight_effect", "mix_effect"]] = pd.NA
 
     # Reshape the data
-    result = df.melt(id_vars=[period_col, groupby_col], value_vars=['value_effect', 'weight_effect', 'mix_effect', 'total_value'])
+    result = df.melt(
+        id_vars=[period_col, groupby_col],
+        value_vars=["value_effect", "weight_effect", "mix_effect", "total_value"],
+    )
 
     if not aggregated_output:
-        totals = result[result["variable"] == "total_value"].groupby([period_col, "variable"]).sum(numeric_only=True).reset_index()
-        totals[groupby_col] = [" " * (i+1) for i in range(len(totals))]
+        totals = (
+            result[result["variable"] == "total_value"]
+            .groupby([period_col, "variable"])
+            .sum(numeric_only=True)
+            .reset_index()
+        )
+        totals[groupby_col] = [" " * (i + 1) for i in range(len(totals))]
         df = result[result["variable"] != "total_value"]
         result = pd.concat([df, totals], ignore_index=True)
     # Create a sort order for the variables
     variable_order = pd.CategoricalDtype(
-        ["value_effect", "weight_effect", "mix_effect", "total_value", *[f"{' '*i}" for i in range(1, 10)]],
-        ordered=True
+        [
+            "value_effect",
+            "weight_effect",
+            "mix_effect",
+            "total_value",
+            *[f"{' '*i}" for i in range(1, 10)],
+        ],
+        ordered=True,
     )
     result["variable"] = result["variable"].astype(variable_order)
-    result[groupby_col] = pd.Categorical(result[groupby_col], categories=sorted(result[groupby_col].unique(), key=lambda x: (x.strip() == "", x)))
+    result[groupby_col] = pd.Categorical(
+        result[groupby_col],
+        categories=sorted(
+            result[groupby_col].unique(), key=lambda x: (x.strip() == "", x)
+        ),
+    )
 
     # Sort the result by period, product, and variable
-    result = result.sort_values(by=[period_col, groupby_col, "variable"]).reset_index(drop=True).dropna()
+    result = (
+        result.sort_values(by=[period_col, groupby_col, "variable"])
+        .reset_index(drop=True)
+        .dropna()
+    )
 
     # Replace "total_value" with spaces and add more spaces for each occurrence
     i = 0

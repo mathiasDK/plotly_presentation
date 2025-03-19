@@ -46,10 +46,26 @@ class UpdateDictTest(unittest.TestCase):
         )
         expected_x = [
             ["FY23", "FY24", "FY24", "FY24", "FY25", "FY25", "FY25"],
-            [" ", "value_effect", "weight_effect", "  ", "value_effect", "weight_effect", "   "],
+            [
+                " ",
+                "value_effect",
+                "weight_effect",
+                "  ",
+                "value_effect",
+                "weight_effect",
+                "   ",
+            ],
         ]
         expected_y = [1000.0, 110.0, 100.0, 1210.0, -100.0, -110.0, 1000.0]
-        expected_measure = ["absolute", "relative", "relative", "absolute", "relative", "relative", "absolute"]
+        expected_measure = [
+            "absolute",
+            "relative",
+            "relative",
+            "absolute",
+            "relative",
+            "relative",
+            "absolute",
+        ]
         self.assertListEqual(x, expected_x)
         self.assertListEqual(y, expected_y)
         self.assertListEqual(measure, expected_measure)
