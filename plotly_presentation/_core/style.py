@@ -12,6 +12,7 @@ from plotly_presentation._core.options import options
 import plotly.io as pio
 import plotly.graph_objects as go
 from plotly_presentation._core.utils.dict_funcs import update_dict
+import numpy as np
 
 
 layout = options.get_option("config.layout")
@@ -163,3 +164,35 @@ class Style:
             "mode": "between",
             "line": {"width": 0.5, "color": "black", "dash": "solid"},
         }
+    
+    def adjust_yaxis(self, range: list) -> go.Figure:
+        self.figure.update_yaxes(range=range)
+        # Create a secondary x-axis
+        self.figure.update_layout(
+            xaxis2=dict(overlaying="x", side="top", visible=False)
+        )
+        # Generate sinus curve data
+        x_sin = np.linspace(0, 100, 1000)
+        factor = (range[1] - range[0]) * 0.04
+        y_sin_1 = (
+            np.sin(x_sin) * factor + (range[1] - range[0]) * 0.08 + range[0]
+        )  # Adjust y value to the given range
+
+        # Add sinus curve trace
+        self.figure.add_trace(
+            go.Scatter(
+                x=x_sin,
+                y=y_sin_1,
+                xaxis="x2",
+                mode="lines",
+                line=dict(color=PlotColor.BG_COLOR.value, width=3),
+                name="sin_curve_1",
+                showlegend=False,
+            )
+        )
+        self.figure.update_layout(showlegend=False)
+        return self.figure
+    
+    def update_layout(self, **kwargs):
+        self.figure.update_layout(**kwargs)
+        return self.figure

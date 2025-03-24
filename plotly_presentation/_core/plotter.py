@@ -5,7 +5,7 @@ from plotly_presentation._core.callouts import Callout
 from plotly_presentation._core.style import Style
 
 
-class Plotter:
+class Plotter():
     def __init__(
         self, figure: go.Figure = None, slide_layout: str = "slide_100%"
     ) -> None:
@@ -33,8 +33,8 @@ class Plotter:
         self._apply_settings()
         return self.figure
 
-    def add_trace(self, func) -> go.Figure:
-        self.figure.add_trace(func)
+    def add_trace(self, func, **kwargs) -> go.Figure:
+        self.figure.add_trace(func, **kwargs)
         self._apply_settings()
         if type(func) == plotly.graph_objs.Waterfall:
             self.style._apply_waterfall_style()

@@ -121,6 +121,7 @@ def _bar_example_2(df):
             name="b",
         )
     )
+    p.style.update_layout(title="Bar plot")
     p.show()
 
 
@@ -499,7 +500,7 @@ def plot_analysis_graphs():
     """
     Analysis graphs examples
     """
-    from plotly_presentation._core.analysis import Analysis
+    from plotly_presentation import Analysis
 
     """Print break"""
     _price_volume_mix_example_aggregated()
@@ -588,5 +589,5 @@ def _price_volume_mix_example_aggregated_adjusted_y():
         show_text=True,
         text_format=".0f",
     )
-    p.adjust_yaxis(range=[25000, 41000])
+    p.style.adjust_yaxis(range=[25000, 41000])
     p.show()
