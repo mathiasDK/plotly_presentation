@@ -1,12 +1,12 @@
-from plotly_presentation._core.analysis_helper.price_volume_mix import (
+from plotly_presentation._core.analysis_helper.change.price_volume_mix import (
     price_volume_mix_analysis,
 )
-from plotly_presentation._core.analysis_helper.price_volume import price_volume_analysis
-from plotly_presentation._core.colors import PlotColor
+from plotly_presentation._core.analysis_helper.change.price_volume import (
+    price_volume_analysis,
+)
 from plotly_presentation._core.plotter import Plotter
 import plotly.graph_objects as go
 import pandas as pd
-import numpy as np
 
 
 class Analysis(Plotter):

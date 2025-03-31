@@ -505,7 +505,7 @@ def plot_analysis_graphs():
     """Print break"""
     _price_volume_mix_example_aggregated()
     _price_volume_mix_example_by_product()
-    _price_volume_mix_example_aggregated_adjusted_y()
+    _price_volume_example_aggregated_adjusted_y()
 
 
 @_print_source
@@ -565,29 +565,26 @@ def _price_volume_mix_example_by_product():
 
 
 @_print_source
-def _price_volume_mix_example_aggregated_adjusted_y():
+def _price_volume_example_aggregated_adjusted_y():
     """
-    Price volume mix example
+    Price volume example
     """
     df = pd.DataFrame(
         {
-            "product": ["A", "B", "C", "A", "B", "C"],
-            "price": [10, 15, 20, 11, 15, 23],
-            "volume": [1000, 800, 500, 1000, 700, 800],
-            "period": ["FY23", "FY23", "FY23", "FY24", "FY24", "FY24"],
+            "price": [10, 11, 10],
+            "volume": [1000, 1100, 1150],
+            "period": ["FY23", "FY24", "FY25"],
         }
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.price_volume_mix_analysis(
+    p.price_volume_analysis(
         df,
         value_col="price",
         weight_col="volume",
         period_col="period",
-        groupby_col="product",
-        aggregated_output=True,
         show_text=True,
-        text_format=".0f",
+        text_format=",.0f",
     )
-    p.style.adjust_yaxis(range=[25000, 41000])
+    p.style.adjust_yaxis(range=[5000, 15000])
     p.show()

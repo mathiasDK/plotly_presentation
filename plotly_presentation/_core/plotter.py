@@ -5,7 +5,7 @@ from plotly_presentation._core.callouts import Callout
 from plotly_presentation._core.style import Style
 
 
-class Plotter():
+class Plotter:
     def __init__(
         self, figure: go.Figure = None, slide_layout: str = "slide_100%"
     ) -> None:

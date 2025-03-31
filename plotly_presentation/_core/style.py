@@ -164,7 +164,7 @@ class Style:
             "mode": "between",
             "line": {"width": 0.5, "color": "black", "dash": "solid"},
         }
-    
+
     def adjust_yaxis(self, range: list) -> go.Figure:
         self.figure.update_yaxes(range=range)
         # Create a secondary x-axis
@@ -192,7 +192,7 @@ class Style:
         )
         self.figure.update_layout(showlegend=False)
         return self.figure
-    
+
     def update_layout(self, **kwargs):
         self.figure.update_layout(**kwargs)
         return self.figure
