@@ -1,58 +1,58 @@
 primary_colors:
   primary: "#D73809"
-  secondary: "#60748D"
-  tertiary: "#940C08"
-  positive: "#09d738"
-  negative: "#D73809"
+  secondary: "#007B9C"
+  tertiary: "#702963"
+  positive: "#005A32"
+  negative: "#E65C4F"
   neutral: "#CFD6D5"
 
 light_primary_colors:
-  primary: "#f98f70"
-  secondary: "#a3b0c0"
-  tertiary: "#f87f7c"
+  primary: "#F08A6B"
+  secondary: "#4CB9D4"
+  tertiary: "#B47CA9"
 
 color_list: 
   - "#D73809"
-  - "#60748D"
-  - "#940C08"
-  - "#CA5E1B"
-  - "#BD6A5F"
-  - "#3D180F"
-  - "#C2322D"
-  - "#5C3431"
-  - "#B79F9F"
-  - "#CFD6D5"
+  - "#007B9C"
+  - "#702963"
+  - "#F6B100"
+  - "#005A32"
+  - "#6E7F80"
+  - "#5C3C0D"
+  - "#A0D2DB"
+  - "#FFDE59"
+  - "#E65C4F"
 
 divergent_colors:
   start: "#D73809"
   mid: "#c2c2c2"
-  end: "#940C08"
+  end: "#702963"
 
 sequential_colors:
   start: "#D73809"
-  end: "#f98f70"
+  end: "#F08A6B"
 
 callout_colors:
-  line_color: "#222222"
-  text_color: "#000000"
+  line_color: "#2A2A2A"
+  text_color: "#2A2A2A"
   text_bg_color: "#ffffff"
   circle_line_color: "#D73809"
 
 plot_colors:
-  line_color: "#000000"
-  text_color: "#000000"
+  line_color: "#2A2A2A"
+  text_color: "#2A2A2A"
   bg_color: "#ffffff"
 
 custom_sequential:
   reds:
     - "#D73809"
-    - "#f98f70"
+    - "#F08A6B"
   ice:
     - "#60748D"
     - "#a3b0c0"
   hot_cold:
     - "#D73809"
-    - "#60748D"
+    - "#007B9C"
 
 custom_diverging:
   reds:
