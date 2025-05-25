@@ -3,6 +3,7 @@ import plotly
 import plotly.express as px
 from plotly_presentation._core.callouts import Callout
 from plotly_presentation._core.style import Style
+from plotly_presentation._core.comparison import Comparison
 
 
 class Plotter:
@@ -27,6 +28,7 @@ class Plotter:
     def _apply_settings(self) -> None:
         self.callout = Callout(self.figure)
         self.style = Style(self.figure, self.slide_layout)
+        self.comparison = Comparison(self.figure)
 
     def express(self, type: str, **kwargs) -> go.Figure:
         self.figure = getattr(px, type)(**kwargs)
