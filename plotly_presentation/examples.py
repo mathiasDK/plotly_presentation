@@ -505,6 +505,8 @@ def plot_analysis_graphs():
     _price_volume_mix_example_aggregated()
     _price_volume_mix_example_by_product()
     _price_volume_mix_example_aggregated_adjusted_y()
+    _comparison_vertical_bars()
+    _comparison_horisontal_bars()
 
 
 @_print_source
@@ -590,3 +592,65 @@ def _price_volume_mix_example_aggregated_adjusted_y():
     )
     p.adjust_yaxis(range=[25000, 41000])
     p.show()
+
+@_print_source
+def _comparison_vertical_bars():
+    """
+    Price volume mix example
+    """
+    df = pd.DataFrame({
+            'Country': [
+                *['Germany']*3, *['France']*3, *['Italy']*3, *['Spain']*3, *['Denmark']*3,
+            ],
+            'Response': [
+                *['Positive', 'Neutral', 'Negative']*5, 
+            ],
+            'Percentage': [
+                90, 5, 5,
+                80, 15, 5,
+                70, 20, 10,
+                60, 25, 15,
+                50, 30, 20,
+            ],
+            'pivot': [
+                *['other']*3*5
+            ]
+        })
+
+    p = Analysis(slide_layout="slide_wide")
+    p.comparison.vertical_stacked_bar_with_total(
+        df,
+        x="Country",
+        y="Percentage",
+        color="Response",
+        calculate_total=True,
+        total_formula="mean",
+    ).show()
+
+
+@_print_source
+def _comparison_horisontal_bars():
+    """
+    Price volume mix example
+    """
+    df = pd.DataFrame({
+            'Country': [
+                'Germany', 'France', 'Italy', 'Spain', 'Denmark',
+            ],
+            'Percentage': [
+                90, 80, 70, 60, 50, 
+            ],
+            'pivot': [
+                *['other']*5
+            ]
+        })
+
+    p = Analysis(slide_layout="slide_wide")
+    p.comparison.horisontal_stacked_bar_with_total(
+        df,
+        x="Percentage",
+        y="Country",
+        calculate_total=True,
+        total_formula="mean",
+        total_as_first=True,
+    ).show()

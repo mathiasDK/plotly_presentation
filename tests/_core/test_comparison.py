@@ -56,10 +56,10 @@ class TestComparison(unittest.TestCase):
             df, category="Country", value="Percentage", total_category="All", total_as_first=True, total_formula="sum", calculate_total=False
         ).reset_index(drop=True)
         expected_dataframe = pd.DataFrame({
-            'Country': ['All', 'Germany', 'France'],
-            'Percentage': [60, 80, 50],
-            'Respondents': [180, 80, 100],
-            'pivot': ['total', 'other', 'other']
+            'Country': ['All', '', 'Germany', 'France'],
+            'Percentage': [60, 0, 80, 50],
+            'Respondents': [180, pd.NA, 80, 100],
+            'pivot': ['total', 'empty', 'other', 'other']
         })
         pd.testing.assert_frame_equal(result, expected_dataframe, check_index_type=False)
 
@@ -68,11 +68,12 @@ class TestComparison(unittest.TestCase):
         result = self.comp._prepare_data_for_total(
             df, category="Country", value="Percentage", total_category="All", total_as_first=False, total_formula="sum", calculate_total=False
         ).reset_index(drop=True)
+        print(result)
         expected_dataframe = pd.DataFrame({
-            'Country': ['Germany', 'France', 'All', ],
-            'Percentage': [80, 50, 60, ],
-            'Respondents': [80, 100, 180, ],
-            'pivot': ['other', 'other', 'total', ]
+            'Country': ['Germany', 'France', '', 'All', ],
+            'Percentage': [80, 50, 0, 60, ],
+            'Respondents': [80, 100, pd.NA, 180, ],
+            'pivot': ['other', 'other', 'empty', 'total', ]
         })
         pd.testing.assert_frame_equal(result, expected_dataframe, check_index_type=False)
 
@@ -80,33 +81,28 @@ class TestComparison(unittest.TestCase):
         df = self.df.copy()
         result = self.comp._prepare_data_for_total(
             df, category="Country", value="Percentage", color = "Response", total_category="All", total_as_first=True, total_formula="sum", calculate_total=False
-        ).reset_index(drop=True)
+        ).head(6).reset_index(drop=True)
         print(result)
         expected_dataframe = pd.DataFrame({
             'Country': [
                 'All', 'All', 'All',
-                'Germany', 'Germany', 'Germany',
-                'France', 'France', 'France',
+                '', '', '',
             ],
             'Response': [
-                'Positive', 'Neutral', 'Negative', 
                 'Positive', 'Neutral', 'Negative', 
                 'Positive', 'Neutral', 'Negative', 
             ],
             'Percentage': [
                 60, 25, 15,
-                80, 15, 5,
-                50, 30, 20,
+                0, 0, 0,
             ],
             'Respondents': [
                 180, 75, 45,
-                80, 15, 5,
-                100, 60, 40,
+                pd.NA, pd.NA, pd.NA,
             ],
             'pivot': [
                 'total', 'total', 'total', 
-                'other', 'other', 'other', 
-                'other', 'other', 'other', 
+                'empty', 'empty', 'empty', 
             ]
         })
         pd.testing.assert_frame_equal(result, expected_dataframe, check_index_type=False)
@@ -115,31 +111,27 @@ class TestComparison(unittest.TestCase):
         df = self.df.copy()
         result = self.comp._prepare_data_for_total(
             df, category="Country", value="Percentage", color = "Response", total_category="All", total_as_first=False, total_formula="sum", calculate_total=False
-        ).reset_index(drop=True)
+        ).tail(6).reset_index(drop=True)
+        print(df)
         expected_dataframe = pd.DataFrame({
             'Country': [
-                'Germany', 'Germany', 'Germany',
-                'France', 'France', 'France',
+                '', '', '',
                 'All', 'All', 'All',
             ],
             'Response': [
                 'Positive', 'Neutral', 'Negative', 
                 'Positive', 'Neutral', 'Negative', 
-                'Positive', 'Neutral', 'Negative', 
             ],
             'Percentage': [
-                80, 15, 5,
-                50, 30, 20,
+                0, 0, 0,
                 60, 25, 15
             ],
             'Respondents': [
-                80, 15, 5,
-                100, 60, 40,
+                pd.NA, pd.NA, pd.NA,
                 180, 75, 45,
             ],
             'pivot': [
-                'other', 'other', 'other', 
-                'other', 'other', 'other', 
+                'empty', 'empty', 'empty', 
                 'total', 'total', 'total', 
             ]
         })

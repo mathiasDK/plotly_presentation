@@ -14,7 +14,6 @@ class Analysis(Plotter):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.comparison = Comparison()
-        self.price_volume = PriceVolume()
 
     def price_volume_mix_analysis(
         self,
