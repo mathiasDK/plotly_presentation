@@ -1,5 +1,13 @@
 import pandas as pd
 
+class PriceVolume:
+    def __init__(self):
+        """
+        Initialize the PriceVolumeAnalysis class.
+        This class provides methods to perform price-volume-mix analysis on a DataFrame.
+        """
+        pass
+
 
 def price_volume_analysis(
     df: pd.DataFrame,
