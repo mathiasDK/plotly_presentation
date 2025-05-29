@@ -1,9 +1,10 @@
 from plotly_presentation._core.analysis_helper.price_volume_mix import (
     price_volume_mix_analysis,
 )
-from plotly_presentation._core.analysis_helper.price_volume import price_volume_analysis
+from plotly_presentation._core.analysis_helper.price_volume import price_volume_analysis, PriceVolume
 from plotly_presentation._core.colors import PlotColor
 from plotly_presentation._core.plotter import Plotter
+from plotly_presentation._core.analysis_helper.comparison import Comparison
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
@@ -12,6 +13,8 @@ import numpy as np
 class Analysis(Plotter):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
+        self.comparison = Comparison()
+        self.price_volume = PriceVolume()
 
     def price_volume_mix_analysis(
         self,

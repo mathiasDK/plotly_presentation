@@ -3,8 +3,8 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 class Comparison:
-    def __init__(self, figure: go.Figure):
-        self.figure = figure
+    def __init__(self):
+        self.figure = None
 
     def _get_original_sorting(self, df:pd.DataFrame, columns:list|str) -> dict:
         d = {}
@@ -104,16 +104,17 @@ class Comparison:
         )
         self.figure.for_each_trace(lambda t: t.update(text="")) # Removing titles
 
-    def _calculate_total(self, df: pd.DataFrame, total_formula:str, x:str, y:str, color:str):
+    def _calculate_total(self, df: pd.DataFrame, total_formula:str, x:str, y:str, color:str, weight_column:str=None, total_name:str="Total") -> pd.DataFrame:
         VALID_TOTAL_FORMULAS = ["sum", "mean"]
         if total_formula.lower() not in VALID_TOTAL_FORMULAS:
             raise AttributeError(f"Please provide a valid way to calculate the total - valid formulas are {VALID_TOTAL_FORMULAS}")
         
-        grouping = [x]
         if color is not None:
-            grouping.append(color)
-        
-        total_row = df.groupby(grouping).agg({y: total_formula}).reset_index()
+            total_row = df.groupby(color).agg({y: total_formula}).reset_index()
+        else:
+            total_row = df.agg({y: total_formula}).reset_index().rename(columns={0: y})
+        total_row[x] = total_name
+
         for col in df.columns:
             if col not in total_row.columns:
                 total_row[col] = pd.NA
