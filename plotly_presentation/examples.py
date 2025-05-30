@@ -524,7 +524,7 @@ def _price_volume_mix_example_aggregated():
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.price_volume_mix_analysis(
+    p.price_volume.price_volume_mix_analysis(
         df,
         value_col="price",
         weight_col="volume",
@@ -552,7 +552,7 @@ def _price_volume_mix_example_by_product():
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.price_volume_mix_analysis(
+    p.price_volume.price_volume_mix_analysis(
         df,
         value_col="price",
         weight_col="volume",
@@ -580,7 +580,7 @@ def _price_volume_mix_example_aggregated_adjusted_y():
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.price_volume_mix_analysis(
+    p.price_volume.price_volume_mix_analysis(
         df,
         value_col="price",
         weight_col="volume",
@@ -625,7 +625,8 @@ def _comparison_vertical_bars():
         color="Response",
         calculate_total=True,
         total_formula="mean",
-    ).show()
+    )
+    p.show()
 
 
 @_print_source
