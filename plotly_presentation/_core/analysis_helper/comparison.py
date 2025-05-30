@@ -2,6 +2,23 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
+class ComparisonWrapper:
+    def __init__(self, comparison, parent):
+        self._comparison = comparison
+        self._parent = parent
+
+    def __getattr__(self, name):
+        attr = getattr(self._comparison, name)
+        if callable(attr):
+            def wrapper(*args, **kwargs):
+                result = attr(*args, **kwargs)
+                # Assign to self.figure if result is a Plotly Figure
+                if isinstance(result, go.Figure):
+                    self._parent.figure = result
+                return result
+            return wrapper
+        return attr
+
 class Comparison:
     def __init__(self):
         self.figure = None
