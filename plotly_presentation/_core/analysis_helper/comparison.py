@@ -88,8 +88,11 @@ class Comparison:
             sort_cols += [category]
 
         # Map for 'pivot' sorting
-        pivot_order = {"total": 0 if total_as_first else 1, "other": 1 if total_as_first else 0, "empty": 0.5}
-        df = df.copy()
+        pivot_order = {
+            "total": 0 if total_as_first else 1, 
+            "other": 1 if total_as_first else 0, 
+            "empty": 0.5
+        }
         df["pivot_sort"] = df["pivot"].map(pivot_order)
 
         # Use original_sorting for category and color
@@ -101,7 +104,9 @@ class Comparison:
             sort_by = ["pivot_sort", "cat_sort"]
 
 
-        df = df.sort_values(by=sort_by, ascending=[order_ascending]*len(sort_by)).drop(columns=["pivot_sort", "cat_sort"] + (["color_sort"] if color else []))
+        df = df\
+            .sort_values(by=sort_by, ascending=[order_ascending]*len(sort_by))\
+            .drop(columns=["pivot_sort", "cat_sort"] + (["color_sort"] if color else []))
 
         return df
 
@@ -155,14 +160,26 @@ class Comparison:
         return self.figure
 
     def _calculate_total(self, df: pd.DataFrame, total_formula:str, x:str, y:str, color:str, weight_column:str=None, total_name:str="Total") -> pd.DataFrame:
-        VALID_TOTAL_FORMULAS = ["sum", "mean"]
+        VALID_TOTAL_FORMULAS = ["sum", "mean", "count", "median", "min", "max", "std", "var", "weigted_mean"]
         if total_formula.lower() not in VALID_TOTAL_FORMULAS:
             raise AttributeError(f"Please provide a valid way to calculate the total - valid formulas are {VALID_TOTAL_FORMULAS}")
         
         if color is not None:
-            total_row = df.groupby(color).agg({y: total_formula}).reset_index()
+            if total_formula.lower() != "weighted_mean":
+                total_row = df.groupby(color).agg({y: total_formula}).reset_index()
+            else:
+                if weight_column is None:
+                    raise ValueError("Please provide a weight column for weighted mean calculation")
+                total_row = df.groupby(color).apply(lambda g: (g[y] * g[weight_column]).sum() / g[weight_column].sum()).reset_index()
+                total_row = total_row.rename(columns={0: y})
         else:
-            total_row = df.agg({y: total_formula}).reset_index().rename(columns={0: y})
+            if total_formula.lower() != "weighted_mean":
+                total_row = df.agg({y: total_formula}).reset_index()
+            else:
+                if weight_column is None:
+                    raise ValueError("Please provide a weight column for weighted mean calculation")
+                total_row = df.apply(lambda g: (g[y] * g[weight_column]).sum() / g[weight_column].sum()).reset_index()
+            total_row = total_row.rename(columns={0: y})
         total_row[x] = total_name
 
         for col in df.columns:
