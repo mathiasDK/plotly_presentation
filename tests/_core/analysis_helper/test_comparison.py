@@ -42,15 +42,15 @@ class TestComparison(unittest.TestCase):
                     20,
                 ],
                 "Respondents": [
-                    180,
-                    80,
+                    300,
                     100,
-                    75,
-                    15,
-                    60,
-                    45,
-                    5,
-                    40,
+                    200,
+                    300,
+                    100,
+                    200,
+                    300,
+                    100,
+                    200,
                 ],
             }
         )
@@ -67,9 +67,9 @@ class TestComparison(unittest.TestCase):
                     50,
                 ],
                 "Respondents": [
-                    180,
-                    80,
+                    300,
                     100,
+                    200,
                 ],
             }
         )
@@ -102,7 +102,7 @@ class TestComparison(unittest.TestCase):
             {
                 "Country": ["All", "", "Germany", "France"],
                 "Percentage": [60, 0, 80, 50],
-                "Respondents": [180, pd.NA, 80, 100],
+                "Respondents": [300, pd.NA, 100, 200],
                 "pivot": ["total", "empty", "other", "other"],
             }
         )
@@ -137,10 +137,10 @@ class TestComparison(unittest.TestCase):
                     60,
                 ],
                 "Respondents": [
-                    80,
                     100,
+                    200,
                     pd.NA,
-                    180,
+                    300,
                 ],
                 "pivot": [
                     "other",
@@ -198,9 +198,9 @@ class TestComparison(unittest.TestCase):
                     0,
                 ],
                 "Respondents": [
-                    180,
-                    75,
-                    45,
+                    300,
+                    300,
+                    300,
                     pd.NA,
                     pd.NA,
                     pd.NA,
@@ -259,9 +259,9 @@ class TestComparison(unittest.TestCase):
                     pd.NA,
                     pd.NA,
                     pd.NA,
-                    180,
-                    75,
-                    45,
+                    300,
+                    300,
+                    300,
                 ],
                 "pivot": [
                     "empty",
@@ -375,14 +375,16 @@ class TestComparison(unittest.TestCase):
             "Percentage",
             "Response",
             weight_column="Respondents",
-        )
+        ).sort_values(by=["Country", "Response"]).reset_index(drop=True)
+        print(total)
         expected_dataframe = pd.DataFrame(
             {
                 "Country": ["Total", "Total", "Total"],
                 "Response": ["Positive", "Neutral", "Negative"],
-                "Percentage": [60, 25, 20],  # Weighted percentages for each response
+                "Percentage": [60., 25., 15.],  # Weighted percentages for each response
+                "Respondents": [pd.NA, pd.NA, pd.NA],  # Total respondents for each response
             }
-        )
+        ).sort_values(by=["Country", "Response"]).reset_index(drop=True)
         pd.testing.assert_frame_equal(total, expected_dataframe, check_index_type=False)
 
     def test_calculate_total_invalid_formula(self):

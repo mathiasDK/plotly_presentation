@@ -25,6 +25,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
           pip install nbval jupyter
+          pip install --upgrade kaleido
+          pip install nbformat
 
       - name: Run examples.ipynb with nbval
         run: |

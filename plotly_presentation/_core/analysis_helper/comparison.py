@@ -284,7 +284,7 @@ class Comparison:
             "max",
             "std",
             "var",
-            "weigted_mean",
+            "weighted_mean",
         ]
         if total_formula.lower() not in VALID_TOTAL_FORMULAS:
             raise AttributeError(
