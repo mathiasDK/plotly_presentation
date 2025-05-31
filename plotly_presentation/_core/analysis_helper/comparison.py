@@ -20,10 +20,30 @@ class ComparisonWrapper:
         return attr
 
 class Comparison:
+    """
+    Provides methods for preparing data and generating comparison charts with totals.
+
+    Methods:
+        _get_original_sorting(df, columns): Returns a dict mapping unique values to their original order.
+        _prepare_data_for_total(...): Adds a total row/category to the DataFrame for plotting.
+        _calculate_total(...): Calculates total values using various formulas.
+        vertical_stacked_bar_with_total(...): Creates a vertical stacked bar chart with totals.
+        horisontal_stacked_bar_with_total(...): Creates a horizontal stacked bar chart with totals.
+    """
     def __init__(self):
         self.figure = None
 
     def _get_original_sorting(self, df:pd.DataFrame, columns:list|str) -> dict:
+        """
+        Returns a dictionary mapping each unique value in the specified columns to its original order.
+
+        Args:
+            df (pd.DataFrame): The DataFrame to analyze.
+            columns (list or str): Column(s) to get unique value order for.
+
+        Returns:
+            dict: Mapping of column names to value-order dictionaries.
+        """
         d = {}
         if isinstance(columns, str):
             columns = [columns]
@@ -43,6 +63,23 @@ class Comparison:
             total_as_first:bool=True,
             order_ascending:bool=True
         ) -> pd.DataFrame:
+        """
+        Prepares the DataFrame by adding a total row/category for plotting.
+
+        Args:
+            df (pd.DataFrame): Input data.
+            category (str): Category column.
+            value (str): Value column.
+            color (str, optional): Color/grouping column.
+            total_category (str, optional): Name of the total category.
+            calculate_total (bool, optional): Whether to calculate the total row.
+            total_formula (str, optional): Formula for calculating the total.
+            total_as_first (bool, optional): Place total first or last.
+            order_ascending (bool, optional): Sort order.
+
+        Returns:
+            pd.DataFrame: Modified DataFrame with total and empty rows.
+        """
 
         if total_category is None and calculate_total is False:
             raise ValueError("Please provide the total category or tell the function how to calculate it")
@@ -111,6 +148,22 @@ class Comparison:
         return df
 
     def vertical_stacked_bar_with_total(self, df:pd.DataFrame, x:str, y:str, color:str=None, total_placement:int=None, calculate_total:bool=False, total_formula:str=None, total_as_first:bool=True, **kwargs) -> go.Figure:
+        """
+        Creates a vertical stacked bar chart with a total row/category.
+
+        Args:
+            df (pd.DataFrame): Input data.
+            x (str): X-axis category.
+            y (str): Y-axis value.
+            color (str, optional): Color/grouping column.
+            total_placement (int, optional): Name of the total category.
+            calculate_total (bool, optional): Whether to calculate the total row.
+            total_formula (str, optional): Formula for calculating the total.
+            total_as_first (bool, optional): Place total first or last.
+
+        Returns:
+            go.Figure: Plotly bar chart figure.
+        """
 
         df = self._prepare_data_for_total(
             df, 
@@ -135,6 +188,22 @@ class Comparison:
         return self.figure
 
     def horisontal_stacked_bar_with_total(self, df:pd.DataFrame, x:str, y:str, color:str=None, total_placement:int=None, calculate_total:bool=False, total_formula:str=None, total_as_first:bool=True, **kwargs) -> go.Figure:
+        """
+        Creates a horizontal stacked bar chart with a total row/category.
+
+        Args:
+            df (pd.DataFrame): Input data.
+            x (str): X-axis value.
+            y (str): Y-axis category.
+            color (str, optional): Color/grouping column.
+            total_placement (int, optional): Name of the total category.
+            calculate_total (bool, optional): Whether to calculate the total row.
+            total_formula (str, optional): Formula for calculating the total.
+            total_as_first (bool, optional): Place total first or last.
+
+        Returns:
+            go.Figure: Plotly bar chart figure.
+        """
 
         df = self._prepare_data_for_total(
             df, 
@@ -160,6 +229,21 @@ class Comparison:
         return self.figure
 
     def _calculate_total(self, df: pd.DataFrame, total_formula:str, x:str, y:str, color:str, weight_column:str=None, total_name:str="Total") -> pd.DataFrame:
+        """
+        Calculates total values for the DataFrame using the specified formula.
+
+        Args:
+            df (pd.DataFrame): Input data.
+            total_formula (str): Formula for calculation ('sum', 'mean', etc.).
+            x (str): Category column.
+            y (str): Value column.
+            color (str): Color/grouping column.
+            weight_column (str, optional): Column for weighted mean.
+            total_name (str, optional): Name for the total row/category.
+
+        Returns:
+            pd.DataFrame: DataFrame with total values.
+        """
         VALID_TOTAL_FORMULAS = ["sum", "mean", "count", "median", "min", "max", "std", "var", "weigted_mean"]
         if total_formula.lower() not in VALID_TOTAL_FORMULAS:
             raise AttributeError(f"Please provide a valid way to calculate the total - valid formulas are {VALID_TOTAL_FORMULAS}")
