@@ -368,23 +368,39 @@ class TestComparison(unittest.TestCase):
 
     def test_calculate_total_with_color_weighted(self):
         df = self.df[self.df["Country"] != "All"].copy()
-        total = self.comp._calculate_total(
-            df,
-            "weighted_mean",
-            "Country",
-            "Percentage",
-            "Response",
-            weight_column="Respondents",
-        ).sort_values(by=["Country", "Response"]).reset_index(drop=True)
+        total = (
+            self.comp._calculate_total(
+                df,
+                "weighted_mean",
+                "Country",
+                "Percentage",
+                "Response",
+                weight_column="Respondents",
+            )
+            .sort_values(by=["Country", "Response"])
+            .reset_index(drop=True)
+        )
         print(total)
-        expected_dataframe = pd.DataFrame(
-            {
-                "Country": ["Total", "Total", "Total"],
-                "Response": ["Positive", "Neutral", "Negative"],
-                "Percentage": [60., 25., 15.],  # Weighted percentages for each response
-                "Respondents": [pd.NA, pd.NA, pd.NA],  # Total respondents for each response
-            }
-        ).sort_values(by=["Country", "Response"]).reset_index(drop=True)
+        expected_dataframe = (
+            pd.DataFrame(
+                {
+                    "Country": ["Total", "Total", "Total"],
+                    "Response": ["Positive", "Neutral", "Negative"],
+                    "Percentage": [
+                        60.0,
+                        25.0,
+                        15.0,
+                    ],  # Weighted percentages for each response
+                    "Respondents": [
+                        pd.NA,
+                        pd.NA,
+                        pd.NA,
+                    ],  # Total respondents for each response
+                }
+            )
+            .sort_values(by=["Country", "Response"])
+            .reset_index(drop=True)
+        )
         pd.testing.assert_frame_equal(total, expected_dataframe, check_index_type=False)
 
     def test_calculate_total_invalid_formula(self):
