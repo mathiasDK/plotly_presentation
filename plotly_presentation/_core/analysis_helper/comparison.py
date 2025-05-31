@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
+
 class ComparisonWrapper:
     def __init__(self, comparison, parent):
         self._comparison = comparison
@@ -10,14 +11,17 @@ class ComparisonWrapper:
     def __getattr__(self, name):
         attr = getattr(self._comparison, name)
         if callable(attr):
+
             def wrapper(*args, **kwargs):
                 result = attr(*args, **kwargs)
                 # Assign to self.figure if result is a Plotly Figure
                 if isinstance(result, go.Figure):
                     self._parent.figure = result
                 return result
+
             return wrapper
         return attr
+
 
 class Comparison:
     """
@@ -30,10 +34,11 @@ class Comparison:
         vertical_stacked_bar_with_total(...): Creates a vertical stacked bar chart with totals.
         horisontal_stacked_bar_with_total(...): Creates a horizontal stacked bar chart with totals.
     """
+
     def __init__(self):
         self.figure = None
 
-    def _get_original_sorting(self, df:pd.DataFrame, columns:list|str) -> dict:
+    def _get_original_sorting(self, df: pd.DataFrame, columns: list | str) -> dict:
         """
         Returns a dictionary mapping each unique value in the specified columns to its original order.
 
@@ -50,19 +55,19 @@ class Comparison:
         for col in columns:
             d[col] = {val: i for i, val in enumerate(df[col].unique())}
         return d
-    
+
     def _prepare_data_for_total(
-            self, 
-            df:pd.DataFrame, 
-            category:str, 
-            value:str, 
-            color:str=None, 
-            total_category:str=None, 
-            calculate_total:bool=False, 
-            total_formula:str=None, 
-            total_as_first:bool=True,
-            order_ascending:bool=True
-        ) -> pd.DataFrame:
+        self,
+        df: pd.DataFrame,
+        category: str,
+        value: str,
+        color: str = None,
+        total_category: str = None,
+        calculate_total: bool = False,
+        total_formula: str = None,
+        total_as_first: bool = True,
+        order_ascending: bool = True,
+    ) -> pd.DataFrame:
         """
         Prepares the DataFrame by adding a total row/category for plotting.
 
@@ -82,11 +87,17 @@ class Comparison:
         """
 
         if total_category is None and calculate_total is False:
-            raise ValueError("Please provide the total category or tell the function how to calculate it")
+            raise ValueError(
+                "Please provide the total category or tell the function how to calculate it"
+            )
         if total_category is not None and calculate_total is True:
-            raise ValueError("Please provide either the total category or tell the function how to calculate it, not both")
-        
-        original_sorting = self._get_original_sorting(df, [category, color] if color else category)
+            raise ValueError(
+                "Please provide either the total category or tell the function how to calculate it, not both"
+            )
+
+        original_sorting = self._get_original_sorting(
+            df, [category, color] if color else category
+        )
 
         if calculate_total is True:
             totals = self._calculate_total(df, total_formula, category, value, color)
@@ -95,10 +106,12 @@ class Comparison:
             df = pd.concat([df, totals])
         else:
             if total_category not in df[category].unique():
-                raise ValueError(f"The category {total_category} is not present in the data")
+                raise ValueError(
+                    f"The category {total_category} is not present in the data"
+                )
             df["pivot"] = "other"
             df.loc[df[category] == total_category, "pivot"] = "total"
-        
+
         # Adding an empty row to ensure spacing between total and other categories
         if color:
             empty_dfs = []
@@ -126,9 +139,9 @@ class Comparison:
 
         # Map for 'pivot' sorting
         pivot_order = {
-            "total": 0 if total_as_first else 1, 
-            "other": 1 if total_as_first else 0, 
-            "empty": 0.5
+            "total": 0 if total_as_first else 1,
+            "other": 1 if total_as_first else 0,
+            "empty": 0.5,
         }
         df["pivot_sort"] = df["pivot"].map(pivot_order)
 
@@ -140,14 +153,24 @@ class Comparison:
         else:
             sort_by = ["pivot_sort", "cat_sort"]
 
-
-        df = df\
-            .sort_values(by=sort_by, ascending=[order_ascending]*len(sort_by))\
-            .drop(columns=["pivot_sort", "cat_sort"] + (["color_sort"] if color else []))
+        df = df.sort_values(
+            by=sort_by, ascending=[order_ascending] * len(sort_by)
+        ).drop(columns=["pivot_sort", "cat_sort"] + (["color_sort"] if color else []))
 
         return df
 
-    def vertical_stacked_bar_with_total(self, df:pd.DataFrame, x:str, y:str, color:str=None, total_placement:int=None, calculate_total:bool=False, total_formula:str=None, total_as_first:bool=True, **kwargs) -> go.Figure:
+    def vertical_stacked_bar_with_total(
+        self,
+        df: pd.DataFrame,
+        x: str,
+        y: str,
+        color: str = None,
+        total_placement: int = None,
+        calculate_total: bool = False,
+        total_formula: str = None,
+        total_as_first: bool = True,
+        **kwargs,
+    ) -> go.Figure:
         """
         Creates a vertical stacked bar chart with a total row/category.
 
@@ -166,28 +189,33 @@ class Comparison:
         """
 
         df = self._prepare_data_for_total(
-            df, 
-            category=x, 
-            value=y, 
-            color=color, 
-            total_category=total_placement, 
-            calculate_total=calculate_total, 
-            total_formula=total_formula, 
+            df,
+            category=x,
+            value=y,
+            color=color,
+            total_category=total_placement,
+            calculate_total=calculate_total,
+            total_formula=total_formula,
             total_as_first=total_as_first,
-            order_ascending=True
+            order_ascending=True,
         )
 
-        self.figure = px.bar(
-            df,
-            x = x,
-            y = y,
-            color = color,
-            **kwargs
-        )
+        self.figure = px.bar(df, x=x, y=y, color=color, **kwargs)
         # self.figure.for_each_annotation(lambda a: a.update(text="")) # Removing titles
         return self.figure
 
-    def horisontal_stacked_bar_with_total(self, df:pd.DataFrame, x:str, y:str, color:str=None, total_placement:int=None, calculate_total:bool=False, total_formula:str=None, total_as_first:bool=True, **kwargs) -> go.Figure:
+    def horisontal_stacked_bar_with_total(
+        self,
+        df: pd.DataFrame,
+        x: str,
+        y: str,
+        color: str = None,
+        total_placement: int = None,
+        calculate_total: bool = False,
+        total_formula: str = None,
+        total_as_first: bool = True,
+        **kwargs,
+    ) -> go.Figure:
         """
         Creates a horizontal stacked bar chart with a total row/category.
 
@@ -206,29 +234,32 @@ class Comparison:
         """
 
         df = self._prepare_data_for_total(
-            df, 
-            category=y, 
-            value=x, 
-            color=color, 
-            total_category=total_placement, 
-            calculate_total=calculate_total, 
-            total_formula=total_formula, 
-            total_as_first=total_as_first, # Inverting total_as_first for horizontal bar chart to make it top if it is True
-            order_ascending=False  # For horizontal bar chart, we want the total to be at the top
+            df,
+            category=y,
+            value=x,
+            color=color,
+            total_category=total_placement,
+            calculate_total=calculate_total,
+            total_formula=total_formula,
+            total_as_first=total_as_first,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
+            order_ascending=False,  # For horizontal bar chart, we want the total to be at the top
         )
 
-        self.figure = px.bar(
-            df,
-            x = x,
-            y = y,
-            color = color,
-            **kwargs
-        )
+        self.figure = px.bar(df, x=x, y=y, color=color, **kwargs)
         # self.figure.for_each_trace(lambda t: t.update(text="")) # Removing titles
 
         return self.figure
 
-    def _calculate_total(self, df: pd.DataFrame, total_formula:str, x:str, y:str, color:str, weight_column:str=None, total_name:str="Total") -> pd.DataFrame:
+    def _calculate_total(
+        self,
+        df: pd.DataFrame,
+        total_formula: str,
+        x: str,
+        y: str,
+        color: str,
+        weight_column: str = None,
+        total_name: str = "Total",
+    ) -> pd.DataFrame:
         """
         Calculates total values for the DataFrame using the specified formula.
 
@@ -244,30 +275,55 @@ class Comparison:
         Returns:
             pd.DataFrame: DataFrame with total values.
         """
-        VALID_TOTAL_FORMULAS = ["sum", "mean", "count", "median", "min", "max", "std", "var", "weigted_mean"]
+        VALID_TOTAL_FORMULAS = [
+            "sum",
+            "mean",
+            "count",
+            "median",
+            "min",
+            "max",
+            "std",
+            "var",
+            "weigted_mean",
+        ]
         if total_formula.lower() not in VALID_TOTAL_FORMULAS:
-            raise AttributeError(f"Please provide a valid way to calculate the total - valid formulas are {VALID_TOTAL_FORMULAS}")
-        
+            raise AttributeError(
+                f"Please provide a valid way to calculate the total - valid formulas are {VALID_TOTAL_FORMULAS}"
+            )
+
         if color is not None:
             if total_formula.lower() != "weighted_mean":
                 total_row = df.groupby(color).agg({y: total_formula}).reset_index()
             else:
                 if weight_column is None:
-                    raise ValueError("Please provide a weight column for weighted mean calculation")
-                total_row = df.groupby(color).apply(lambda g: (g[y] * g[weight_column]).sum() / g[weight_column].sum()).reset_index()
+                    raise ValueError(
+                        "Please provide a weight column for weighted mean calculation"
+                    )
+                total_row = (
+                    df.groupby(color)
+                    .apply(
+                        lambda g: (g[y] * g[weight_column]).sum()
+                        / g[weight_column].sum()
+                    )
+                    .reset_index()
+                )
                 total_row = total_row.rename(columns={0: y})
         else:
             if total_formula.lower() != "weighted_mean":
                 total_row = df.agg({y: total_formula}).reset_index()
             else:
                 if weight_column is None:
-                    raise ValueError("Please provide a weight column for weighted mean calculation")
-                total_row = df.apply(lambda g: (g[y] * g[weight_column]).sum() / g[weight_column].sum()).reset_index()
+                    raise ValueError(
+                        "Please provide a weight column for weighted mean calculation"
+                    )
+                total_row = df.apply(
+                    lambda g: (g[y] * g[weight_column]).sum() / g[weight_column].sum()
+                ).reset_index()
             total_row = total_row.rename(columns={0: y})
         total_row[x] = total_name
 
         for col in df.columns:
             if col not in total_row.columns:
                 total_row[col] = pd.NA
-        total_row = total_row[df.columns] # reordering
+        total_row = total_row[df.columns]  # reordering
         return total_row

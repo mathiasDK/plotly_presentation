@@ -7,7 +7,6 @@ class PriceVolumeTest(unittest.TestCase):
     def setUp(self):
         self.price_volume = PriceVolume()
 
-
     def test_single_period_comparison(self):
         # Example from here https://www.investmentguide.co.uk/price-volume-price-volume-mix-revenue-bridges/
         df = pd.DataFrame(

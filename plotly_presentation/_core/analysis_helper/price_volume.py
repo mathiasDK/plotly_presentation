@@ -2,6 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly_presentation._core.plotter import Plotter
 
+
 class PriceVolumeWrapper:
     def __init__(self, price_volume, parent):
         self._price_volume = price_volume
@@ -10,14 +11,17 @@ class PriceVolumeWrapper:
     def __getattr__(self, name):
         attr = getattr(self._price_volume, name)
         if callable(attr):
+
             def wrapper(*args, **kwargs):
                 result = attr(*args, **kwargs)
                 # Assign to self.figure if result is a Plotly Figure
                 if isinstance(result, go.Figure):
                     self._parent.figure = result
                 return result
+
             return wrapper
         return attr
+
 
 class PriceVolume:
     def __init__(self):
@@ -152,7 +156,6 @@ class PriceVolume:
 
         return x, y, measure
 
-
     def _price_volume_analysis(
         self,
         df: pd.DataFrame,
@@ -212,7 +215,9 @@ class PriceVolume:
 
         # Sort the result by period, product, and variable
         result = (
-            result.sort_values(by=[period_col, "variable"]).reset_index(drop=True).dropna()
+            result.sort_values(by=[period_col, "variable"])
+            .reset_index(drop=True)
+            .dropna()
         )
 
         # Replace "total_value" with spaces and add more spaces for each occurrence
@@ -321,7 +326,9 @@ class PriceVolume:
         Returns:
         go.Figure: Plotly figure with the price-volume-mix analysis.
         """
-        x, y, measure = self._price_volume_analysis(df, value_col, weight_col, period_col)
+        x, y, measure = self._price_volume_analysis(
+            df, value_col, weight_col, period_col
+        )
         x = self.__replace_list_names(x, category_name)
         if show_text:
             if text is None:

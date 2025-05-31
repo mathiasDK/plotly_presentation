@@ -1,7 +1,13 @@
-from plotly_presentation._core.analysis_helper.price_volume import PriceVolume, PriceVolumeWrapper
+from plotly_presentation._core.analysis_helper.price_volume import (
+    PriceVolume,
+    PriceVolumeWrapper,
+)
 from plotly_presentation._core.colors import PlotColor
 from plotly_presentation._core.plotter import Plotter
-from plotly_presentation._core.analysis_helper.comparison import Comparison, ComparisonWrapper
+from plotly_presentation._core.analysis_helper.comparison import (
+    Comparison,
+    ComparisonWrapper,
+)
 import plotly.graph_objects as go
 import numpy as np
 

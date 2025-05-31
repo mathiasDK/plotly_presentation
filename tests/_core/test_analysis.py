@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly_presentation._core.analysis import Analysis
 
+
 class TestAnalysis(unittest.TestCase):
     def setUp(self):
         self.analysis = Analysis()
@@ -32,21 +33,34 @@ class TestAnalysis(unittest.TestCase):
         self.assertEqual(fig.layout.yaxis.range, (10, 20))
         last_trace = fig.data[-1]
         # Check that the y values are within the specified range
-        self.assertTrue(np.all((last_trace.y >= min(y_range)) & (last_trace.y <= max(y_range) + (y_range[1] - y_range[0]) * 0.2)))
+        self.assertTrue(
+            np.all(
+                (last_trace.y >= min(y_range))
+                & (last_trace.y <= max(y_range) + (y_range[1] - y_range[0]) * 0.2)
+            )
+        )
 
     def test_comparison_wrapper(self):
         self.analysis.figure = None
-        df = pd.DataFrame({
-            'Country': [
-                'Germany', 'France', 'Italy', 'Spain', 'Denmark',
-            ],
-            'Percentage': [
-                90, 80, 70, 60, 50, 
-            ],
-            'pivot': [
-                *['other']*5
-            ]
-        })
+        df = pd.DataFrame(
+            {
+                "Country": [
+                    "Germany",
+                    "France",
+                    "Italy",
+                    "Spain",
+                    "Denmark",
+                ],
+                "Percentage": [
+                    90,
+                    80,
+                    70,
+                    60,
+                    50,
+                ],
+                "pivot": [*["other"] * 5],
+            }
+        )
         self.analysis.comparison.horisontal_stacked_bar_with_total(
             df,
             x="Percentage",
@@ -79,7 +93,6 @@ class TestAnalysis(unittest.TestCase):
             text_format=".0f",
         )
         self.assertIsInstance(self.analysis.figure, go.Figure)
-        
 
 
 if __name__ == "__main__":
