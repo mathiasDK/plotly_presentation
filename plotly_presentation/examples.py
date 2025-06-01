@@ -677,4 +677,5 @@ def _comparison_horisontal_bars():
         calculate_total=True,
         total_formula="mean",
         total_as_first=True,
+        total_color_adjustment=-5
     ).show()
