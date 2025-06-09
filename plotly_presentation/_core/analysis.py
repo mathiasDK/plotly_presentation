@@ -1,13 +1,7 @@
-from plotly_presentation._core.analysis_helper.price_volume import (
-    PriceVolume,
-    PriceVolumeWrapper,
-)
+from plotly_presentation._core.analysis_helper.price_volume import PriceVolume
 from plotly_presentation._core.colors import PlotColor
 from plotly_presentation._core.plotter import Plotter
-from plotly_presentation._core.analysis_helper.comparison import (
-    Comparison,
-    ComparisonWrapper,
-)
+from plotly_presentation._core.analysis_helper.comparison import Comparison
 import plotly.graph_objects as go
 import numpy as np
 
@@ -16,8 +10,8 @@ class Analysis(Plotter):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.figure = None
-        self.comparison = ComparisonWrapper(Comparison(), self)
-        self.price_volume = PriceVolumeWrapper(PriceVolume(), self)
+        self.comparison = Comparison()
+        self.price_volume = PriceVolume()
 
     def adjust_yaxis(self, range: list) -> go.Figure:
         self.figure.update_yaxes(range=range)

@@ -641,6 +641,7 @@ def _comparison_vertical_bars():
         calculate_total=True,
         total_formula="mean",
     )
+    p.style.set_color_palette(palette_type="sequential", palette_name="hot_cold")
     p.show()
 
 
@@ -677,5 +678,9 @@ def _comparison_horisontal_bars():
         calculate_total=True,
         total_formula="mean",
         total_as_first=True,
-        total_color_adjustment=-5
-    ).show()
+        total_color_adjustment=-2,
+    )
+    p.figure.update_layout(
+        showlegend=False,
+    )
+    p.show()

@@ -1,26 +1,10 @@
 import pandas as pd
 import plotly.graph_objects as go
 from plotly_presentation._core.plotter import Plotter
-
-
-class PriceVolumeWrapper:
-    def __init__(self, price_volume, parent):
-        self._price_volume = price_volume
-        self._parent = parent
-
-    def __getattr__(self, name):
-        attr = getattr(self._price_volume, name)
-        if callable(attr):
-
-            def wrapper(*args, **kwargs):
-                result = attr(*args, **kwargs)
-                # Assign to self.figure if result is a Plotly Figure
-                if isinstance(result, go.Figure):
-                    self._parent.figure = result
-                return result
-
-            return wrapper
-        return attr
+from plotly_presentation._core.analysis_helper.utils import (
+    assign_figure_to_self,
+    apply_setting,
+)
 
 
 class PriceVolume:
@@ -236,6 +220,8 @@ class PriceVolume:
 
         return x, y, measure
 
+    @assign_figure_to_self
+    @apply_setting
     def price_volume_mix_analysis(
         self,
         df: pd.DataFrame,
@@ -289,6 +275,8 @@ class PriceVolume:
         )
         return self.figure
 
+    @assign_figure_to_self
+    @apply_setting
     def price_volume_analysis(
         self,
         df: pd.DataFrame,

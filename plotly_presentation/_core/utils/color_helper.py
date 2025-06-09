@@ -14,9 +14,9 @@ def adjust_color_brightness(color, level):
 
     # Convert hex to RGB if needed
     if isinstance(color, str):
-        color = color.lstrip('#')
+        color = color.lstrip("#")
         if len(color) == 6:
-            r, g, b = tuple(int(color[i:i+2], 16) for i in (0, 2, 4))
+            r, g, b = tuple(int(color[i : i + 2], 16) for i in (0, 2, 4))
         else:
             raise ValueError("Hex color must be in format '#RRGGBB'")
     elif isinstance(color, tuple) and len(color) == 3:

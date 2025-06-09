@@ -3,26 +3,10 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly_presentation._core.utils.color_helper import adjust_color_brightness
 from plotly_presentation._core.colors import Color
-
-
-class ComparisonWrapper:
-    def __init__(self, comparison, parent):
-        self._comparison = comparison
-        self._parent = parent
-
-    def __getattr__(self, name):
-        attr = getattr(self._comparison, name)
-        if callable(attr):
-
-            def wrapper(*args, **kwargs):
-                result = attr(*args, **kwargs)
-                # Assign to self.figure if result is a Plotly Figure
-                if isinstance(result, go.Figure):
-                    self._parent.figure = result
-                return result
-
-            return wrapper
-        return attr
+from plotly_presentation._core.analysis_helper.utils import (
+    assign_figure_to_self,
+    apply_setting,
+)
 
 
 class Comparison:
@@ -160,8 +144,14 @@ class Comparison:
         ).drop(columns=["pivot_sort", "cat_sort"] + (["color_sort"] if color else []))
 
         return df
-    
-    def _set_color_dict(self, categories:list[str], total_category:str = "Total", color_adjustment:int=2, **kwargs) -> dict:
+
+    def _set_color_dict(
+        self,
+        categories: list[str],
+        total_category: str = "Total",
+        color_adjustment: int = 2,
+        **kwargs,
+    ) -> dict:
         """
         Sets the color dictionary for the total category. If the `color_discrete_map` is provided in kwargs, it uses that; otherwise, it adjusts the primary color.
 
@@ -179,7 +169,9 @@ class Comparison:
                 Color.PRIMARY.value, color_adjustment
             )
         return color_discrete_map
-        
+
+    @assign_figure_to_self
+    @apply_setting
     def vertical_stacked_bar_with_total(
         self,
         df: pd.DataFrame,
@@ -230,7 +222,7 @@ class Comparison:
                 categories=categories,
                 total_category="Total" if total_category is None else total_category,
                 color_adjustment=total_color_adjustment,
-                **kwargs
+                **kwargs,
             )
             kwargs["color_discrete_map"] = color_discrete_map
 
@@ -238,6 +230,8 @@ class Comparison:
         # self.figure.for_each_annotation(lambda a: a.update(text="")) # Removing titles
         return self.figure
 
+    @assign_figure_to_self
+    @apply_setting
     def horisontal_stacked_bar_with_total(
         self,
         df: pd.DataFrame,
@@ -288,12 +282,13 @@ class Comparison:
                 categories=categories,
                 total_category="Total" if total_category is None else total_category,
                 color_adjustment=total_color_adjustment,
-                **kwargs
+                **kwargs,
             )
-            print(color_discrete_map)
             kwargs["color_discrete_map"] = color_discrete_map
 
-        self.figure = px.bar(df, x=x, y=y, color=color if color is not None else y, **kwargs)
+        self.figure = px.bar(
+            df, x=x, y=y, color=color if color is not None else y, **kwargs
+        )
 
         return self.figure
 
