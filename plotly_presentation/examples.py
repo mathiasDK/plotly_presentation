@@ -684,3 +684,4 @@ def _comparison_horisontal_bars():
         showlegend=False,
     )
     p.show()
+

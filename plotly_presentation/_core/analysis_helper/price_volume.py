@@ -6,7 +6,6 @@ from plotly_presentation._core.analysis_helper.utils import (
     apply_setting,
 )
 
-
 class PriceVolume:
     def __init__(self):
         """
