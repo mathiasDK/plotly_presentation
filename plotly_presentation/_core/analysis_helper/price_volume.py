@@ -1,10 +1,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 from plotly_presentation._core.plotter import Plotter
-from plotly_presentation._core.analysis_helper.utils import (
-    assign_figure_to_self,
-    apply_setting,
-)
+from plotly_presentation._core.analysis_helper.utils import apply_setting
 
 
 class PriceVolume:
@@ -220,7 +217,6 @@ class PriceVolume:
 
         return x, y, measure
 
-    @assign_figure_to_self
     @apply_setting
     def price_volume_mix_analysis(
         self,
@@ -275,7 +271,6 @@ class PriceVolume:
         )
         return self.figure
 
-    @assign_figure_to_self
     @apply_setting
     def price_volume_analysis(
         self,
