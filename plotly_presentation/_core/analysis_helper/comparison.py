@@ -1,26 +1,9 @@
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
-
-
-class ComparisonWrapper:
-    def __init__(self, comparison, parent):
-        self._comparison = comparison
-        self._parent = parent
-
-    def __getattr__(self, name):
-        attr = getattr(self._comparison, name)
-        if callable(attr):
-
-            def wrapper(*args, **kwargs):
-                result = attr(*args, **kwargs)
-                # Assign to self.figure if result is a Plotly Figure
-                if isinstance(result, go.Figure):
-                    self._parent.figure = result
-                return result
-
-            return wrapper
-        return attr
+from plotly_presentation._core.utils.color_helper import adjust_color_brightness
+from plotly_presentation._core.colors import Color
+from plotly_presentation._core.analysis_helper.utils import apply_setting
 
 
 class Comparison:
@@ -159,16 +142,43 @@ class Comparison:
 
         return df
 
+    def _set_color_dict(
+        self,
+        categories: list[str],
+        total_category: str = "Total",
+        color_adjustment: int = 2,
+        **kwargs,
+    ) -> dict:
+        """
+        Sets the color dictionary for the total category. If the `color_discrete_map` is provided in kwargs, it uses that; otherwise, it adjusts the primary color.
+
+        Args:
+            total_category (str): Name of the total category.
+            color (str, optional): Color/grouping column. Defaults to Color.PRIMARY.
+
+        Returns:
+            dict: Color dictionary for the total category.
+        """
+        color_discrete_map = kwargs.get("color_discrete_map", None)
+        if not color_discrete_map:
+            color_discrete_map = {cat: Color.PRIMARY.value for cat in categories}
+            color_discrete_map[total_category] = adjust_color_brightness(
+                Color.PRIMARY.value, color_adjustment
+            )
+        return color_discrete_map
+
+    @apply_setting
     def vertical_stacked_bar_with_total(
         self,
         df: pd.DataFrame,
         x: str,
         y: str,
         color: str = None,
-        total_placement: int = None,
+        total_category: str = None,
         calculate_total: bool = False,
         total_formula: str = None,
         total_as_first: bool = True,
+        total_color_adjustment: int = 2,
         **kwargs,
     ) -> go.Figure:
         """
@@ -179,10 +189,11 @@ class Comparison:
             x (str): X-axis category.
             y (str): Y-axis value.
             color (str, optional): Color/grouping column.
-            total_placement (int, optional): Name of the total category.
+            total_category (str, optional): Name of the total category. Defaults to "Total".
             calculate_total (bool, optional): Whether to calculate the total row.
             total_formula (str, optional): Formula for calculating the total.
             total_as_first (bool, optional): Place total first or last.
+            total_color_adjustment (int, optional): Adjustment level for the total category color.
 
         Returns:
             go.Figure: Plotly bar chart figure.
@@ -193,27 +204,40 @@ class Comparison:
             category=x,
             value=y,
             color=color,
-            total_category=total_placement,
+            total_category=total_category,
             calculate_total=calculate_total,
             total_formula=total_formula,
             total_as_first=total_as_first,
             order_ascending=True,
         )
 
+        if color is None:
+            color = x
+            categories = df[x].unique().tolist()
+            color_discrete_map = self._set_color_dict(
+                categories=categories,
+                total_category="Total" if total_category is None else total_category,
+                color_adjustment=total_color_adjustment,
+                **kwargs,
+            )
+            kwargs["color_discrete_map"] = color_discrete_map
+
         self.figure = px.bar(df, x=x, y=y, color=color, **kwargs)
         # self.figure.for_each_annotation(lambda a: a.update(text="")) # Removing titles
         return self.figure
 
+    @apply_setting
     def horisontal_stacked_bar_with_total(
         self,
         df: pd.DataFrame,
         x: str,
         y: str,
         color: str = None,
-        total_placement: int = None,
+        total_category: int = None,
         calculate_total: bool = False,
         total_formula: str = None,
-        total_as_first: bool = True,
+        total_as_top: bool = True,
+        total_color_adjustment: int = 2,
         **kwargs,
     ) -> go.Figure:
         """
@@ -224,10 +248,11 @@ class Comparison:
             x (str): X-axis value.
             y (str): Y-axis category.
             color (str, optional): Color/grouping column.
-            total_placement (int, optional): Name of the total category.
+            total_category (int, optional): Name of the total category.
             calculate_total (bool, optional): Whether to calculate the total row.
             total_formula (str, optional): Formula for calculating the total.
-            total_as_first (bool, optional): Place total first or last.
+            total_as_top (bool, optional): Place total bottom or top.
+            total_color_adjustment (int, optional): Adjustment level for the total category color.
 
         Returns:
             go.Figure: Plotly bar chart figure.
@@ -238,15 +263,27 @@ class Comparison:
             category=y,
             value=x,
             color=color,
-            total_category=total_placement,
+            total_category=total_category,
             calculate_total=calculate_total,
             total_formula=total_formula,
-            total_as_first=total_as_first,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
+            total_as_first=~total_as_top,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
             order_ascending=False,  # For horizontal bar chart, we want the total to be at the top
         )
 
-        self.figure = px.bar(df, x=x, y=y, color=color, **kwargs)
-        # self.figure.for_each_trace(lambda t: t.update(text="")) # Removing titles
+        if color is None:
+            color = y
+            categories = df[y].unique().tolist()
+            color_discrete_map = self._set_color_dict(
+                categories=categories,
+                total_category="Total" if total_category is None else total_category,
+                color_adjustment=total_color_adjustment,
+                **kwargs,
+            )
+            kwargs["color_discrete_map"] = color_discrete_map
+
+        self.figure = px.bar(
+            df, x=x, y=y, color=color if color is not None else y, **kwargs
+        )
 
         return self.figure
 

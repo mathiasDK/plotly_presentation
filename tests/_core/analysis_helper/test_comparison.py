@@ -414,7 +414,7 @@ class TestComparison(unittest.TestCase):
         df = self.df.copy()
         comp = Comparison()
         comp.vertical_stacked_bar_with_total(
-            df, x="Country", y="Percentage", total_placement="All"
+            df, x="Country", y="Percentage", total_category="All"
         )
         self.assertIsNotNone(comp.figure)
         self.assertIsInstance(comp.figure, go.Figure)
@@ -423,7 +423,7 @@ class TestComparison(unittest.TestCase):
         df = self.df.copy()
         comp = Comparison()
         comp.horisontal_stacked_bar_with_total(
-            df, x="Percentage", y="Country", total_placement="All"
+            df, x="Percentage", y="Country", total_category="All"
         )
         self.assertIsNotNone(comp.figure)
         self.assertIsInstance(comp.figure, go.Figure)
