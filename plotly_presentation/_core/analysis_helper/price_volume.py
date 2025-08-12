@@ -5,12 +5,13 @@ from plotly_presentation._core.analysis_helper.utils import apply_setting
 
 
 class PriceVolume:
-    def __init__(self):
+    def __init__(self, parent = None):
         """
         Initialize the PriceVolumeAnalysis class.
         This class provides methods to perform price-volume-mix analysis on a DataFrame.
         """
         self.figure = None
+        self.parent = parent
 
     def _price_volume_mix_analysis(
         self,
@@ -269,6 +270,8 @@ class PriceVolume:
         self.figure = Plotter().add_trace(
             go.Waterfall(x=x, y=y, measure=measure, text=text, **kwargs)
         )
+        if self.parent is not None:
+            self.parent.figure = self.figure
         return self.figure
 
     @apply_setting
@@ -319,6 +322,8 @@ class PriceVolume:
         self.figure = Plotter().add_trace(
             go.Waterfall(x=x, y=y, measure=measure, text=text, **kwargs)
         )
+        if self.parent is not None:
+            self.parent.figure = self.figure
         return self.figure
 
     def __get_text(self, y, text_format):

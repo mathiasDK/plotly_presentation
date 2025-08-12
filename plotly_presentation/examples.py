@@ -524,8 +524,7 @@ def _price_volume_mix_example_aggregated():
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.price_volume(
-        method_name="price_volume_mix_analysis",
+    p.price_volume.price_volume_mix_analysis(
         df=df,
         value_col="price",
         weight_col="volume",
@@ -553,8 +552,7 @@ def _price_volume_mix_example_by_product():
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.price_volume(
-        method_name="price_volume_mix_analysis",
+    p.price_volume.price_volume_mix_analysis(
         df=df,
         value_col="price",
         weight_col="volume",
@@ -582,8 +580,7 @@ def _price_volume_mix_example_aggregated_adjusted_y():
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.price_volume(
-        method_name="price_volume_mix_analysis",
+    p.price_volume.price_volume_mix_analysis(
         df=df,
         value_col="price",
         weight_col="volume",
@@ -636,8 +633,7 @@ def _comparison_vertical_bars():
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.comparison(
-        method_name="vertical_stacked_bar_with_total",
+    p.comparison.vertical_stacked_bar_with_total(
         df=df,
         x="Country",
         y="Percentage",
@@ -675,8 +671,7 @@ def _comparison_horisontal_bars():
     )
 
     p = Analysis(slide_layout="slide_wide")
-    p.comparison(
-        method_name="horisontal_stacked_bar_with_total",
+    p.comparison.horisontal_stacked_bar_with_total(
         df=df,
         x="Percentage",
         y="Country",
