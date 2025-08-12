@@ -18,7 +18,7 @@ class Comparison:
         horisontal_stacked_bar_with_total(...): Creates a horizontal stacked bar chart with totals.
     """
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         self.figure = None
         self.parent = parent
 

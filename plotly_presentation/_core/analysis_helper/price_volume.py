@@ -5,7 +5,7 @@ from plotly_presentation._core.analysis_helper.utils import apply_setting
 
 
 class PriceVolume:
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         """
         Initialize the PriceVolumeAnalysis class.
         This class provides methods to perform price-volume-mix analysis on a DataFrame.
