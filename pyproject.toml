@@ -1,6 +1,6 @@
 [project]
 name = "plotly_presentation"
-version = "0.11.1"
+version = "0.11.2"
 description = "Python library to make it easier to plot using plotly"
 readme = "README.md"
 license = { text = "MIT" }

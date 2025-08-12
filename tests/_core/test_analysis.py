@@ -61,8 +61,7 @@ class TestAnalysis(unittest.TestCase):
                 "pivot": [*["other"] * 5],
             }
         )
-        self.analysis.comparison(
-            method_name="horisontal_stacked_bar_with_total",
+        self.analysis.comparison.horisontal_stacked_bar_with_total(
             df=df,
             x="Percentage",
             y="Country",
@@ -83,8 +82,7 @@ class TestAnalysis(unittest.TestCase):
             }
         )
 
-        self.analysis.price_volume(
-            method_name="price_volume_mix_analysis",
+        self.analysis.price_volume.price_volume_mix_analysis(
             df=df,
             value_col="price",
             weight_col="volume",
