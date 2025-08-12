@@ -428,6 +428,79 @@ class TestComparison(unittest.TestCase):
         self.assertIsNotNone(comp.figure)
         self.assertIsInstance(comp.figure, go.Figure)
 
+    def test_vertical_stacked_bar_with_total_sorting(self):
+        pass
+
+    def test_horisontal_stacked_bar_with_total_sorting(self):
+        pass
+
+    def test_categorical_comparison_figure(self):
+        df = pd.DataFrame(
+            {
+                "category": ["Dem", "Rep", "Dem", "Rep"],
+                "metric": ["A", "A", "B", "B"],
+                "value": [10, 20, 30, 40],
+                "text": ["10%", "20%", "30%", "40%"],
+            }
+        )
+        comp = Comparison()
+        comp.categorical_comparison(
+            df,
+            category="category",
+            metric="metric",
+            val="value",
+            text="text",
+            size = "value",
+        )
+        self.assertIsInstance(comp.figure, go.Figure)
+
+    def test_categorical_comparison_size_max(self):
+        df = pd.DataFrame(
+            {
+                "category": ["Dem", "Rep", "Dem", "Rep"],
+                "metric": ["A", "A", "B", "B"],
+                "value": [10, 20, 30, 40],
+                "text": ["10%", "20%", "30%", "40%"],
+            }
+        )
+        comp = Comparison()
+        comp.categorical_comparison(
+            df,
+            category="category",
+            metric="metric",
+            val="value",
+            text="text",
+            relative_to_min=False,
+        )
+        actual_size = comp.figure.data[0].marker.size.tolist()
+        print(actual_size)
+        expected_size = [5., 10., 7.5, 10.]  
+        self.assertListEqual(actual_size, expected_size)
+
+    def test_categorical_comparison_size_min(self):
+        df = pd.DataFrame(
+            {
+                "category": ["Dem", "Rep", "Dem", "Rep"],
+                "metric": ["A", "A", "B", "B"],
+                "value": [10, 20, 30, 45],
+                "text": ["10%", "20%", "30%", "40%"],
+            }
+        )
+        comp = Comparison()
+        comp.categorical_comparison(
+            df,
+            category="category",
+            metric="metric",
+            val="value",
+            text="text",
+            # relative_to_min=True,
+        )
+        actual_size = comp.figure.data[0].marker.size.tolist()
+        print(actual_size)
+        expected_size = [10., 20., 10., 15.]  
+        self.assertListEqual(actual_size, expected_size)
+
+
 
 if __name__ == "__main__":
     unittest.main()
