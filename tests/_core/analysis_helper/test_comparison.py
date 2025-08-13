@@ -450,7 +450,7 @@ class TestComparison(unittest.TestCase):
             metric="metric",
             val="value",
             text="text",
-            size = "value",
+            size="value",
         )
         self.assertIsInstance(comp.figure, go.Figure)
 
@@ -474,7 +474,7 @@ class TestComparison(unittest.TestCase):
         )
         actual_size = comp.figure.data[0].marker.size.tolist()
         print(actual_size)
-        expected_size = [5., 10., 7.5, 10.]  
+        expected_size = [5.0, 10.0, 7.5, 10.0]
         self.assertListEqual(actual_size, expected_size)
 
     def test_categorical_comparison_size_min(self):
@@ -496,10 +496,8 @@ class TestComparison(unittest.TestCase):
             # relative_to_min=True,
         )
         actual_size = comp.figure.data[0].marker.size.tolist()
-        print(actual_size)
-        expected_size = [10., 20., 10., 15.]  
+        expected_size = [20.0, 40.0, 20.0, 30.0]
         self.assertListEqual(actual_size, expected_size)
-
 
 
 if __name__ == "__main__":

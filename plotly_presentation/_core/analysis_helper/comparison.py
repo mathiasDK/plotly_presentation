@@ -22,6 +22,18 @@ class Comparison:
         self.figure = None
         self.parent = parent
 
+    # def __set_analysis_settings(self):
+    #     print(self.parent)
+    #     if isinstance(self.parent, "plotly_presentation._core.analysis.Analysis"):
+    #         print("Setting figure")
+    #         self.parent.figure = self.figure
+    #         print("Applying settings")
+    #         self.parent._apply_settings()
+    #     else:
+    #         print("No parent found, not applying settings")
+    #         # self.parent.figure = self.figure  # Uncomment if you want to set figure in other contexts
+    #         # self.parent._apply_settings()  # Uncomment if you want to apply settings in other contexts
+
     def _get_original_sorting(self, df: pd.DataFrame, columns: list | str) -> dict:
         """
         Returns a dictionary mapping each unique value in the specified columns to its original order.
@@ -369,6 +381,7 @@ class Comparison:
         total_row = total_row[df.columns]  # reordering
         return total_row
 
+    @apply_setting
     def categorical_comparison(
         self,
         df: pd.DataFrame,
@@ -378,7 +391,7 @@ class Comparison:
         text: str = None,
         size: str = None,
         relative_to_min: bool = True,
-        category_on_y: bool = True,
+        category_on_x: bool = True,
         **kwargs,
     ) -> go.Figure:
         """
@@ -402,24 +415,25 @@ class Comparison:
         df = df.copy()
         if size is None:
             transform_function = "min" if relative_to_min else "max"
-            df["size"] = df[val] / df.groupby(metric)[val].transform(transform_function) * 10
+            df["size"] = (
+                df[val] / df.groupby(metric)[val].transform(transform_function) * 20
+            )
             size = "size"
 
-        if category_on_y:
-            x, y = metric, category
-        else:
+        if category_on_x:
             x, y = category, metric
+        else:
+            x, y = metric, category
 
         self.figure = px.scatter(
             df,
             x=x,
             y=y,
             size=size,
-            color=val,
+            # color=val,
             text=text,
             **kwargs,
         )
 
-        if self.parent is not None:
-            self.parent.figure = self.figure
+        # self.__set_analysis_settings()
         return self.figure

@@ -507,6 +507,7 @@ def plot_analysis_graphs():
     _price_volume_mix_example_aggregated_adjusted_y()
     _comparison_vertical_bars()
     _comparison_horisontal_bars()
+    _comparison_categorical_comparison()
 
 
 @_print_source
@@ -679,6 +680,55 @@ def _comparison_horisontal_bars():
         total_formula="mean",
         total_as_top=False,
         total_color_adjustment=-2,
+    )
+    p.figure.update_layout(
+        showlegend=False,
+    )
+    p.show()
+
+
+@_print_source
+def _comparison_categorical_comparison():
+    """
+    Categorical comparison example
+    """
+    df = pd.DataFrame(
+        {
+            "Category": [
+                "Company ABC",
+                "Company YXZ",
+                "Company ABC",
+                "Company YXZ",
+                "Company ABC",
+                "Company YXZ",
+            ],
+            "Metric": [
+                "Employees",
+                "Employees",
+                "Units Sold",
+                "Units Sold",
+                "Revenue",
+                "Revenue",
+            ],
+            "Value": [
+                100,
+                150,
+                3000,
+                3100,
+                8000000,
+                2000000,
+            ],
+            "Text": ["100", "150", "3.0k", "3.1k", "8M", "2M"],
+        }
+    )
+
+    p = Analysis(slide_layout="slide_25%")
+    p.comparison.categorical_comparison(
+        df=df,
+        category="Category",
+        metric="Metric",
+        val="Value",
+        text="Text",
     )
     p.figure.update_layout(
         showlegend=False,
