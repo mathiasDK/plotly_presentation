@@ -474,7 +474,7 @@ class TestComparison(unittest.TestCase):
         )
         actual_size = comp.figure.data[0].marker.size.tolist()
         print(actual_size)
-        expected_size = [5.0, 10.0, 7.5, 10.0]
+        expected_size = [10.0, 20.0, 15.0, 20.0]
         self.assertListEqual(actual_size, expected_size)
 
     def test_categorical_comparison_size_min(self):
