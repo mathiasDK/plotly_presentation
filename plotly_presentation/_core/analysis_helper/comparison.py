@@ -22,6 +22,18 @@ class Comparison:
         self.figure = None
         self.parent = parent
 
+    # def __set_analysis_settings(self):
+    #     print(self.parent)
+    #     if isinstance(self.parent, "plotly_presentation._core.analysis.Analysis"):
+    #         print("Setting figure")
+    #         self.parent.figure = self.figure
+    #         print("Applying settings")
+    #         self.parent._apply_settings()
+    #     else:
+    #         print("No parent found, not applying settings")
+    #         # self.parent.figure = self.figure  # Uncomment if you want to set figure in other contexts
+    #         # self.parent._apply_settings()  # Uncomment if you want to apply settings in other contexts
+
     def _get_original_sorting(self, df: pd.DataFrame, columns: list | str) -> dict:
         """
         Returns a dictionary mapping each unique value in the specified columns to its original order.
@@ -368,3 +380,60 @@ class Comparison:
                 total_row[col] = pd.NA
         total_row = total_row[df.columns]  # reordering
         return total_row
+
+    @apply_setting
+    def categorical_comparison(
+        self,
+        df: pd.DataFrame,
+        category: str,
+        metric: str,
+        val: str,
+        text: str = None,
+        size: str = None,
+        relative_to_min: bool = True,
+        category_on_x: bool = True,
+        **kwargs,
+    ) -> go.Figure:
+        """
+        Creates a categorical comparison figure using Plotly express scatter plot.
+
+        Args:
+            df (pd.DataFrame): Input data.
+            category (str): Category column.
+            metric (str): Metric name column.
+            val (str): Value column.
+            text (str, optional): Text label for points. If not provided, there will be no text labels.
+            size (str, optional): Column for point size. If not provided, it will be calculated based on the metric relative to the min or max value.
+            relative_to_min (bool, optional): If True, size is calculated relative to the minimum value; if False, relative to the maximum value.
+            category_on_y (bool, optional): If True, category is on the y-axis; if False, it is on the x-axis.
+            **kwargs: Additional keyword arguments for the Plotly express scatter function.
+
+        Returns:
+            go.Figure: Plotly categorical comparison figure.
+        """
+
+        df = df.copy()
+        if size is None:
+            transform_function = "min" if relative_to_min else "max"
+            df["size"] = (
+                df[val] / df.groupby(metric)[val].transform(transform_function) * 20
+            )
+            size = "size"
+
+        if category_on_x:
+            x, y = category, metric
+        else:
+            x, y = metric, category
+
+        self.figure = px.scatter(
+            df,
+            x=x,
+            y=y,
+            size=size,
+            # color=val,
+            text=text,
+            **kwargs,
+        )
+
+        # self.__set_analysis_settings()
+        return self.figure
