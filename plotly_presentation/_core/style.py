@@ -87,6 +87,10 @@ class Style:
             height_multiplier = 0.75
             width_multiplier = 1
 
+        elif slide_layout == "slide_tall":
+            height_multiplier = 1.0
+            width_multiplier = 0.5
+
         self.figure.update_layout(
             height=int(self.plot_height * height_multiplier),
             width=int(self.plot_width * width_multiplier),

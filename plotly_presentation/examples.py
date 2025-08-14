@@ -569,7 +569,7 @@ def _price_volume_mix_example_by_product():
 @_print_source
 def _price_volume_mix_example_aggregated_adjusted_y():
     """
-    Price volume mix example
+    Price volume mix example with a call out and adjusted y-axis.
     """
     df = pd.DataFrame(
         {
@@ -591,7 +591,10 @@ def _price_volume_mix_example_aggregated_adjusted_y():
         show_text=True,
         text_format=".0f",
     )
-    p.adjust_yaxis(range=[25000, 41000])
+    p.callout.add_square_growth_line(
+        x0=0, x1=4, y0=33000, y1=40900, y_top=42000, text="+25%"
+    )
+    p.adjust_yaxis(range=[25000, 44000])
     p.show()
 
 
@@ -722,7 +725,7 @@ def _comparison_categorical_comparison():
         }
     )
 
-    p = Analysis(slide_layout="slide_25%")
+    p = Analysis(slide_layout="slide_tall")
     p.comparison.categorical_comparison(
         df=df,
         category="Category",
