@@ -428,11 +428,61 @@ class TestComparison(unittest.TestCase):
         self.assertIsNotNone(comp.figure)
         self.assertIsInstance(comp.figure, go.Figure)
 
-    def test_vertical_stacked_bar_with_total_sorting(self):
-        pass
+    def test_vertical_stacked_bar_with_total_sorting_first(self):
+        df = self.df.copy()
+        comp = Comparison()
+        comp.vertical_stacked_bar_with_total(
+            df,
+            x="Country",
+            y="Percentage",
+            total_category="All",
+            total_as_first=True,
+        )
+        expected_order = ["All", "", "Germany", "France"]
+        actual_order = [t.name for t in comp.figure.data]
+        self.assertEqual(actual_order, expected_order)
 
-    def test_horisontal_stacked_bar_with_total_sorting(self):
-        pass
+    def test_vertical_stacked_bar_with_total_sorting_last(self):
+        df = self.df.copy()
+        comp = Comparison()
+        comp.vertical_stacked_bar_with_total(
+            df,
+            x="Country",
+            y="Percentage",
+            total_category="All",
+            total_as_first=False,
+        )
+        expected_order = ["Germany", "France", "", "All"]
+        actual_order = [t.name for t in comp.figure.data]
+        self.assertEqual(actual_order, expected_order)
+
+    def test_horisontal_stacked_bar_with_total_sorting_bottom(self):
+        df = self.df.copy()
+        comp = Comparison()
+        comp.horisontal_stacked_bar_with_total(
+            df,
+            x="Percentage",
+            y="Country",
+            total_category="All",
+            total_as_top=False,
+        )
+        expected_order = ["Germany", "France", "", "All"]
+        actual_order = [t.name for t in comp.figure.data]
+        self.assertEqual(actual_order, expected_order)
+
+    def test_horisontal_stacked_bar_with_total_sorting_top(self):
+        df = self.df.copy()
+        comp = Comparison()
+        comp.horisontal_stacked_bar_with_total(
+            df,
+            x="Percentage",
+            y="Country",
+            total_category="All",
+            total_as_top=True,
+        )
+        expected_order = ["All", "", "Germany", "France"]
+        actual_order = [t.name for t in comp.figure.data]
+        self.assertEqual(actual_order, expected_order)
 
     def test_categorical_comparison_figure(self):
         df = pd.DataFrame(

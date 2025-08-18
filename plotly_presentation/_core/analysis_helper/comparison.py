@@ -22,18 +22,6 @@ class Comparison:
         self.figure = None
         self.parent = parent
 
-    # def __set_analysis_settings(self):
-    #     print(self.parent)
-    #     if isinstance(self.parent, "plotly_presentation._core.analysis.Analysis"):
-    #         print("Setting figure")
-    #         self.parent.figure = self.figure
-    #         print("Applying settings")
-    #         self.parent._apply_settings()
-    #     else:
-    #         print("No parent found, not applying settings")
-    #         # self.parent.figure = self.figure  # Uncomment if you want to set figure in other contexts
-    #         # self.parent._apply_settings()  # Uncomment if you want to apply settings in other contexts
-
     def _get_original_sorting(self, df: pd.DataFrame, columns: list | str) -> dict:
         """
         Returns a dictionary mapping each unique value in the specified columns to its original order.
@@ -81,7 +69,6 @@ class Comparison:
         Returns:
             pd.DataFrame: Modified DataFrame with total and empty rows.
         """
-
         if total_category is None and calculate_total is False:
             raise ValueError(
                 "Please provide the total category or tell the function how to calculate it"
@@ -148,10 +135,13 @@ class Comparison:
             sort_by = ["pivot_sort", "cat_sort", "color_sort"]
         else:
             sort_by = ["pivot_sort", "cat_sort"]
-
+        # Ensure category order matches the original DataFrame order for non-total/empty rows
+        # For 'pivot_sort', sort so that 'other' rows keep their original order, then 'empty', then 'total'
         df = df.sort_values(
-            by=sort_by, ascending=[order_ascending] * len(sort_by)
-        ).drop(columns=["pivot_sort", "cat_sort"] + (["color_sort"] if color else []))
+            by=sort_by,
+            ascending=[True]
+            * len(sort_by),  # [total_as_first] + [True] * (len(sort_by) - 1)
+        ).drop(columns=sort_by)
 
         return df
 
@@ -281,7 +271,7 @@ class Comparison:
             total_category=total_category,
             calculate_total=calculate_total,
             total_formula=total_formula,
-            total_as_first=~total_as_top,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
+            total_as_first=total_as_top,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
             order_ascending=False,  # For horizontal bar chart, we want the total to be at the top
         )
 
@@ -430,10 +420,8 @@ class Comparison:
             x=x,
             y=y,
             size=size,
-            # color=val,
             text=text,
             **kwargs,
         )
 
-        # self.__set_analysis_settings()
         return self.figure
