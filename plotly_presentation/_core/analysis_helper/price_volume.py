@@ -12,7 +12,7 @@ class PriceVolume:
         """
         Initialize the PriceVolumeAnalysis class.
         This class provides methods to perform price-volume-mix analysis on a DataFrame.
-        
+
         Parameters:
         parent: Optional parent Analysis instance. If provided, figures will be assigned to parent.figure.
         """
