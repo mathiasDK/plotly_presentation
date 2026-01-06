@@ -163,3 +163,100 @@ class Style:
             "mode": "between",
             "line": {"width": 0.5, "color": "black", "dash": "solid"},
         }
+
+    def set_legend(
+        self,
+        position: str = "top",
+        orientation: str = "h",
+        font_size: int = None,
+        bgcolor: str = None,
+    ):
+        """
+        Configure legend position and styling for better analytics.
+
+        Parameters:
+        position (str): 'top', 'bottom', 'left', 'right', or 'top-left', etc.
+        orientation (str): 'h' (horizontal) or 'v' (vertical)
+        font_size (int): Font size for legend
+        bgcolor (str): Background color for legend
+        """
+        legend_dict = {
+            "orientation": orientation,
+        }
+
+        # Map position strings to plotly positions
+        position_map = {
+            "top": {"x": 0.5, "y": 1.02, "xanchor": "center", "yanchor": "bottom"},
+            "bottom": {"x": 0.5, "y": -0.15, "xanchor": "center", "yanchor": "top"},
+            "left": {"x": -0.15, "y": 0.5, "xanchor": "right", "yanchor": "middle"},
+            "right": {"x": 1.02, "y": 0.5, "xanchor": "left", "yanchor": "middle"},
+        }
+
+        if position in position_map:
+            legend_dict.update(position_map[position])
+        else:
+            # Handle compound positions like "top-left"
+            parts = position.split("-")
+            if len(parts) == 2:
+                x_pos = (
+                    -0.15
+                    if "left" in parts[1]
+                    else (1.02 if "right" in parts[1] else 0.5)
+                )
+                y_pos = (
+                    1.02
+                    if "top" in parts[0]
+                    else (-0.15 if "bottom" in parts[0] else 0.5)
+                )
+                xanchor = (
+                    "right"
+                    if "left" in parts[1]
+                    else ("left" if "right" in parts[1] else "center")
+                )
+                yanchor = (
+                    "bottom"
+                    if "top" in parts[0]
+                    else ("top" if "bottom" in parts[0] else "middle")
+                )
+                legend_dict.update(
+                    {"x": x_pos, "y": y_pos, "xanchor": xanchor, "yanchor": yanchor}
+                )
+
+        if font_size:
+            legend_dict["font"] = {"size": font_size}
+
+        if bgcolor:
+            legend_dict["bgcolor"] = bgcolor
+
+        self.figure.update_layout(legend=legend_dict)
+        return self.figure
+
+    def set_title(
+        self,
+        title: str,
+        subtitle: str = None,
+        title_size: int = 18,
+        subtitle_size: int = 14,
+    ):
+        """
+        Set title and optional subtitle for analytics charts.
+
+        Parameters:
+        title (str): Main title
+        subtitle (str): Optional subtitle
+        title_size (int): Font size for title
+        subtitle_size (int): Font size for subtitle
+        """
+        self.figure.update_layout(
+            title={
+                "text": title,
+                "subtitle": {
+                    "text": subtitle,
+                    "font": {"size": subtitle_size},
+                },
+                "x": 0.05,
+                "xanchor": "left",
+                "font": {"size": title_size},
+            }
+        )
+        return self.figure
