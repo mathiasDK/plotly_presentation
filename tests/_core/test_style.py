@@ -255,3 +255,187 @@ class StyleTest(unittest.TestCase):
                 str(context.exception),
                 "Invalid palette name. Must be one of {palette_names}",
             )
+
+    def test_set_legend_default(self):
+        """Test set_legend with default parameters"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend()
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.orientation, "h")
+        self.assertEqual(legend.x, 0.5)
+        self.assertEqual(legend.y, 1.02)
+        self.assertEqual(legend.xanchor, "center")
+        self.assertEqual(legend.yanchor, "bottom")
+
+    def test_set_legend_position_top(self):
+        """Test set_legend with position='top'"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(position="top")
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.x, 0.5)
+        self.assertEqual(legend.y, 1.02)
+        self.assertEqual(legend.xanchor, "center")
+        self.assertEqual(legend.yanchor, "bottom")
+
+    def test_set_legend_position_bottom(self):
+        """Test set_legend with position='bottom'"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(position="bottom")
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.x, 0.5)
+        self.assertEqual(legend.y, -0.15)
+        self.assertEqual(legend.xanchor, "center")
+        self.assertEqual(legend.yanchor, "top")
+
+    def test_set_legend_position_left(self):
+        """Test set_legend with position='left'"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(position="left")
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.x, -0.15)
+        self.assertEqual(legend.y, 0.5)
+        self.assertEqual(legend.xanchor, "right")
+        self.assertEqual(legend.yanchor, "middle")
+
+    def test_set_legend_position_right(self):
+        """Test set_legend with position='right'"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(position="right")
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.x, 1.02)
+        self.assertEqual(legend.y, 0.5)
+        self.assertEqual(legend.xanchor, "left")
+        self.assertEqual(legend.yanchor, "middle")
+
+    def test_set_legend_position_top_left(self):
+        """Test set_legend with compound position='top-left'"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(position="top-left")
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.x, -0.15)
+        self.assertEqual(legend.y, 1.02)
+        self.assertEqual(legend.xanchor, "right")
+        self.assertEqual(legend.yanchor, "bottom")
+
+    def test_set_legend_position_top_right(self):
+        """Test set_legend with compound position='top-right'"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(position="top-right")
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.x, 1.02)
+        self.assertEqual(legend.y, 1.02)
+        self.assertEqual(legend.xanchor, "left")
+        self.assertEqual(legend.yanchor, "bottom")
+
+    def test_set_legend_orientation_vertical(self):
+        """Test set_legend with orientation='v'"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(orientation="v")
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.orientation, "v")
+
+    def test_set_legend_font_size(self):
+        """Test set_legend with custom font size"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(font_size=16)
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.font.size, 16)
+
+    def test_set_legend_bgcolor(self):
+        """Test set_legend with background color"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(bgcolor="rgba(255, 255, 255, 0.8)")
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.bgcolor, "rgba(255, 255, 255, 0.8)")
+
+    def test_set_legend_all_options(self):
+        """Test set_legend with all options combined"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_legend(
+            position="bottom", orientation="v", font_size=14, bgcolor="lightgray"
+        )
+
+        legend = p.figure.layout.legend
+        self.assertEqual(legend.x, 0.5)
+        self.assertEqual(legend.y, -0.15)
+        self.assertEqual(legend.orientation, "v")
+        self.assertEqual(legend.font.size, 14)
+        self.assertEqual(legend.bgcolor, "lightgray")
+
+    def test_set_title_basic(self):
+        """Test set_title with just a title"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_title("Stock Prices Over Time")
+
+        title = p.figure.layout.title
+        self.assertEqual(title.text, "Stock Prices Over Time")
+        self.assertEqual(title.x, 0.05)
+        self.assertEqual(title.xanchor, "left")
+        self.assertEqual(title.font.size, 18)
+
+    def test_set_title_with_subtitle(self):
+        """Test set_title with title and subtitle"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_title(
+            title="Stock Prices Over Time",
+            subtitle="Daily closing prices from 2018-2020",
+        )
+
+        title = p.figure.layout.title
+        self.assertEqual(title.text, "Stock Prices Over Time")
+        self.assertEqual(title.subtitle.text, "Daily closing prices from 2018-2020")
+        self.assertEqual(title.subtitle.font.size, 14)
+        self.assertEqual(title.x, 0.05)
+        self.assertEqual(title.xanchor, "left")
+        self.assertEqual(title.font.size, 18)
+
+    def test_set_title_custom_sizes(self):
+        """Test set_title with custom title and subtitle sizes"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_title(
+            title="Stock Prices",
+            subtitle="Subtitle text",
+            title_size=24,
+            subtitle_size=16,
+        )
+
+        title = p.figure.layout.title
+        self.assertEqual(title.text, "Stock Prices")
+        self.assertEqual(title.subtitle.text, "Subtitle text")
+        self.assertEqual(title.font.size, 24)
+        self.assertEqual(title.subtitle.font.size, 16)
+
+    def test_set_title_with_none_subtitle(self):
+        """Test set_title with None subtitle (should still set subtitle structure)"""
+        p = Plotter()
+        p.express(type="bar", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.style.set_title(title="Stock Prices", subtitle=None)
+
+        title = p.figure.layout.title
+        self.assertEqual(title.text, "Stock Prices")
+        self.assertIsNotNone(title.subtitle)
+        self.assertEqual(title.subtitle.text, None)
