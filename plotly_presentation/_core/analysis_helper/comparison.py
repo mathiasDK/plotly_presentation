@@ -21,8 +21,9 @@ class Comparison:
         horisontal_stacked_bar_with_total(...): Creates a horizontal stacked bar chart with totals.
     """
 
-    def __init__(self):
-        self.figure = None
+    def __init__(self, parent=None):
+        # self.figure = None
+        self.parent = parent
 
     def _get_original_sorting(self, df: pd.DataFrame, columns: list | str) -> dict:
         """
@@ -226,9 +227,9 @@ class Comparison:
             )
             kwargs["color_discrete_map"] = color_discrete_map
 
-        self.figure = px.bar(df, x=x, y=y, color=color, **kwargs)
-        # self.figure.for_each_annotation(lambda a: a.update(text="")) # Removing titles
-        return self.figure
+        figure = px.bar(df, x=x, y=y, color=color, **kwargs)
+
+        return figure
 
     @assign_figure_to_self
     @apply_setting
@@ -286,11 +287,9 @@ class Comparison:
             )
             kwargs["color_discrete_map"] = color_discrete_map
 
-        self.figure = px.bar(
-            df, x=x, y=y, color=color if color is not None else y, **kwargs
-        )
+        figure = px.bar(df, x=x, y=y, color=color if color is not None else y, **kwargs)
 
-        return self.figure
+        return figure
 
     def _calculate_total(
         self,

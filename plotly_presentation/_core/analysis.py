@@ -4,14 +4,15 @@ from plotly_presentation._core.plotter import Plotter
 from plotly_presentation._core.analysis_helper.comparison import Comparison
 import plotly.graph_objects as go
 import numpy as np
+from plotly_presentation._core.analysis_helper.utils import assign_figure_to_self
 
 
 class Analysis(Plotter):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.figure = None
-        self.comparison = Comparison()
-        self.price_volume = PriceVolume()
+        self.comparison = Comparison(parent=self)
+        self.price_volume = PriceVolume(parent=self)
 
     def adjust_yaxis(self, range: list) -> go.Figure:
         self.figure.update_yaxes(range=range)

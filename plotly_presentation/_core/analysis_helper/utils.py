@@ -6,8 +6,12 @@ def assign_figure_to_self(method):
     @wraps(method)
     def wrapper(self, *args, **kwargs):
         result = method(self, *args, **kwargs)
-        # Assign to self.figure if result is a Plotly Figure
-        self.figure = result
+        # If parent exists, assign to parent.figure, otherwise assign to self.figure
+        if hasattr(self, 'parent') and self.parent is not None:
+            self.parent.figure = result
+        else:
+            self.figure = result
+
         return result
 
     return wrapper
