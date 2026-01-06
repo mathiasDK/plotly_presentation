@@ -272,7 +272,7 @@ class Comparison:
             total_category=total_category,
             calculate_total=calculate_total,
             total_formula=total_formula,
-            total_as_first=total_as_first,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
+            total_as_first=~total_as_top,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
             order_ascending=False,  # For horizontal bar chart, we want the total to be at the top
         )
 

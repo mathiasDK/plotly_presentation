@@ -62,12 +62,12 @@ class TestAnalysis(unittest.TestCase):
             }
         )
         self.analysis.comparison.horisontal_stacked_bar_with_total(
-            df,
+            df=df,
             x="Percentage",
             y="Country",
             calculate_total=True,
             total_formula="mean",
-            total_as_first=True,
+            total_as_top=True,
         )
         self.assertIsInstance(self.analysis.figure, go.Figure)
 
@@ -83,7 +83,7 @@ class TestAnalysis(unittest.TestCase):
         )
 
         self.analysis.price_volume.price_volume_mix_analysis(
-            df,
+            df=df,
             value_col="price",
             weight_col="volume",
             period_col="period",

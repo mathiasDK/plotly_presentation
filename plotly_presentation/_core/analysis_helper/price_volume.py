@@ -277,6 +277,8 @@ class PriceVolume:
         self.figure = Plotter().add_trace(
             go.Waterfall(x=x, y=y, measure=measure, text=text, **kwargs)
         )
+        if self.parent is not None:
+            self.parent.figure = self.figure
         return self.figure
 
     @assign_figure_to_self
@@ -328,6 +330,8 @@ class PriceVolume:
         self.figure = Plotter().add_trace(
             go.Waterfall(x=x, y=y, measure=measure, text=text, **kwargs)
         )
+        if self.parent is not None:
+            self.parent.figure = self.figure
         return self.figure
 
     def __get_text(self, y, text_format):
