@@ -8,20 +8,32 @@ from plotly_presentation._core.utils.root_searcher import get_file_path
 class Options:
     def __init__(self):
         try:
-            options_path = os.environ["PLOTLY_CONFIG_DIR"]
+            config_dir = os.environ["PLOTLY_CONFIG_DIR"]
+            # Normalize the path
+            options_path = Path(config_dir).expanduser().resolve()
+            # Only raise error if path exists but is not a directory
+            # (allows setting path to a directory that will be created)
+            if options_path.exists() and not options_path.is_dir():
+                raise ValueError(
+                    f"PLOTLY_CONFIG_DIR must point to a directory: {options_path}"
+                )
         except KeyError:
-            home_path = str(Path.home())
-            options_path = home_path + "/.plotly_presentation/"
+            # Default to home directory if environment variable is not set
+            options_path = Path.home() / ".plotly_presentation"
+
+        # Store as Path object for better path handling
+        self._options_path = options_path
+
         self._options = OrderedDict(
             {
-                "config.layout": OptionValue(options_path + "layout_config.yaml"),
+                "config.layout": OptionValue(str(options_path / "layout_config.yaml")),
                 "config.callout_settings": OptionValue(
-                    options_path + "callout_settings_config.yaml"
+                    str(options_path / "callout_settings_config.yaml")
                 ),
                 "config.theme_settings": OptionValue(
-                    options_path + "theme_settings_config.yaml"
+                    str(options_path / "theme_settings_config.yaml")
                 ),
-                "config.colors": OptionValue(options_path + "colors_config.yaml"),
+                "config.colors": OptionValue(str(options_path / "colors_config.yaml")),
             }
         )
 
