@@ -1,7 +1,10 @@
 import pandas as pd
 import plotly.graph_objects as go
 from plotly_presentation._core.plotter import Plotter
-from plotly_presentation._core.analysis_helper.utils import apply_setting
+from plotly_presentation._core.analysis_helper.utils import (
+    assign_figure_to_self,
+    apply_setting,
+)
 
 
 class PriceVolume:
@@ -9,8 +12,11 @@ class PriceVolume:
         """
         Initialize the PriceVolumeAnalysis class.
         This class provides methods to perform price-volume-mix analysis on a DataFrame.
+
+        Parameters:
+        parent: Optional parent Analysis instance. If provided, figures will be assigned to parent.figure.
         """
-        self.figure = None
+        # self.figure = None
         self.parent = parent
 
     def _price_volume_mix_analysis(
@@ -218,6 +224,7 @@ class PriceVolume:
 
         return x, y, measure
 
+    @assign_figure_to_self
     @apply_setting
     def price_volume_mix_analysis(
         self,
@@ -274,6 +281,7 @@ class PriceVolume:
             self.parent.figure = self.figure
         return self.figure
 
+    @assign_figure_to_self
     @apply_setting
     def price_volume_analysis(
         self,

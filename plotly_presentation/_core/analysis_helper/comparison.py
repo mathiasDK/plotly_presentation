@@ -3,7 +3,10 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly_presentation._core.utils.color_helper import adjust_color_brightness
 from plotly_presentation._core.colors import Color
-from plotly_presentation._core.analysis_helper.utils import apply_setting
+from plotly_presentation._core.analysis_helper.utils import (
+    assign_figure_to_self,
+    apply_setting,
+)
 
 
 class Comparison:
@@ -19,7 +22,7 @@ class Comparison:
     """
 
     def __init__(self, parent=None):
-        self.figure = None
+        # self.figure = None
         self.parent = parent
 
     def _get_original_sorting(self, df: pd.DataFrame, columns: list | str) -> dict:
@@ -168,6 +171,7 @@ class Comparison:
             )
         return color_discrete_map
 
+    @assign_figure_to_self
     @apply_setting
     def vertical_stacked_bar_with_total(
         self,
@@ -223,12 +227,11 @@ class Comparison:
             )
             kwargs["color_discrete_map"] = color_discrete_map
 
-        self.figure = px.bar(df, x=x, y=y, color=color, **kwargs)
-        # self.figure.for_each_annotation(lambda a: a.update(text="")) # Removing titles
-        if self.parent is not None:
-            self.parent.figure = self.figure
-        return self.figure
+        figure = px.bar(df, x=x, y=y, color=color, **kwargs)
 
+        return figure
+
+    @assign_figure_to_self
     @apply_setting
     def horisontal_stacked_bar_with_total(
         self,
@@ -239,7 +242,7 @@ class Comparison:
         total_category: int = None,
         calculate_total: bool = False,
         total_formula: str = None,
-        total_as_top: bool = True,
+        total_as_first: bool = True,
         total_color_adjustment: int = 2,
         **kwargs,
     ) -> go.Figure:
@@ -254,7 +257,7 @@ class Comparison:
             total_category (int, optional): Name of the total category.
             calculate_total (bool, optional): Whether to calculate the total row.
             total_formula (str, optional): Formula for calculating the total.
-            total_as_top (bool, optional): Place total bottom or top.
+            total_as_first (bool, optional): Place total first or last.
             total_color_adjustment (int, optional): Adjustment level for the total category color.
 
         Returns:
@@ -269,7 +272,7 @@ class Comparison:
             total_category=total_category,
             calculate_total=calculate_total,
             total_formula=total_formula,
-            total_as_first=~total_as_top,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
+            total_as_first=~total_as_first,  # Inverting total_as_first for horizontal bar chart to make it top if it is True
             order_ascending=False,  # For horizontal bar chart, we want the total to be at the top
         )
 
@@ -284,12 +287,9 @@ class Comparison:
             )
             kwargs["color_discrete_map"] = color_discrete_map
 
-        self.figure = px.bar(
-            df, x=x, y=y, color=color if color is not None else y, **kwargs
-        )
-        if self.parent is not None:
-            self.parent.figure = self.figure
-        return self.figure
+        figure = px.bar(df, x=x, y=y, color=color if color is not None else y, **kwargs)
+
+        return figure
 
     def _calculate_total(
         self,

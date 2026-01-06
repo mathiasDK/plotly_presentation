@@ -677,7 +677,7 @@ def _comparison_horisontal_bars():
         y="Country",
         calculate_total=True,
         total_formula="mean",
-        total_as_top=False,
+        total_as_first=True,
         total_color_adjustment=-2,
     )
     p.figure.update_layout(

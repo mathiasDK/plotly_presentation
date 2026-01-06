@@ -67,7 +67,7 @@ class TestAnalysis(unittest.TestCase):
             y="Country",
             calculate_total=True,
             total_formula="mean",
-            total_as_top=True,
+            total_as_first=True,
         )
         self.assertIsInstance(self.analysis.figure, go.Figure)
 
