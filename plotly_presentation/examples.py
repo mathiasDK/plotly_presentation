@@ -732,6 +732,7 @@ def _comparison_categorical_comparison():
         metric="Metric",
         val="Value",
         text="Text",
+        relative_to_min=False,
     )
     p.figure.update_layout(
         showlegend=False,
