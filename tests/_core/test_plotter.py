@@ -28,7 +28,7 @@ class PlotterTests(unittest.TestCase):
     # Added tests for Plotly subplots figures
     def test_make_subplots_layout_axes(self):
         fig = make_subplots(rows=1, cols=2)
-        p = Plotter(figure = fig)
+        p = Plotter(figure=fig)
         self.assertIsInstance(p.figure, go.Figure)
 
     def test_add_trace_to_subplot_assigns_axis(self):

@@ -106,6 +106,15 @@ class CalloutTest(unittest.TestCase):
         trace_count = len(p.figure.data)
         self.assertEqual(trace_count, 6)
 
+    def test_end_line_marker_count_custom(self):
+        p = Plotter()
+        p.express(type="line", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])
+        p.callout.add_line_end_marker(
+            text_type="custom", custom_texts=["GOOGLE", "APPLE", "META"], opacity=0.5
+        )
+        trace_count = len(p.figure.data)
+        self.assertEqual(trace_count, 6)
+
     def test_end_line_marker_count_selected(self):
         p = Plotter()
         p.express(type="line", data_frame=self.df, x="date", y=["GOOG", "AAPL", "FB"])

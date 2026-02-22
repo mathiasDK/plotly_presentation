@@ -18,7 +18,11 @@ class Plotter:
         self.slide_layout = slide_layout
         if figure is not None:
             self.figure = figure
-            if getattr(figure, "data", None) and len(figure.data) > 0 and isinstance(figure.data[0], plotly.graph_objs.Waterfall):
+            if (
+                getattr(figure, "data", None)
+                and len(figure.data) > 0
+                and isinstance(figure.data[0], plotly.graph_objs.Waterfall)
+            ):
                 self.style._apply_waterfall_style()
         else:
             self.figure = go.Figure()
