@@ -18,7 +18,11 @@ class Plotter:
         self.slide_layout = slide_layout
         if figure is not None:
             self.figure = figure
-            if type(figure.data[0]) == plotly.graph_objs.Waterfall:
+            if (
+                getattr(figure, "data", None)
+                and len(figure.data) > 0
+                and isinstance(figure.data[0], plotly.graph_objs.Waterfall)
+            ):
                 self.style._apply_waterfall_style()
         else:
             self.figure = go.Figure()
@@ -33,10 +37,10 @@ class Plotter:
         self._apply_settings()
         return self.figure
 
-    def add_trace(self, func) -> go.Figure:
-        self.figure.add_trace(func)
+    def add_trace(self, func, **kwargs) -> go.Figure:
+        self.figure.add_trace(func, **kwargs)
         self._apply_settings()
-        if type(func) == plotly.graph_objs.Waterfall:
+        if isinstance(func, plotly.graph_objs.Waterfall):
             self.style._apply_waterfall_style()
         return self.figure
 

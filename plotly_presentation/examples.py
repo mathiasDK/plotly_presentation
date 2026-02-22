@@ -256,6 +256,7 @@ def plot_line_callout():
     _line_callout_example_2()
     _line_callout_example_3()
     _line_callout_example_4()
+    _line_callout_example_5()
 
 
 @_print_source
@@ -327,6 +328,41 @@ def _line_callout_example_4():
     p.express(type="line", data_frame=df, x="date", y="GOOG")
     p.callout.add_square_growth_line(
         x0="2019-01-28", x1="2019-12-30", y0=1, y1=1.2, y_top=1.5, text="+20%"
+    )
+    p.figure.update_layout(showlegend=False)
+    p.show()
+
+
+@_print_source
+def _line_callout_example_5():
+    """
+    Subplot Line Callout example
+    """
+    from plotly.subplots import make_subplots
+
+    df = data.stocks()
+    p = Plotter(figure=make_subplots(rows=2, cols=1), slide_layout="slide_50%")
+    p.add_trace(go.Scatter(x=df["date"], y=df["GOOG"], mode="lines"), row=1, col=1)
+    p.add_trace(go.Scatter(x=df["date"], y=df["AAPL"], mode="lines"), row=2, col=1)
+    p.callout.add_square_growth_line(
+        x0="2019-01-28",
+        x1="2019-12-30",
+        y0=1,
+        y1=1.2,
+        y_top=1.5,
+        text="+20%",
+        xref="x",
+        yref="y",
+    )
+    p.callout.add_square_growth_line(
+        x0="2019-01-28",
+        x1="2019-12-30",
+        y0=1,
+        y1=1.65,
+        y_top=1.8,
+        text="+65%",
+        xref="x2",
+        yref="y2",
     )
     p.figure.update_layout(showlegend=False)
     p.show()

@@ -178,6 +178,7 @@ class Callout:
         circle_x_pixel_width: int = None,
         circle_y_pixel_width: int = None,
         text: str = None,
+        **kwargs,
     ) -> go.Figure:
         """Creating a set of lines going up from one bar across and down to another.
         An example can be found in the examples/ folder.
@@ -217,7 +218,7 @@ class Callout:
         }
 
         for l in [l1, l2, l3]:
-            self.figure.add_shape(**l, **self._DEFAULT_LINE_STYLE)
+            self.figure.add_shape(**l, **self._DEFAULT_LINE_STYLE, **kwargs)
 
         if text is not None:
             self.add_circle_highlight(
@@ -227,6 +228,7 @@ class Callout:
                 circle_y_pixel_width=circle_y_pixel_width,
                 text=text,
                 shape_form="oval",
+                **kwargs,
             )
 
         return self.figure
@@ -241,6 +243,7 @@ class Callout:
         circle_x_pixel_width: int = None,
         circle_y_pixel_width: int = None,
         text: str = None,
+        **kwargs,
     ) -> go.Figure:
         """Adding two horisontal dashed lines from the given points, one arrow (up or down), and some text to describe the difference.
 
@@ -284,6 +287,7 @@ class Callout:
                 circle_y_pixel_width=circle_y_pixel_width,
                 text=text,
                 shape_form="oval",
+                **kwargs,
             )
         return self.figure
 
@@ -293,6 +297,7 @@ class Callout:
         text_type=None,
         text_format=".1f",
         y_text_offset: float = 0,
+        **kwargs,
     ) -> go.Figure:
         """Adding a set of annotations to a group barchart with exactly two traces.
         The annotations compares the primary to the secondary trace and can plot various texts for comparison.
@@ -412,9 +417,16 @@ class Callout:
                 **ARROW_STYLE,
                 text="",
                 bgcolor="rgba(0,0,0,0)",
+                **kwargs,
             )
             self.figure.add_shape(  # horisontal line
-                **self._DEFAULT_LINE_STYLE, x0=x0, x1=x1, y0=y_max, y1=y_max, xref="x2"
+                **self._DEFAULT_LINE_STYLE,
+                x0=x0,
+                x1=x1,
+                y0=y_max,
+                y1=y_max,
+                xref="x2",
+                **kwargs,
             )
 
             # Adding the text
@@ -431,6 +443,7 @@ class Callout:
                     text=f"<b>{text}</b>",
                     xref="x2",
                     **self._DEFAULT_SMALL_TEXT_STYLE,
+                    **kwargs,
                 )
         return self.figure
 
@@ -441,6 +454,8 @@ class Callout:
         text_format: str = ".1f",
         text_positions: list[str] | str = None,
         marker_size: int = 10,
+        custom_texts: list[str] = None,
+        **kwargs,
     ) -> go.Figure:
         """Creating a marker at the end of the line with optional text.
 
@@ -458,6 +473,7 @@ class Callout:
                 - 'category' = The name of the trace.
                 - 'value+category' = The value of the y axis and the name of the trace.
                 - 'category+value' = The name of the trace and the value of the y axis.
+                - 'custom' = Custom text from the `custom_texts` argument.
                 - None = No text.
             text_format (str, optional):
                 How the yaxis value should be formatted. Defaults to ".1f".
@@ -480,7 +496,13 @@ class Callout:
         elif isinstance(traces, str):
             traces = [traces]
 
-        _VALID_TEXT_TYPES = ["value", "category", "value+category", "category+value"]
+        _VALID_TEXT_TYPES = [
+            "value",
+            "category",
+            "value+category",
+            "category+value",
+            "custom",
+        ]
         if text_type is not None:
             if text_type not in _VALID_TEXT_TYPES:
                 raise AttributeError(
@@ -514,6 +536,17 @@ class Callout:
                 elif text_type == "category+value":
                     showlegend = False
                     text = f"{name}<br>{y:{text_format}}"
+                elif text_type == "custom":
+                    showlegend = False
+                    text = custom_texts[i] if custom_texts else None
+
+                scatter_kwargs = {}
+                trace_kwargs = {}
+                for k, v in kwargs.items():
+                    if k in dir(go.Scatter):
+                        scatter_kwargs[k] = v
+                    else:
+                        trace_kwargs[k] = v
 
                 self.figure.add_trace(
                     go.Scatter(
@@ -525,7 +558,9 @@ class Callout:
                         showlegend=False,
                         name=f"{name}_marker",
                         textposition=text_positions[i],
-                    )
+                        **scatter_kwargs,
+                    ),
+                    **trace_kwargs,
                 )
                 i += 1
         self.figure.update_layout(showlegend=showlegend)
