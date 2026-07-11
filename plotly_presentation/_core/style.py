@@ -60,9 +60,10 @@ pio.templates.default = "presentation_layout"
 
 
 class Style:
-    def __init__(self, figure, slide_layout) -> None:
+    def __init__(self, figure, slide_layout, discrete_color_map: dict = {}) -> None:
         self.figure = figure
         self.slide_layout = slide_layout
+        self.discrete_color_map = discrete_color_map
         self._set_width_and_height(slide_layout=slide_layout)
 
     def _set_width_and_height(self, slide_layout="slide_100%"):
@@ -154,6 +155,40 @@ class Style:
                         self.figure.update_traces(
                             marker_color=color, selector=({"name": name})
                         )
+
+    def update_discrete_color_map(self) -> None:
+        """Apply discrete color mapping to the plot.
+        
+        Args:
+            color_map (dict): Dictionary mapping values to colors
+        """
+        # Iterate through all traces in the figure
+        if len(self.discrete_color_map) == 0:
+            return  # No color mapping provided, exit early
+        for trace in self.figure.data:
+            # Check if the trace has a 'marker' attribute
+            if hasattr(trace, 'marker') and hasattr(trace.marker, 'color'):
+                # If the trace has a color property, we can update it
+                pass
+            
+            # Try to map colors for different types of traces
+            if hasattr(trace, 'name') and trace.name:
+                # Look up the trace name in our color map
+                if trace.name in self.discrete_color_map:
+                    color = self.discrete_color_map[trace.name]
+                    try:
+                        self.figure.update_traces(line_color=color, selector={'name': trace.name})
+                    except ValueError:
+                        try:
+                            self.figure.update_traces(marker_color=color, selector={'name': trace.name})
+                        except Exception:
+                            # If no suitable color assignment found, skip
+                            pass
+            
+            # For traces with text or labels
+            if hasattr(trace, 'text') and trace.text is not None:
+                # Apply color mapping to text elements if needed
+                pass
 
     def _apply_waterfall_style(self):
         self.figure.data[0]["increasing"] = {"marker": {"color": Color.POSITIVE.value}}

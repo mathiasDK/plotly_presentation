@@ -7,7 +7,7 @@ from plotly_presentation._core.style import Style
 
 class Plotter:
     def __init__(
-        self, figure: go.Figure = None, slide_layout: str = "slide_100%"
+        self, figure: go.Figure = None, slide_layout: str = "slide_100%", **kwargs
     ) -> None:
         """Initiate the plot library with the following extentions:
         .callout
@@ -26,11 +26,14 @@ class Plotter:
                 self.style._apply_waterfall_style()
         else:
             self.figure = go.Figure()
+        self.kwargs = kwargs
         self._apply_settings()
 
     def _apply_settings(self) -> None:
         self.callout = Callout(self.figure)
-        self.style = Style(self.figure, self.slide_layout)
+        _VALID_STYLE_KWARGS = dir(Style)
+        style_kwargs = {k: v for k, v in self.kwargs.items() if k in _VALID_STYLE_KWARGS}
+        self.style = Style(self.figure, self.slide_layout, **style_kwargs)
 
     def express(self, type: str, **kwargs) -> go.Figure:
         self.figure = getattr(px, type)(**kwargs)
