@@ -564,3 +564,22 @@ class StyleTest(unittest.TestCase):
         self.assertEqual(fig.data[0].marker.color, '#FF0000')
         self.assertEqual(fig.data[1].line.color, '#00FF00')
         self.assertEqual(fig.data[2].line.color, '#0000FF')
+
+    def test_update_discrete_color_map_plotter(self):
+        """Test update_discrete_color_map with different trace types"""
+
+        # Create a discrete color map
+        color_map = {
+            'Bar Trace': '#FF0000',
+        }
+        # Create a figure with different trace types
+        p = Plotter(discrete_color_map=color_map)
+        p.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name='Bar Trace'))
+
+        print(p.style.discrete_color_map)  # Debugging line to check the color map
+        
+        # Apply the discrete color mapping
+        p.style.update_discrete_color_map()
+        
+        # Verify that colors were applied correctly
+        self.assertEqual(p.figure.data[0].marker.color, '#FF0000')

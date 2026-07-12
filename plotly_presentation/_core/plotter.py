@@ -32,6 +32,7 @@ class Plotter:
     def _apply_settings(self) -> None:
         self.callout = Callout(self.figure)
         _VALID_STYLE_KWARGS = dir(Style)
+        print(_VALID_STYLE_KWARGS)
         style_kwargs = {k: v for k, v in self.kwargs.items() if k in _VALID_STYLE_KWARGS}
         self.style = Style(self.figure, self.slide_layout, **style_kwargs)
 

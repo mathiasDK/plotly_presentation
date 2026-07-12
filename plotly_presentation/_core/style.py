@@ -63,8 +63,20 @@ class Style:
     def __init__(self, figure, slide_layout, discrete_color_map: dict = {}) -> None:
         self.figure = figure
         self.slide_layout = slide_layout
-        self.discrete_color_map = discrete_color_map
+
+        self._discrete_color_map = discrete_color_map
         self._set_width_and_height(slide_layout=slide_layout)
+
+    @property
+    def discrete_color_map(self):
+
+        return self._discrete_color_map
+    
+
+    @discrete_color_map.setter
+    def discrete_color_map(self, value):
+
+        self._discrete_color_map = value
 
     def _set_width_and_height(self, slide_layout="slide_100%"):
         """Set plot width and height based on the layout"""
@@ -163,7 +175,8 @@ class Style:
             color_map (dict): Dictionary mapping values to colors
         """
         # Iterate through all traces in the figure
-        if len(self.discrete_color_map) == 0:
+
+        if len(self._discrete_color_map) == 0:
             return  # No color mapping provided, exit early
         for trace in self.figure.data:
             # Check if the trace has a 'marker' attribute
@@ -174,8 +187,10 @@ class Style:
             # Try to map colors for different types of traces
             if hasattr(trace, 'name') and trace.name:
                 # Look up the trace name in our color map
-                if trace.name in self.discrete_color_map:
-                    color = self.discrete_color_map[trace.name]
+
+
+                if trace.name in self._discrete_color_map:
+                    color = self._discrete_color_map[trace.name]
                     try:
                         self.figure.update_traces(line_color=color, selector={'name': trace.name})
                     except ValueError:
