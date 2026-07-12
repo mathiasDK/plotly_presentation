@@ -58,24 +58,27 @@ layout = update_dict(color_layout, layout)
 pio.templates["presentation_layout"] = go.layout.Template(layout=layout)
 pio.templates.default = "presentation_layout"
 
-
 class Style:
     def __init__(self, figure, slide_layout, discrete_color_map: dict = {}) -> None:
         self.figure = figure
         self.slide_layout = slide_layout
-
         self._discrete_color_map = discrete_color_map
         self._set_width_and_height(slide_layout=slide_layout)
 
     @property
     def discrete_color_map(self):
+        """This should help make it easier to make consistent colors between multiple plots, 
+        by having just one color map put into each Plotter().
 
+        Make sure that the colors are being applied using the Style.update_discrete_color_map() function.
+
+        Returns:
+            dict: The discrete color map dictionary
+        """
         return self._discrete_color_map
     
-
     @discrete_color_map.setter
     def discrete_color_map(self, value):
-
         self._discrete_color_map = value
 
     def _set_width_and_height(self, slide_layout="slide_100%"):
@@ -175,7 +178,6 @@ class Style:
             color_map (dict): Dictionary mapping values to colors
         """
         # Iterate through all traces in the figure
-
         if len(self._discrete_color_map) == 0:
             return  # No color mapping provided, exit early
         for trace in self.figure.data:
@@ -187,8 +189,6 @@ class Style:
             # Try to map colors for different types of traces
             if hasattr(trace, 'name') and trace.name:
                 # Look up the trace name in our color map
-
-
                 if trace.name in self._discrete_color_map:
                     color = self._discrete_color_map[trace.name]
                     try:
