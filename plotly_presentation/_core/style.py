@@ -58,6 +58,7 @@ layout = update_dict(color_layout, layout)
 pio.templates["presentation_layout"] = go.layout.Template(layout=layout)
 pio.templates.default = "presentation_layout"
 
+
 class Style:
     def __init__(self, figure, slide_layout, discrete_color_map: dict = {}) -> None:
         self.figure = figure
@@ -67,7 +68,7 @@ class Style:
 
     @property
     def discrete_color_map(self):
-        """This should help make it easier to make consistent colors between multiple plots, 
+        """This should help make it easier to make consistent colors between multiple plots,
         by having just one color map put into each Plotter().
 
         Make sure that the colors are being applied using the Style.update_discrete_color_map() function.
@@ -76,7 +77,7 @@ class Style:
             dict: The discrete color map dictionary
         """
         return self._discrete_color_map
-    
+
     @discrete_color_map.setter
     def discrete_color_map(self, value):
         self._discrete_color_map = value
@@ -173,7 +174,7 @@ class Style:
 
     def update_discrete_color_map(self) -> None:
         """Apply discrete color mapping to the plot.
-        
+
         Args:
             color_map (dict): Dictionary mapping values to colors
         """
@@ -182,26 +183,30 @@ class Style:
             return  # No color mapping provided, exit early
         for trace in self.figure.data:
             # Check if the trace has a 'marker' attribute
-            if hasattr(trace, 'marker') and hasattr(trace.marker, 'color'):
+            if hasattr(trace, "marker") and hasattr(trace.marker, "color"):
                 # If the trace has a color property, we can update it
                 pass
-            
+
             # Try to map colors for different types of traces
-            if hasattr(trace, 'name') and trace.name:
+            if hasattr(trace, "name") and trace.name:
                 # Look up the trace name in our color map
                 if trace.name in self._discrete_color_map:
                     color = self._discrete_color_map[trace.name]
                     try:
-                        self.figure.update_traces(line_color=color, selector={'name': trace.name})
+                        self.figure.update_traces(
+                            line_color=color, selector={"name": trace.name}
+                        )
                     except ValueError:
                         try:
-                            self.figure.update_traces(marker_color=color, selector={'name': trace.name})
+                            self.figure.update_traces(
+                                marker_color=color, selector={"name": trace.name}
+                            )
                         except Exception:
                             # If no suitable color assignment found, skip
                             pass
-            
+
             # For traces with text or labels
-            if hasattr(trace, 'text') and trace.text is not None:
+            if hasattr(trace, "text") and trace.text is not None:
                 # Apply color mapping to text elements if needed
                 pass
 

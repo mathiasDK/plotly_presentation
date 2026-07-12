@@ -444,65 +444,59 @@ class StyleTest(unittest.TestCase):
         """Test basic functionality of update_discrete_color_map"""
         # Create a simple figure with named traces
         fig = go.Figure()
-        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name='Trace1'))
-        fig.add_trace(go.Scatter(x=[1, 2, 3], y=[3, 2, 1], name='Trace2'))
-        
+        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name="Trace1"))
+        fig.add_trace(go.Scatter(x=[1, 2, 3], y=[3, 2, 1], name="Trace2"))
+
         # Create a discrete color map
-        color_map = {
-            'Trace1': '#FF0000',  # Red
-            'Trace2': '#00FF00'   # Green
-        }
-        
+        color_map = {"Trace1": "#FF0000", "Trace2": "#00FF00"}  # Red  # Green
+
         # Create style object
-        style = Style(fig, 'slide_100%', discrete_color_map=color_map)
-        
+        style = Style(fig, "slide_100%", discrete_color_map=color_map)
+
         # Apply the discrete color mapping
         style.update_discrete_color_map()
-        
+
         # Verify that colors were applied correctly
-        self.assertEqual(fig.data[0].marker.color, '#FF0000')
-        self.assertEqual(fig.data[1].line.color, '#00FF00')
+        self.assertEqual(fig.data[0].marker.color, "#FF0000")
+        self.assertEqual(fig.data[1].line.color, "#00FF00")
 
     def test_update_discrete_color_map_with_none_traces(self):
         """Test update_discrete_color_map with traces that have no color attributes"""
         # Create a figure with traces that may not have color properties
         fig = go.Figure()
-        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name='Bar Trace'))
-        fig.add_trace(go.Scatter(x=[1, 2, 3], y=[3, 2, 1], name='Scatter Trace'))
-        
+        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name="Bar Trace"))
+        fig.add_trace(go.Scatter(x=[1, 2, 3], y=[3, 2, 1], name="Scatter Trace"))
+
         # Create a discrete color map
-        color_map = {
-            'Bar Trace': '#FF5733',
-            'Scatter Trace': '#33FF57'
-        }
-        
+        color_map = {"Bar Trace": "#FF5733", "Scatter Trace": "#33FF57"}
+
         # Create style object
-        style = Style(fig, 'slide_100%', discrete_color_map=color_map)
-        
+        style = Style(fig, "slide_100%", discrete_color_map=color_map)
+
         # Apply the discrete color mapping
         style.update_discrete_color_map()
-        
+
         # Verify that colors were applied correctly
-        self.assertEqual(fig.data[0].marker.color, '#FF5733')
-        self.assertEqual(fig.data[1].line.color, '#33FF57')
+        self.assertEqual(fig.data[0].marker.color, "#FF5733")
+        self.assertEqual(fig.data[1].line.color, "#33FF57")
 
     def test_update_discrete_color_map_empty_map(self):
         """Test update_discrete_color_map with empty color map"""
         # Create a figure with named traces
         fig = go.Figure()
-        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name='Trace1'))
-        
+        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name="Trace1"))
+
         # Empty color map
         color_map = {}
-        
+
         # Create style object
-        style = Style(fig, 'slide_100%', discrete_color_map=color_map)
+        style = Style(fig, "slide_100%", discrete_color_map=color_map)
         initial_color = fig.data[0].marker.color
-        
+
         # Apply the discrete color mapping (should not fail)
         style.update_discrete_color_map()
         new_color = fig.data[0].marker.color
-        
+
         # Colors should remain unchanged
         self.assertEqual(initial_color, new_color)
 
@@ -510,32 +504,29 @@ class StyleTest(unittest.TestCase):
         """Test update_discrete_color_map with color map for non-existent trace"""
         # Create a figure with named traces
         fig = go.Figure()
-        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name='Trace1'))
-        
+        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name="Trace1"))
+
         # Color map with non-existent trace name
-        color_map = {
-            'NonExistentTrace': '#FF0000',
-            'Trace1': '#00FF00'
-        }
-        
+        color_map = {"NonExistentTrace": "#FF0000", "Trace1": "#00FF00"}
+
         # Create style object
-        style = Style(fig, 'slide_100%', discrete_color_map=color_map)
-        
+        style = Style(fig, "slide_100%", discrete_color_map=color_map)
+
         # Apply the discrete color mapping
         style.update_discrete_color_map()
-        
+
         # Only existing trace should be updated
-        self.assertEqual(fig.data[0].marker.color, '#00FF00')
+        self.assertEqual(fig.data[0].marker.color, "#00FF00")
 
     def test_update_discrete_color_map_no_discrete_color_map(self):
         """Test update_discrete_color_map when discrete_color_map is None"""
         # Create a figure with named traces
         fig = go.Figure()
-        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name='Trace1'))
-        
+        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name="Trace1"))
+
         # No discrete color map provided
-        style = Style(fig, 'slide_100%')
-        
+        style = Style(fig, "slide_100%")
+
         # Apply the discrete color mapping (should not fail)
         style.update_discrete_color_map()
 
@@ -543,43 +534,43 @@ class StyleTest(unittest.TestCase):
         """Test update_discrete_color_map with different trace types"""
         # Create a figure with different trace types
         fig = go.Figure()
-        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name='Bar Trace'))
-        fig.add_trace(go.Scatter(x=[1, 2, 3], y=[3, 2, 1], name='Scatter Trace'))
-        fig.add_trace(go.Scattergl(x=[1, 2, 3], y=[2, 3, 1], name='ScatterGL Trace'))
-        
+        fig.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name="Bar Trace"))
+        fig.add_trace(go.Scatter(x=[1, 2, 3], y=[3, 2, 1], name="Scatter Trace"))
+        fig.add_trace(go.Scattergl(x=[1, 2, 3], y=[2, 3, 1], name="ScatterGL Trace"))
+
         # Create a discrete color map
         color_map = {
-            'Bar Trace': '#FF0000',
-            'Scatter Trace': '#00FF00',
-            'ScatterGL Trace': '#0000FF'
+            "Bar Trace": "#FF0000",
+            "Scatter Trace": "#00FF00",
+            "ScatterGL Trace": "#0000FF",
         }
-        
+
         # Create style object
-        style = Style(fig, 'slide_100%', discrete_color_map=color_map)
-        
+        style = Style(fig, "slide_100%", discrete_color_map=color_map)
+
         # Apply the discrete color mapping
         style.update_discrete_color_map()
-        
+
         # Verify that colors were applied correctly
-        self.assertEqual(fig.data[0].marker.color, '#FF0000')
-        self.assertEqual(fig.data[1].line.color, '#00FF00')
-        self.assertEqual(fig.data[2].line.color, '#0000FF')
+        self.assertEqual(fig.data[0].marker.color, "#FF0000")
+        self.assertEqual(fig.data[1].line.color, "#00FF00")
+        self.assertEqual(fig.data[2].line.color, "#0000FF")
 
     def test_update_discrete_color_map_plotter(self):
         """Test update_discrete_color_map with different trace types"""
 
         # Create a discrete color map
         color_map = {
-            'Bar Trace': '#FF0000',
+            "Bar Trace": "#FF0000",
         }
         # Create a figure with different trace types
         p = Plotter(discrete_color_map=color_map)
-        p.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name='Bar Trace'))
+        p.add_trace(go.Bar(x=[1, 2, 3], y=[1, 2, 3], name="Bar Trace"))
 
         print(p.style.discrete_color_map)  # Debugging line to check the color map
-        
+
         # Apply the discrete color mapping
         p.style.update_discrete_color_map()
-        
+
         # Verify that colors were applied correctly
-        self.assertEqual(p.figure.data[0].marker.color, '#FF0000')
+        self.assertEqual(p.figure.data[0].marker.color, "#FF0000")
